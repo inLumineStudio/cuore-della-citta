@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { heroClaim, heroImageSrc, heroSubtitle, navLinks, showFullNav, siteConfig } from "@/lib/content";
 import { whatsappHref } from "@/lib/contact";
 
@@ -79,43 +80,16 @@ export function Hero() {
 
           <button
             type="button"
-            aria-label={isMenuOpen ? "Chiudi il menu" : "Apri il menu"}
+            aria-label="Apri il menu"
             className="text-cream md:hidden"
-            onClick={() => setIsMenuOpen((open) => !open)}
+            onClick={() => setIsMenuOpen(true)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <Menu className="h-6 w-6" strokeWidth={1.5} />
           </button>
         </div>
-
-        {isMenuOpen && (
-          <div className="bg-ink/95 backdrop-blur-sm md:hidden">
-            <div className="flex flex-col gap-4 px-6 py-6">
-              {navLinks.map((link) =>
-                showFullNav ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-lg text-cream/90 hover:text-cream transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <span
-                    key={link.href}
-                    role="link"
-                    aria-disabled="true"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="cursor-pointer text-lg text-cream/90 hover:text-cream transition-colors select-none"
-                  >
-                    {link.label}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      <MobileMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
       <div className="relative z-10 flex w-full flex-col items-end gap-5 px-6 pb-10 text-right sm:gap-7 sm:px-10 sm:pb-14 lg:px-14">
         <p className="max-w-md text-base text-hero-ivory leading-relaxed sm:text-lg">

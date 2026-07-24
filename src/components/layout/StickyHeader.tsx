@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Menu } from "lucide-react";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { navLinks, showFullNav, siteConfig } from "@/lib/content";
 
 export function StickyHeader() {
@@ -57,45 +57,15 @@ export function StickyHeader() {
 
         <button
           type="button"
-          aria-label={isMenuOpen ? "Chiudi il menu" : "Apri il menu"}
+          aria-label="Apri il menu"
           className="text-ink md:hidden"
-          onClick={() => setIsMenuOpen((open) => !open)}
+          onClick={() => setIsMenuOpen(true)}
         >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <Menu className="h-6 w-6" strokeWidth={1.5} />
         </button>
       </div>
 
-      {isMenuOpen && (
-        <div className="border-t border-stone-light bg-cream md:hidden">
-          <div className="flex flex-col gap-4 px-6 py-6">
-            {navLinks.map((link) =>
-              showFullNav ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-base text-ink-soft hover:text-ink transition-colors"
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <span
-                  key={link.href}
-                  role="link"
-                  aria-disabled="true"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="cursor-pointer text-base text-ink-soft hover:text-ink transition-colors select-none"
-                >
-                  {link.label}
-                </span>
-              )
-            )}
-            <Button href="/faq" variant="outline-dark" className="mt-2 w-fit" disabled={!showFullNav}>
-              Contattaci
-            </Button>
-          </div>
-        </div>
-      )}
+      <MobileMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </header>
   );
 }

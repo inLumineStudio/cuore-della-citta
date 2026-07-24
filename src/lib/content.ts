@@ -41,7 +41,7 @@ export type NavLink = {
 export const navLinks: NavLink[] = [
   { label: "La Dimora", href: "/la-dimora" },
   { label: "Servizi & Comfort", href: "/servizi-comfort" },
-  { label: "Posizione & Mappa", href: "/posizione" },
+  { label: "Dove ci Troviamo", href: "/posizione" },
   { label: "I Nostri Partner", href: "/partner" },
   { label: "FAQ", href: "/faq" },
 ];
