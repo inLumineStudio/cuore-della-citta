@@ -29,10 +29,10 @@
   --color-hero-ivory: var(--color-hero-ivory);
   --color-hero-sand: var(--color-hero-sand);
 
-  --font-hero: var(--font-bodoni);
-  --font-display: var(--font-inter);
-  --font-body: var(--font-inter);
-  --font-brand: var(--font-inter);
+  --font-hero: var(--font-newsreader);
+  --font-display: var(--font-work-sans);
+  --font-body: var(--font-work-sans);
+  --font-brand: var(--font-work-sans);
 }
 
 html {

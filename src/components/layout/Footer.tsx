@@ -53,7 +53,11 @@ export function Footer() {
 
         <nav className="flex flex-col gap-3 sm:items-end">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm hover:text-cream transition-colors">
+            <a
+              key={link.href}
+              href={link.href}
+              className="relative inline-block text-sm text-cream/70 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-terracotta after:transition-all after:duration-300 after:content-[''] hover:text-cream hover:after:w-full"
+            >
               {link.label}
             </a>
           ))}

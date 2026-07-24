@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Newsreader, Work_Sans } from "next/font/google";
 import { StickyHeader } from "@/components/layout/StickyHeader";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 // Usato esclusivamente per il titolo "Cuore della Città" nella Hero
-const bodoniModa = Bodoni_Moda({
-  variable: "--font-bodoni",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 // Font per tutto il resto del sito
-const inter = Inter({
-  variable: "--font-inter",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +34,7 @@ export default function RootLayout({
     <html
       lang="it"
       data-scroll-behavior="smooth"
-      className={`${bodoniModa.variable} ${inter.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${workSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-ink font-body">
         <StickyHeader />

@@ -36,7 +36,7 @@ export function Hero() {
               href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white px-3 py-1 font-semibold tracking-wide uppercase whitespace-nowrap text-white transition-colors hover:bg-white/10"
+              className="inline-block whitespace-nowrap border border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-300 hover:bg-white hover:text-ink sm:text-sm"
             >
               Prenota ora
             </a>
@@ -59,7 +59,7 @@ export function Hero() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors hover:text-white sm:text-2xl"
+                    className="inline-block font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-[transform,color] duration-300 hover:translate-x-[3px] hover:text-white hover:italic sm:text-2xl"
                   >
                     {link.label}
                   </a>
@@ -69,7 +69,7 @@ export function Hero() {
                   <span
                     role="link"
                     aria-disabled="true"
-                    className="cursor-pointer font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors hover:text-white select-none sm:text-2xl"
+                    className="inline-block cursor-pointer font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-[transform,color] duration-300 select-none hover:translate-x-[3px] hover:text-white hover:italic sm:text-2xl"
                   >
                     {link.label}
                   </span>

@@ -41,13 +41,20 @@ export function StickyHeader() {
           {navLinks.map((link) =>
             showFullNav ? (
               <li key={link.href}>
-                <a href={link.href} className="text-sm tracking-wide text-ink-soft hover:text-ink transition-colors">
+                <a
+                  href={link.href}
+                  className="inline-block text-sm tracking-wide text-ink-soft transition-[transform,color] duration-300 hover:translate-x-[3px] hover:text-ink hover:italic"
+                >
                   {link.label}
                 </a>
               </li>
             ) : (
               <li key={link.href}>
-                <span role="link" aria-disabled="true" className="cursor-pointer text-sm tracking-wide text-ink-soft hover:text-ink transition-colors select-none">
+                <span
+                  role="link"
+                  aria-disabled="true"
+                  className="inline-block cursor-pointer text-sm tracking-wide text-ink-soft transition-[transform,color] duration-300 select-none hover:translate-x-[3px] hover:text-ink hover:italic"
+                >
                   {link.label}
                 </span>
               </li>

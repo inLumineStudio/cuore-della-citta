@@ -83,17 +83,23 @@ header trasparente su barra promo con gradiente ambra/terracotta.
 
 ### Font
 
-- **Font editoriale Hero** (`font-hero`): [Bodoni Moda](https://fonts.google.com/specimen/Bodoni+Moda) —
-  didone ad alto contrasto, usato per gli elementi **grandi** dell'overlay
-  Hero: il wordmark "Cuore della Città", il claim in basso e la nav
-  dell'overlay (mood drammatico/editoriale come il riferimento). Va usato
-  **solo a dimensioni ampie**: a misure piccole le aste sottili si spezzano e
-  la leggibilità cala — per questo la nav dello `StickyHeader` (compatta, su
-  fondo crema) resta in Inter.
+- **Font editoriale Hero** (`font-hero`): [Newsreader](https://fonts.google.com/specimen/Newsreader) —
+  serif editoriale con grazie morbide (preferito a un Didone ad alto
+  contrasto come Bodoni Moda, giudicato troppo estremo per un brand di
+  ospitalità), usato per gli elementi **grandi** dell'overlay Hero: il
+  wordmark "Cuore della Città", il claim in basso e la nav dell'overlay
+  (mood editoriale come il riferimento). Va usato **solo a dimensioni
+  ampie** — per questo la nav dello `StickyHeader` (compatta, su fondo
+  crema) resta nel font body.
 - **Tutto il resto** (`font-body` / `font-display` / `font-brand`):
-  [Inter](https://fonts.google.com/specimen/Inter) — sans pulito e leggibile,
-  usato per copy, nav dello StickyHeader, logo header/footer e ogni altra
+  [Work Sans](https://fonts.google.com/specimen/Work+Sans) — sans
+  umanistico, più caldo di un geometrico da interfaccia come Inter, usato
+  per copy, nav dello StickyHeader, logo header/footer e ogni altra
   sezione.
+
+Entrambi i font sono caricati con `style: ["normal", "italic"]` in
+`layout.tsx` (corsivo tipografico reale, non sintetizzato dal browser) per
+supportare l'hover corsivo dei link di navigazione.
 
 Caricati via `next/font/google` in `src/app/layout.tsx`, esposti come CSS var
 (`--font-bodoni`, `--font-inter`) e mappati sui token semantici in
