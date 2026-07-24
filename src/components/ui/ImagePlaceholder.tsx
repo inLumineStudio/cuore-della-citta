@@ -1,17 +1,24 @@
-import { ImageOff } from "lucide-react";
-
 type ImagePlaceholderProps = {
   label?: string;
   className?: string;
 };
 
-export function ImagePlaceholder({ label = "Foto in arrivo", className = "" }: ImagePlaceholderProps) {
+export function ImagePlaceholder({ label, className = "" }: ImagePlaceholderProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-amber-soft/40 via-cream-soft to-stone-light/60 text-stone ${className}`}
+      className={`relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-soft/40 via-cream-soft to-stone-light/50 ${className}`}
     >
-      <ImageOff className="h-6 w-6" strokeWidth={1.5} />
-      <span className="text-xs tracking-wide uppercase">{label}</span>
+      <span
+        aria-hidden="true"
+        className="font-hero text-[7rem] leading-none text-stone/15 select-none sm:text-[9rem]"
+      >
+        CC
+      </span>
+      {label && (
+        <span className="absolute bottom-4 left-4 text-[0.7rem] tracking-[0.25em] text-stone/70 uppercase">
+          {label}
+        </span>
+      )}
     </div>
   );
 }

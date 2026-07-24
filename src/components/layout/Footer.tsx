@@ -1,5 +1,8 @@
+import { Mail, Phone } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { InstagramIcon, WhatsappIcon } from "@/components/ui/icons";
 import { navLinks, siteConfig } from "@/lib/content";
+import { telHref, whatsappHref } from "@/lib/contact";
 
 export function Footer() {
   return (
@@ -11,6 +14,41 @@ export function Footer() {
           </span>
           <p className="max-w-xs text-sm leading-relaxed">{siteConfig.addressLine}</p>
           <p className="text-sm">{siteConfig.email}</p>
+
+          <div className="mt-2 flex items-center gap-4">
+            <a
+              href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Scrivici su WhatsApp"
+              className="text-cream/70 transition-colors hover:text-cream"
+            >
+              <WhatsappIcon className="h-5 w-5" />
+            </a>
+            <a
+              href={telHref()}
+              aria-label="Chiamaci"
+              className="text-cream/70 transition-colors hover:text-cream"
+            >
+              <Phone className="h-5 w-5" strokeWidth={1.5} />
+            </a>
+            <a
+              href={`mailto:${siteConfig.email}`}
+              aria-label="Scrivici una mail"
+              className="text-cream/70 transition-colors hover:text-cream"
+            >
+              <Mail className="h-5 w-5" strokeWidth={1.5} />
+            </a>
+            <a
+              href={siteConfig.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Seguici su Instagram"
+              className="text-cream/70 transition-colors hover:text-cream"
+            >
+              <InstagramIcon className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         <nav className="flex flex-col gap-3 sm:items-end">

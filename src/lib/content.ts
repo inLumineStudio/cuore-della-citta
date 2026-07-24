@@ -14,6 +14,8 @@ export const siteConfig = {
   whatsappHref: "390000000000",
   telegramUsername: "cuoredellacitta",
   email: "info@cuoredellacitta.it",
+  // TODO: URL profilo Instagram reale del cliente
+  instagramUrl: "https://instagram.com/cuoredellacitta",
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
 
@@ -45,6 +47,19 @@ export const navLinks: NavLink[] = [
   { label: "I Nostri Partner", href: "/partner" },
   { label: "FAQ", href: "/faq" },
 ];
+
+// Teaser Intro in home — la storia della Dimora (testo fornito dalla proprietaria).
+// La foto definitiva arriverà dopo: per ora ImagePlaceholder.
+export const homeIntro = {
+  eyebrow: "La nostra storia",
+  title: "Il cuore, prima di tutto.",
+  body: [
+    "Abbiamo cercato un luogo da far crescere, qualcosa che restasse ai nostri figli e che non perdesse mai di valore. L'abbiamo trovata in condizioni difficili e l'abbiamo ristrutturata da cima a fondo, con il tempo, la cura e i sacrifici di tutta la famiglia.",
+    "Per questo non è soltanto una casa vacanze, ma un affetto che abbiamo deciso di condividere: il cuore che ci abbiamo messo, oggi, nel cuore della città.",
+  ],
+  cta: "Scopri la Dimora",
+  ctaHref: "/la-dimora",
+};
 
 export type Amenity = {
   icon:

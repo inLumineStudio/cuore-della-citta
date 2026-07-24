@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { Mail, Phone, X } from "lucide-react";
+import { InstagramIcon, WhatsappIcon } from "@/components/ui/icons";
 import { navLinks, showFullNav, siteConfig } from "@/lib/content";
 import { telHref, whatsappHref } from "@/lib/contact";
 
@@ -11,6 +13,12 @@ type MobileMenuProps = {
 };
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
 
@@ -28,7 +36,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     };
   }, [open, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       aria-hidden={!open}
       className={`fixed inset-0 z-[60] md:hidden ${open ? "" : "pointer-events-none"}`}
@@ -91,27 +101,39 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           <p className="mb-4 font-brand text-[0.7rem] tracking-[0.3em] text-stone uppercase">
             Contatti
           </p>
-          <div className="flex flex-col gap-3 text-sm text-ink-soft">
+          <div className="flex items-center gap-5 text-ink-soft">
             <a
               href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Scrivici su WhatsApp"
               className="transition-colors hover:text-terracotta"
             >
-              WhatsApp
+              <WhatsappIcon className="h-5 w-5" />
             </a>
-            <a href={telHref()} className="transition-colors hover:text-terracotta">
-              {siteConfig.phoneDisplay}
+            <a href={telHref()} aria-label="Chiamaci" className="transition-colors hover:text-terracotta">
+              <Phone className="h-5 w-5" strokeWidth={1.5} />
             </a>
             <a
               href={`mailto:${siteConfig.email}`}
+              aria-label="Scrivici una mail"
               className="transition-colors hover:text-terracotta"
             >
-              {siteConfig.email}
+              <Mail className="h-5 w-5" strokeWidth={1.5} />
+            </a>
+            <a
+              href={siteConfig.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Seguici su Instagram"
+              className="transition-colors hover:text-terracotta"
+            >
+              <InstagramIcon className="h-5 w-5" />
             </a>
           </div>
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body
   );
 }
