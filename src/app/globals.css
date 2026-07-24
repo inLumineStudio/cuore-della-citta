@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-cream: #f8f2e7;
+  --color-cream-soft: #f1e8d8;
+  --color-ink: #26201a;
+  --color-ink-soft: #4a4038;
+  --color-stone: #756a5e;
+  --color-stone-light: #e3d8c5;
+  --color-terracotta: #b1552f;
+  --color-terracotta-dark: #8a3f22;
+  --color-amber: #d99a55;
+  --color-amber-soft: #e7c691;
+  --color-hero-ivory: #faf6ee;
+  --color-hero-sand: #eadbc8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--color-cream);
+  --color-cream-soft: var(--color-cream-soft);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-stone: var(--color-stone);
+  --color-stone-light: var(--color-stone-light);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-dark: var(--color-terracotta-dark);
+  --color-amber: var(--color-amber);
+  --color-amber-soft: var(--color-amber-soft);
+  --color-hero-ivory: var(--color-hero-ivory);
+  --color-hero-sand: var(--color-hero-sand);
+
+  --font-hero: var(--font-bodoni);
+  --font-display: var(--font-inter);
+  --font-body: var(--font-inter);
+  --font-brand: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* Scrollbar classica: track scuro, thumb bianco arrotondato, pulsanti freccia */
+  scrollbar-color: #ffffff #57534e;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #57534e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border: 3px solid #57534e;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-button:vertical:start {
+  height: 14px;
+  background: #57534e no-repeat center / 8px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 3 L8.5 7 L1.5 7 Z' fill='white'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-button:vertical:end {
+  height: 14px;
+  background: #57534e no-repeat center / 8px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 7 L8.5 3 L1.5 3 Z' fill='white'/%3E%3C/svg%3E");
 }
