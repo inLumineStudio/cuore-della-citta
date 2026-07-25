@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { NavLink } from "@/components/ui/NavLink";
-import { navLinks, siteConfig } from "@/lib/content";
+import { bookCtaLabel, navLinks, siteConfig } from "@/lib/content";
 import { whatsappHref } from "@/lib/contact";
 
 export function StickyHeader() {
@@ -59,7 +59,7 @@ export function StickyHeader() {
             rel="noopener noreferrer"
             className="inline-block whitespace-nowrap border border-terracotta bg-terracotta px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-cream transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark sm:px-4 sm:py-2 sm:text-xs"
           >
-            Prenota ora
+            {bookCtaLabel}
           </a>
 
           <button

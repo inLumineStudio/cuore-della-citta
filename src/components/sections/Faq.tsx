@@ -51,7 +51,7 @@ export function Faq() {
         </div>
       </div>
 
-      <div className="order-2 flex flex-col justify-center bg-cream-soft px-8 py-12 md:px-16 lg:order-none lg:px-20">
+      <div className="order-2 flex flex-col justify-center bg-cream-soft px-8 py-12 md:px-16 lg:order-none lg:px-20 lg:py-10">
         <dl className="flex w-full flex-col divide-y divide-stone-light">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
@@ -70,7 +70,7 @@ export function Faq() {
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    className="group flex w-full cursor-pointer items-center justify-between gap-6 py-3.5 text-left"
+                    className="group flex w-full cursor-pointer items-center justify-between gap-6 py-3 text-left"
                   >
                     <span
                       className={`text-pretty text-base font-medium transition-colors duration-200 ${
@@ -98,7 +98,7 @@ export function Faq() {
                 <dd
                   id={panelId}
                   hidden={!isOpen}
-                  className="pr-10 pb-5 text-sm leading-relaxed text-ink-soft"
+                  className="pr-10 pb-4 text-sm leading-relaxed text-ink-soft"
                 >
                   {faq.answer ?? (
                     <span className="text-stone italic">Risposta in arrivo.</span>

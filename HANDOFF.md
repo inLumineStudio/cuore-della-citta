@@ -8,13 +8,16 @@ Stato al 24 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
 Sito multi-pagina (Next.js 16 + TS + Tailwind v4), componentizzato, con
 routing reale (non single-page ad anchor):
 
-- **`/`** — Hero full-bleed (barra promo + logo + nav verticale ancorati ai
-  bordi, che scompaiono scorrendo, titolo "Cuore della Città", CTA
-  WhatsApp/Chiamata), seguita dallo **scroll orizzontale desktop**: tre
+- **`/`** — Hero full-bleed, con **due impaginati distinti**: da `md` in su
+  barra promo + logo + nav verticale ancorati ai bordi (che scompaiono
+  scorrendo) e claim in basso a destra; sotto `md` un lockup centrato con
+  wordmark, "Sulmona, Abruzzo" e CTA di prenotazione, sul modello del
+  riferimento Six Senses Rome scelto dal cliente. Segue lo **scroll orizzontale
+  desktop**: tre
   pannelli a piena schermata — "La Nostra Storia", "Dove ci Troviamo" e le
   **FAQ** (accordion su crema accanto al blocco editoriale sulla foto della
-  statua di Ovidio) — che scorrono lateralmente mentre si usa la rotellina in
-  verticale (vedi sotto)
+  statua di Ovidio, tutte e nove le risposte reali) — che scorrono lateralmente
+  mentre si usa la rotellina in verticale (vedi sotto)
 - **`/la-dimora`** — racconto della struttura + galleria fotografica con
   lightbox (click per ingrandire, frecce prev/next)
 - **`/servizi-comfort`** — griglia servizi con icone
@@ -45,10 +48,10 @@ puro, **senza aggiungere dipendenze**. Da `lg:` in su i pannelli sono
 `100vw × 100dvh` e traslano 1:1 con lo scroll; sotto `lg` l'effetto è
 disattivato e i pannelli si impilano in verticale. Dettagli in `CLAUDE.md`.
 
-**Hero**: occupa sempre l'intero viewport (`min-h-dvh`) e il titolo "Cuore
-della Città" è full-bleed edge-to-edge tramite SVG `textLength` (vedi CLAUDE.md
-§ Hero). La scrollbar del sito è colorata come la barra promo (gradiente
-sabbia/terracotta).
+**Hero**: occupa sempre l'intero viewport (`min-h-dvh`); il wordmark "Cuore
+della Città" è in alto a sinistra su desktop e al centro dello schermo su
+mobile, dove sostituisce sottotitolo e claim (vedi `CLAUDE.md` § Hero). La
+scrollbar del sito è in stile classico, track scuro e thumb bianco.
 
 Direzione estetica validata con il cliente: stile editoriale/caldo ispirato
 al riferimento "BEPD:HOTEL". Font, tutti e tre in `src/app/fonts/` o da Google:
@@ -79,7 +82,7 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    2026: PNG da 1,6 MB riconvertito in WebP q92 da 137 KB, vedi la nota sul
    formato in `CLAUDE.md` § Placeholder immagini) e la statua di Ovidio come
    fondo della colonna editoriale delle FAQ (`statua-di-ovidio.jpg`, stessa data
-   — **da chiarire se servono attribuzioni per entrambe**, vedi punto 10).
+   — **da chiarire se servono attribuzioni per entrambe**, vedi punto 9).
    **Manca ancora la foto de "La Nostra Storia"**, che in
    home mostra tuttora `ImagePlaceholder`; idem Gallery e About. Azione:
    salvare le foto in `public/images/` e valorizzare il campo corrispondente
@@ -113,14 +116,7 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
 8. **SEO on-page** — metadata di base già presenti in `layout.tsx`; mancano
    ancora Open Graph image, sitemap, robots.txt e favicon dedicato (quello
    di default è stato rimosso in fase di pulizia scaffold).
-9. **Risposte FAQ** — le **nove domande** in `faqs` (`content.ts`) sono quelle
-   definitive fornite dal cliente e **otto risposte su nove** sono inserite
-   (orari, prenotazione, Wi-Fi, parcheggio, animali, biancheria, cucina,
-   contatti durante il soggiorno). Manca solo **"Qual è la politica di
-   cancellazione?"**, che mostra "Risposta in arrivo.". Azione: valorizzare
-   `answer` per quella voce, tenendo la risposta breve (2-3 righe) — il pannello
-   è vincolato all'altezza del viewport e non scrolla (vedi `CLAUDE.md`).
-10. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
+9. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
    il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
    Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto
    fornito dal cliente, e tenere il credito con quella foto fuori dal sito
@@ -146,10 +142,9 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 ## Prossimo passo consigliato
 
-Raccogliere dal cliente i contenuti reali elencati sopra (punti 2, 3 e 5 sono
-i più veloci da chiudere) e soprattutto **la foto de "La Nostra Storia"** e
-l'**ultima risposta FAQ mancante** (politica di cancellazione): sono i
-placeholder ancora visibili nella homepage mostrata al cliente. Fatto quello,
-si può riportare `showFullNav` a `true` e passare dalla Fase 1 (UI/UX) alla
-Fase 2 (sviluppo front-end con contenuti reali) del workflow concordato nel
-preventivo.
+Le nove FAQ sono complete, quindi **il solo placeholder ancora visibile nella
+homepage è la foto de "La Nostra Storia"**: è la prima cosa da chiedere alla
+proprietaria. Poi i contenuti reali elencati sopra (punti 2, 3 e 5 sono i più
+veloci da chiudere). Fatto quello, si può riportare `showFullNav` a `true` e
+passare dalla Fase 1 (UI/UX) alla Fase 2 (sviluppo front-end con contenuti
+reali) del workflow concordato nel preventivo.

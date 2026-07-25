@@ -32,6 +32,14 @@ export const heroImageSrc: string | undefined = "/images/hero.jpg";
 // TODO: testo placeholder — da validare col cliente.
 export const heroClaim = "Arrivare. Vivere. Restare.";
 
+// Riga sotto il wordmark nel lockup centrato della Hero mobile: dice subito
+// dove siamo a chi arriva da un link o dai social.
+export const heroLocation = "Sulmona, Abruzzo";
+
+// Etichetta condivisa da tutte le CTA di prenotazione (barra promo, header,
+// lockup mobile della Hero).
+export const bookCtaLabel = "Prenota ora";
+
 // Sottotitolo introduttivo della Hero.
 export const heroSubtitle =
   "Svegliati nel cuore di Sulmona, tra le vie del centro storico. Una dimora accogliente ed esclusiva, punto di partenza per la Valle Peligna e le bellezze abruzzesi.";
@@ -205,8 +213,7 @@ export type Faq = {
   answer?: string;
 };
 
-// TODO: manca solo la risposta a "politica di cancellazione" — le altre otto
-// sono quelle fornite dal cliente
+// Domande e risposte definitive fornite dal cliente.
 export const faqs: Faq[] = [
   {
     question: "Quali sono gli orari di check-in e check-out?",
@@ -218,7 +225,11 @@ export const faqs: Faq[] = [
     answer:
       "Tramite prenotazione diretta, per telefono o su WhatsApp. Il soggiorno minimo è di due notti.",
   },
-  { question: "Qual è la politica di cancellazione?" },
+  {
+    question: "Qual è la politica di cancellazione?",
+    answer:
+      "Puoi cancellare la tua prenotazione senza alcuna penale fino a 5 giorni prima della data di arrivo prevista. In caso di cancellazione effettuata nei 5 giorni precedenti al check-in o di mancata presentazione (no-show), verrà addebitato l'intero importo del soggiorno.",
+  },
   {
     question: "Il Wi-Fi è gratuito?",
     answer: "Sì, la connessione Wi-Fi è gratuita.",

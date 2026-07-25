@@ -198,26 +198,61 @@ Unico punto in cui vive il markup delle voci di nav: lo usano sia l'overlay
 della Hero sia lo `StickyHeader` (prima il blocco era duplicato quattro volte,
 per via del ramo `showFullNav`, che ora è dentro il componente).
 
-L'hover è un **filetto che si espande**: a riposo una lineetta di `w-1/3`
-centrata sotto la voce, all'hover `w-full` con virata al colore acceso. Le
-misure sono in `em` (`bottom-[-0.28em]`, `h-px`) perché la stessa primitiva
-serve la nav grande della Hero (`text-2xl`) e quella compatta dello header
-(`text-sm`). Il colore del filetto è per-contesto via `lineClassName`:
-terracotta scuro → terracotta sul crema dello header, sabbia → avorio sulla
-foto della Hero, dove il terracotta scompariva. Ha sostituito il precedente
-hover corsivo + slide orizzontale.
+L'hover è un **filetto che si espande**: il `<span>` è sempre a `w-full` e a
+riposo viene compresso a `scale-x-[0.34]`, all'hover torna a `scale-x-100` con
+virata al colore acceso. L'offset verticale è in `em` (`bottom-[-0.28em]`,
+`h-px`) perché la stessa primitiva serve la nav grande della Hero (`text-2xl`) e
+quella compatta dello header (`text-sm`). Ha sostituito il precedente hover
+corsivo + slide orizzontale.
+
+Due parametri per contesto:
+
+- `align` (`"start"` default, `"end"`) decide il `transform-origin`, cioè da
+  quale lato il filetto si espande. **Va fatto combaciare con l'allineamento
+  della lista**: la nav della Hero è `items-end`, quindi `align="end"` e il
+  filetto cresce da destra verso il testo; lo `StickyHeader` è una riga normale
+  e resta su `start`. Con l'ancoraggio al centro (la prima versione) la lineetta
+  a riposo sembrava fuori asse rispetto alla bandiera del testo.
+- `lineClassName` decide il colore: terracotta scuro → terracotta sul crema
+  dello header, sabbia → avorio sulla foto della Hero, dove il terracotta
+  scompariva.
+
+**Attenzione**: in Tailwind v4 `scale-x-*` scrive la proprietà `scale`, non
+`transform`. La transizione deve quindi elencare `scale`
+(`transition-[scale,background-color]`): con `transition-[transform,...]`
+l'animazione non parte e il filetto scatta.
 
 ### Hero (`components/sections/Hero.tsx`)
 
+La Hero ha **due impaginati diversi**, non uno responsive: sotto `md` un lockup
+centrato, da `md` in su l'impaginato editoriale asimmetrico. I due non
+convivono mai, si escludono con `hidden` / `md:hidden`.
+
 - Occupa **sempre l'intero viewport**: la `<section>` usa `min-h-dvh`
   (dynamic viewport height, robusto anche su mobile con barra URL variabile).
-- Il titolo "Cuore della Città" è il wordmark in alto a sinistra, in
-  `font-display` (Flaviotte) su tre righe: la `max-w-[10ch]` sull'`<h1>` forza
-  il ritorno a capo e la `leading-[0.9]` chiude l'interlinea. È un `<Link>` a
-  `/`, quindi fa anche da logo. (Una prima bozza lo rendeva full-bleed
-  bordo-a-bordo via SVG `textLength`; l'approccio è stato abbandonato con il
-  passaggio all'impaginato attuale, dove il wordmark convive con la nav
-  verticale sullo stesso asse.)
+- **Da `md` in su**: il titolo "Cuore della Città" è il wordmark in alto a
+  sinistra, in `font-display` (Flaviotte) su tre righe — la `max-w-[10ch]`
+  sull'`<h1>` forza il ritorno a capo e la `leading-[0.9]` chiude l'interlinea.
+  È un `<Link>` a `/`, quindi fa anche da logo. In basso a destra sottotitolo e
+  claim. (Una prima bozza rendeva il wordmark full-bleed bordo-a-bordo via SVG
+  `textLength`; l'approccio è stato abbandonato con il passaggio
+  all'impaginato attuale, dove il wordmark convive con la nav verticale sullo
+  stesso asse.)
+- **Sotto `md`** (riferimento scelto dal cliente: Six Senses Rome) al centro
+  dello schermo stanno wordmark, `heroLocation` ("Sulmona, Abruzzo") e la CTA di
+  prenotazione con l'icona WhatsApp in un cerchio. Sottotitolo e claim sono
+  nascosti: su 375px sarebbero un muro di testo sulla foto, e il racconto lo
+  riprende `HomeIntro` subito dopo. `heroLocation` esiste perché la Hero
+  altrimenti non dice **dove** siamo a chi arriva da un link o dai social.
+- Ci sono due `<h1>` nel markup, uno per impaginato, entrambi con il nome del
+  sito. Non si sovrappongono mai: `display: none` toglie l'altro anche
+  dall'albero di accessibilità.
+- La CTA della barra promo è `hidden md:inline-block`: sotto `md` la
+  prenotazione vive nel lockup, a poche decine di pixel da lì, e due CTA
+  identiche si indebolirebbero. Su mobile resta comunque raggiungibile dallo
+  `StickyHeader` appena si scrolla.
+- Sotto `md` c'è un velo piatto in più (`bg-ink/35`) oltre al gradiente: il
+  lockup cade a metà foto, dove il copriletto chiaro mangerebbe il testo avorio.
 - Overlay foto: gradiente scuro dal basso + filtro `brightness-90 saturate-95`
   sull'immagine per ammorbidire le luci calde e garantire leggibilità.
 
@@ -241,14 +276,19 @@ l'accordion su `bg-cream-soft`.
   filetto verticale terracotta a sinistra della voce aperta. Il filetto è un
   `border-l-2` sempre presente e `border-transparent` da chiuso, così l'apertura
   non sposta il testo.
-- Le righe sono volutamente compatte (`py-3.5`, domanda a `text-base`)
-  perché nove domande più una risposta aperta devono stare nei `100dvh` del
-  pannello — vedi il vincolo nella sezione sullo scroll orizzontale.
-- `faqs` in `content.ts` ha `answer` **opzionale**: finché la proprietaria non
-  fornisce la risposta, l'accordion mostra "Risposta in arrivo." invece di un
-  testo inventato. Stessa filosofia di `ImagePlaceholder` per le foto. Oggi
-  otto risposte su nove sono quelle reali; resta senza risposta solo "Qual è
-  la politica di cancellazione?".
+- Le righe sono volutamente compatte (`py-3`, domanda a `text-base`, colonna a
+  `lg:py-10`) perché nove domande più una risposta aperta devono stare nei
+  `100dvh` del pannello — vedi il vincolo nella sezione sullo scroll
+  orizzontale. Il caso peggiore è la risposta sulla cancellazione (cinque righe,
+  ~107px): l'elenco arriva a ~550px e su 720 di viewport resta un margine di
+  ~87px. **Se si allunga una risposta o si aggiunge una domanda va rimisurato**:
+  con le spaziature precedenti (`py-3.5`, colonna a `py-12`) quella risposta
+  faceva già sbordare l'ultima riga sotto i 700px di viewport.
+- `faqs` in `content.ts` ha `answer` **opzionale**: se una risposta manca
+  l'accordion mostra "Risposta in arrivo." invece di un testo inventato, stessa
+  filosofia di `ImagePlaceholder` per le foto. Oggi tutte e nove le risposte
+  sono quelle reali fornite dalla proprietaria, quindi il segnaposto non è
+  visibile da nessuna parte.
 
 ### Placeholder immagini
 
