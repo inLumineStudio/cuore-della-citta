@@ -81,6 +81,7 @@ export function Footer() {
             >
               inLumine Studio
             </a>
+            .
           </p>
         </div>
       </Container>

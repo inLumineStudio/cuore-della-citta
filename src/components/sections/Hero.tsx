@@ -3,10 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { NavLink } from "@/components/ui/NavLink";
-import { WhatsappIcon } from "@/components/ui/icons";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import {
   bookCtaLabel,
@@ -59,10 +58,18 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Sotto md nella riga resta solo l'hamburger: senza `justify-end`
-            finirebbe a sinistra, dove non c'è più il wordmark. */}
-        <div className="flex items-start justify-end px-6 pt-6 md:justify-between sm:px-10 lg:px-14">
-          {/* Sotto md il wordmark è il lockup centrato più in basso. */}
+        <div className="flex items-start justify-between px-6 pt-6 sm:px-10 lg:px-14">
+          {/* Sotto md il posto in alto a sinistra, liberato dal wordmark che è
+              nel lockup centrato, ospita la CTA di prenotazione. */}
+          <a
+            href={whatsappHref()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whitespace-nowrap border border-terracotta bg-terracotta px-3 py-1.5 text-[0.7rem] font-semibold tracking-[0.08em] text-cream uppercase transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark md:hidden"
+          >
+            {bookCtaLabel}
+          </a>
+
           <h1 className="hidden max-w-[10ch] md:block">
             <Link
               href="/"
@@ -103,7 +110,7 @@ export function Hero() {
           sinistra e il blocco in basso sono nascosti. I due `h1` (questo e
           quello dell'overlay) non convivono mai: `hidden` toglie l'altro anche
           dall'albero di accessibilità. */}
-      <div className="relative z-10 flex min-h-dvh w-full flex-col items-center justify-center gap-6 px-8 text-center md:hidden">
+      <div className="relative z-10 flex min-h-dvh w-full flex-col items-center justify-center gap-5 px-8 text-center md:hidden">
         <h1>
           <Link
             href="/"
@@ -117,17 +124,15 @@ export function Hero() {
           {heroLocation}
         </p>
 
-        <a
-          href={whatsappHref()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 flex items-center gap-3 text-xs font-semibold tracking-[0.12em] text-hero-ivory uppercase"
+        {/* Indicatore di scroll: due chevron sovrapposti, senza testo. È
+            decorativo, quindi fuori dall'albero di accessibilità. */}
+        <span
+          aria-hidden
+          className="absolute bottom-10 flex animate-bounce flex-col items-center text-hero-ivory motion-reduce:animate-none"
         >
-          {bookCtaLabel}
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-hero-ivory/60">
-            <WhatsappIcon className="h-4 w-4" />
-          </span>
-        </a>
+          <ChevronDown className="h-5 w-5" strokeWidth={1.25} />
+          <ChevronDown className="-mt-3.5 h-5 w-5 opacity-50" strokeWidth={1.25} />
+        </span>
       </div>
 
       <div className="relative z-10 hidden w-full flex-col items-end gap-5 px-6 pb-10 text-right sm:gap-7 sm:px-10 sm:pb-14 md:flex lg:px-14">

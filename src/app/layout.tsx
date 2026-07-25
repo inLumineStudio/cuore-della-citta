@@ -3,6 +3,8 @@ import { Newsreader } from "next/font/google";
 import localFont from "next/font/local";
 import { StickyHeader } from "@/components/layout/StickyHeader";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { CursorSquare } from "@/components/ui/CursorSquare";
 import "./globals.css";
 
 // Usato esclusivamente per il titolo "Cuore della Città" nella Hero
@@ -56,6 +58,8 @@ export default function RootLayout({
         <StickyHeader />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ScrollToTop />
+        <CursorSquare />
       </body>
     </html>
   );

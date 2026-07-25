@@ -40,8 +40,8 @@ della home e la voce corrispondente è stata tolta da `navLinks`. La cartella
 usato solo da quella pagina ed è oggi orfano: resta in repo come blocco
 riutilizzabile, ma non è montato da nessuna route.
 
-`StickyHeader` e `Footer` sono montati una sola volta in `app/layout.tsx` e
-compaiono su ogni route (chrome globale). `StickyHeader` ha un comportamento
+`StickyHeader`, `Footer`, `ScrollToTop` e `CursorSquare` sono montati una sola
+volta in `app/layout.tsx` e valgono per ogni route (chrome globale). `StickyHeader` ha un comportamento
 diverso in base alla pagina (`usePathname`):
 
 - su `/` resta nascosto finché non si scrolla oltre l'altezza della Hero
@@ -94,7 +94,7 @@ ScrollTrigger; qui è riprodotta in JS puro, senza dipendenze aggiuntive):
 src/
   app/
     fonts/             # Flaviotte + General Sans (font del cliente, next/font/local)
-    layout.tsx        # font, metadata, StickyHeader + Footer globali
+    layout.tsx        # font, metadata, chrome globale (StickyHeader, Footer, ScrollToTop, CursorSquare)
     page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
     la-dimora/page.tsx
     servizi-comfort/page.tsx
@@ -105,7 +105,7 @@ src/
   components/
     layout/             # StickyHeader, Footer — montati in layout.tsx
     sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Button, Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink)
+    ui/                 # Primitive riutilizzabili (Button, Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, ScrollToTop, CursorSquare)
   lib/
     content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
     contact.ts           # Helper per i link rapidi (tel:, wa.me, t.me)
@@ -186,6 +186,29 @@ riesposta a Tailwind via `@theme inline`:
 Usa sempre questi token (`bg-terracotta`, `text-ink-soft`, ecc.) invece di
 colori Tailwind di default, per mantenere coerenza visiva.
 
+### Cursore e ritorno in cima
+
+`CursorSquare` (`components/ui/`) disegna un **quadratino terracotta
+semitrasparente** (14px, `bg-terracotta/60`) che segue il puntatore. Non è un
+`cursor: url(...)`: quello **sostituirebbe** la freccia di sistema, che invece
+deve restare visibile insieme al quadratino. Conseguenze di questa scelta:
+
+- la posizione viene scritta con `style.transform` direttamente sul nodo DOM,
+  senza stato React — un `setState` per `pointermove` ri-renderizzerebbe
+  l'albero decine di volte al secondo;
+- il componente rende sempre il `div` (anche dal server) con `opacity-0`, e
+  l'opacità passa a 1 al primo movimento. Con un gate "sono sul client" il
+  primo render restituiva `null`, quindi l'effect trovava il ref vuoto e non
+  agganciava mai il listener;
+- gira solo dove c'è un puntatore vero (`(hover: hover) and (pointer: fine)`):
+  su touch il quadratino resterebbe fermo dove capita l'ultimo tap.
+
+`ScrollToTop` (`components/ui/`) è il pulsante terracotta in basso a destra:
+compare oltre un viewport di scroll e riporta in cima con
+`behavior: "instant"`, che sovrascrive lo `scroll-behavior: smooth` globale —
+con lo scroll orizzontale la home è alta tre viewport e l'animazione morbida
+durerebbe secondi.
+
 La scrollbar globale (`globals.css`) è in stile "classico": track scuro
 (`#57534E`), thumb bianco arrotondato con bordo che fa da padding, e pulsanti
 freccia su/giù (SVG inline via `::-webkit-scrollbar-button`). Su Firefox si
@@ -239,18 +262,22 @@ convivono mai, si escludono con `hidden` / `md:hidden`.
   all'impaginato attuale, dove il wordmark convive con la nav verticale sullo
   stesso asse.)
 - **Sotto `md`** (riferimento scelto dal cliente: Six Senses Rome) al centro
-  dello schermo stanno wordmark, `heroLocation` ("Sulmona, Abruzzo") e la CTA di
-  prenotazione con l'icona WhatsApp in un cerchio. Sottotitolo e claim sono
-  nascosti: su 375px sarebbero un muro di testo sulla foto, e il racconto lo
-  riprende `HomeIntro` subito dopo. `heroLocation` esiste perché la Hero
-  altrimenti non dice **dove** siamo a chi arriva da un link o dai social.
+  dello schermo stanno wordmark e `heroLocation` ("Sulmona, Abruzzo"), la CTA di
+  prenotazione sta in alto a sinistra — nel posto liberato dal wordmark, a
+  bilanciare l'hamburger a destra — e in fondo due chevron sovrapposti fanno da
+  indicatore di scroll, senza testo (`aria-hidden`: sono decorativi, e
+  `motion-reduce:animate-none` ferma il rimbalzo per chi riduce le animazioni).
+  Sottotitolo e claim sono nascosti: su 375px sarebbero un muro di testo sulla
+  foto, e il racconto lo riprende `HomeIntro` subito dopo. `heroLocation` esiste
+  perché la Hero altrimenti non dice **dove** siamo a chi arriva da un link o
+  dai social.
 - Ci sono due `<h1>` nel markup, uno per impaginato, entrambi con il nome del
   sito. Non si sovrappongono mai: `display: none` toglie l'altro anche
   dall'albero di accessibilità.
 - La CTA della barra promo è `hidden md:inline-block`: sotto `md` la
-  prenotazione vive nel lockup, a poche decine di pixel da lì, e due CTA
-  identiche si indebolirebbero. Su mobile resta comunque raggiungibile dallo
-  `StickyHeader` appena si scrolla.
+  prenotazione è già in alto a sinistra, a pochi pixel da lì, e due CTA
+  identiche si indebolirebbero. Su mobile resta comunque raggiungibile anche
+  dallo `StickyHeader` appena si scrolla.
 - Sotto `md` c'è un velo piatto in più (`bg-ink/35`) oltre al gradiente: il
   lockup cade a metà foto, dove il copriletto chiaro mangerebbe il testo avorio.
 - Overlay foto: gradiente scuro dal basso + filtro `brightness-90 saturate-95`

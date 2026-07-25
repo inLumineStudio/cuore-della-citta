@@ -11,9 +11,9 @@ routing reale (non single-page ad anchor):
 - **`/`** — Hero full-bleed, con **due impaginati distinti**: da `md` in su
   barra promo + logo + nav verticale ancorati ai bordi (che scompaiono
   scorrendo) e claim in basso a destra; sotto `md` un lockup centrato con
-  wordmark, "Sulmona, Abruzzo" e CTA di prenotazione, sul modello del
-  riferimento Six Senses Rome scelto dal cliente. Segue lo **scroll orizzontale
-  desktop**: tre
+  wordmark e "Sulmona, Abruzzo", CTA di prenotazione in alto a sinistra e
+  indicatore di scroll in fondo, sul modello del riferimento Six Senses Rome
+  scelto dal cliente. Segue lo **scroll orizzontale desktop**: tre
   pannelli a piena schermata — "La Nostra Storia", "Dove ci Troviamo" e le
   **FAQ** (accordion su crema accanto al blocco editoriale sulla foto della
   statua di Ovidio, tutte e nove le risposte reali) — che scorrono lateralmente
@@ -64,7 +64,10 @@ scartati e non vengono più caricati. Palette terracotta/ambra. Dettagli in
 
 Micro-interazioni della nav e CTA: le voci di menu hanno un **filetto che si
 espande** all'hover (`components/ui/NavLink.tsx`, ha sostituito l'hover corsivo)
-e le due CTA "Prenota ora" sono **sempre piene** in terracotta, non più outline.
+e le CTA "Prenota ora" sono **sempre piene** in terracotta, non più outline.
+Su desktop un **quadratino terracotta semitrasparente segue il puntatore**
+(`CursorSquare`, la freccia di sistema resta visibile) e un pulsante in basso a
+destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in `CLAUDE.md`.
 
 Verificato: type-check pulito (`npx tsc --noEmit`), nessun errore console,
 testato su viewport desktop e mobile (menu hamburger incluso) e su tutte le
