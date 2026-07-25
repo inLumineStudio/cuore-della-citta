@@ -19,7 +19,7 @@ export function ContactCta() {
 
         <div className="flex flex-wrap justify-center gap-4">
           <Button
-            href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
+            href={whatsappHref()}
             target="_blank"
             rel="noopener noreferrer"
             variant="outline-light"

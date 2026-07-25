@@ -1,38 +1,56 @@
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { homeIntro, showFullNav } from "@/lib/content";
+import { pointsOfInterest, positionImageSrc, positionTeaser, showFullNav } from "@/lib/content";
 
-export function HomeIntro() {
+export function LocationTeaser() {
   return (
     <section className="grid w-full grid-cols-1 lg:h-full lg:grid-cols-2">
       <div className="relative order-1 min-h-[400px] w-full lg:order-none lg:min-h-[600px]">
-        <ImagePlaceholder label="Foto in arrivo" className="absolute inset-0 h-full w-full" />
+        {positionImageSrc ? (
+          <Image
+            src={positionImageSrc}
+            alt="Piazza Garibaldi a Sulmona al tramonto, con gli archi dell'acquedotto medievale"
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <ImagePlaceholder label="Foto in arrivo" className="absolute inset-0 h-full w-full" />
+        )}
       </div>
 
-      <div className="order-2 flex flex-col items-start justify-center bg-cream p-8 md:p-16 lg:order-none lg:p-24">
+      <div className="order-2 flex flex-col items-start justify-center bg-cream-soft p-8 md:p-16 lg:order-none lg:p-24">
         <div className="flex max-w-xl flex-col items-start gap-6 text-left">
           <span className="text-xs font-semibold tracking-[0.25em] text-terracotta uppercase">
-            {homeIntro.eyebrow}
+            {positionTeaser.eyebrow}
           </span>
 
           <h2 className="text-balance font-display text-3xl leading-[1.1] text-ink sm:text-4xl">
-            {homeIntro.title}
+            {positionTeaser.title}
           </h2>
 
-          <div className="flex flex-col gap-4">
-            {homeIntro.body.map((paragraph) => (
-              <p key={paragraph} className="text-pretty text-base leading-relaxed text-ink-soft sm:text-lg">
-                {paragraph}
-              </p>
+          <p className="text-pretty text-base leading-relaxed text-ink-soft sm:text-lg">
+            {positionTeaser.description}
+          </p>
+
+          <ul className="flex w-full flex-col gap-3">
+            {pointsOfInterest.map((poi) => (
+              <li
+                key={poi.name}
+                className="flex items-center justify-between border-b border-stone-light pb-3"
+              >
+                <span className="text-ink">{poi.name}</span>
+                <span className="text-sm text-stone tabular-nums">{poi.distance}</span>
+              </li>
             ))}
-          </div>
+          </ul>
 
           {showFullNav ? (
             <a
-              href={homeIntro.ctaHref}
+              href={positionTeaser.ctaHref}
               className="group mt-2 inline-flex w-fit items-center gap-2 text-sm font-semibold tracking-wide text-ink uppercase transition-colors hover:text-terracotta"
             >
-              {homeIntro.cta}
+              {positionTeaser.cta}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
             </a>
           ) : (
@@ -41,7 +59,7 @@ export function HomeIntro() {
               aria-disabled="true"
               className="group mt-2 inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-semibold tracking-wide text-ink uppercase transition-colors hover:text-terracotta select-none"
             >
-              {homeIntro.cta}
+              {positionTeaser.cta}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
             </span>
           )}

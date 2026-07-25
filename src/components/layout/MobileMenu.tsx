@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Mail, Phone, X } from "lucide-react";
 import { InstagramIcon, WhatsappIcon } from "@/components/ui/icons";
@@ -12,12 +12,17 @@ type MobileMenuProps = {
   onClose: () => void;
 };
 
-export function MobileMenu({ open, onClose }: MobileMenuProps) {
-  const [mounted, setMounted] = useState(false);
+// Il portale ha bisogno di `document`, che sul server non esiste: lo snapshot
+// server restituisce false e quello client true, così il primo render SSR e
+// l'idratazione coincidono senza passare da un setState in effect.
+const neverChanges = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const mounted = useSyncExternalStore(
+    neverChanges,
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -103,7 +108,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           </p>
           <div className="flex items-center gap-5 text-ink-soft">
             <a
-              href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
+              href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Scrivici su WhatsApp"

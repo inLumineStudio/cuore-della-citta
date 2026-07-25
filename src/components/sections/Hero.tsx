@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Menu } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { NavLink } from "@/components/ui/NavLink";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { heroClaim, heroImageSrc, heroSubtitle, navLinks, showFullNav, siteConfig } from "@/lib/content";
+import { heroClaim, heroImageSrc, heroSubtitle, navLinks, siteConfig } from "@/lib/content";
 import { whatsappHref } from "@/lib/contact";
 
 export function Hero() {
@@ -33,10 +35,10 @@ export function Hero() {
           <div className="flex items-center justify-end gap-3 px-6 py-2 text-xs text-white sm:px-10 sm:text-sm lg:px-14">
             <span className="tracking-wide">Prenota direttamente per la miglior tariffa garantita</span>
             <a
-              href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
+              href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block whitespace-nowrap border border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-300 hover:bg-white hover:text-ink sm:text-sm"
+              className="inline-block whitespace-nowrap border border-terracotta bg-terracotta px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-cream transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark sm:text-sm"
             >
               Prenota ora
             </a>
@@ -45,37 +47,25 @@ export function Hero() {
 
         <div className="flex items-start justify-between px-6 pt-6 sm:px-10 lg:px-14">
           <h1 className="max-w-[10ch]">
-            <a
+            <Link
               href="/"
-              className="font-hero text-4xl leading-[0.9] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl"
+              className="font-display text-4xl leading-[0.9] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl"
             >
               {siteConfig.name}
-            </a>
+            </Link>
           </h1>
 
-          <ul className="hidden flex-col items-end gap-2 md:flex">
-            {navLinks.map((link) =>
-              showFullNav ? (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="inline-block font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-[transform,color] duration-300 hover:translate-x-[3px] hover:text-white hover:italic sm:text-2xl"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ) : (
-                <li key={link.href}>
-                  <span
-                    role="link"
-                    aria-disabled="true"
-                    className="inline-block cursor-pointer font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-[transform,color] duration-300 select-none hover:translate-x-[3px] hover:text-white hover:italic sm:text-2xl"
-                  >
-                    {link.label}
-                  </span>
-                </li>
-              )
-            )}
+          <ul className="hidden flex-col items-end gap-3 md:flex">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <NavLink
+                  href={link.href}
+                  label={link.label}
+                  className="font-hero text-xl leading-snug tracking-[0.12em] text-hero-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors duration-300 hover:text-white sm:text-2xl"
+                  lineClassName="bg-hero-sand/80 group-hover:bg-hero-ivory"
+                />
+              </li>
+            ))}
           </ul>
 
           <button
@@ -96,7 +86,7 @@ export function Hero() {
           {heroSubtitle}
         </p>
 
-        <p className="font-hero text-4xl uppercase leading-[0.95] tracking-tight text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
+        <p className="font-display text-4xl uppercase leading-[0.95] tracking-tight text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
           {heroClaim}
         </p>
       </div>

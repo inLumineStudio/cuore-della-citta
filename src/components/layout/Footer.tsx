@@ -1,7 +1,7 @@
 import { Mail, Phone } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { InstagramIcon, WhatsappIcon } from "@/components/ui/icons";
-import { navLinks, siteConfig } from "@/lib/content";
+import { navLinks, photoCredits, siteConfig } from "@/lib/content";
 import { telHref, whatsappHref } from "@/lib/contact";
 
 export function Footer() {
@@ -17,7 +17,7 @@ export function Footer() {
 
           <div className="mt-2 flex items-center gap-4">
             <a
-              href={whatsappHref("Ciao! Vorrei informazioni sulla disponibilità.")}
+              href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Scrivici su WhatsApp"
@@ -64,21 +64,25 @@ export function Footer() {
         </nav>
       </Container>
 
-      <Container className="flex flex-col gap-2 border-t border-cream/10 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-        <p>
-          © {new Date().getFullYear()} {siteConfig.fullName}. Tutti i diritti riservati.
-        </p>
-        <p>
-          Realizzato da{" "}
-          <a
-            href="https://www.inlumine.it"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-cream hover:text-terracotta transition-colors"
-          >
-            inLumine Studio
-          </a>
-        </p>
+      <Container className="border-t border-cream/10 py-6 text-xs">
+        {photoCredits ? <p className="mb-4 text-cream/50">{photoCredits}</p> : null}
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} {siteConfig.fullName}. Tutti i diritti riservati.
+          </p>
+          <p>
+            Realizzato da{" "}
+            <a
+              href="https://www.inlumine.it"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-cream hover:text-terracotta transition-colors"
+            >
+              inLumine Studio
+            </a>
+          </p>
+        </div>
       </Container>
     </footer>
   );

@@ -30,9 +30,9 @@
   --color-hero-sand: var(--color-hero-sand);
 
   --font-hero: var(--font-newsreader);
-  --font-display: var(--font-work-sans);
-  --font-body: var(--font-work-sans);
-  --font-brand: var(--font-work-sans);
+  --font-display: var(--font-flaviotte);
+  --font-body: var(--font-general-sans);
+  --font-brand: var(--font-general-sans);
 }
 
 html {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Newsreader, Work_Sans } from "next/font/google";
+import { Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { StickyHeader } from "@/components/layout/StickyHeader";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -12,11 +13,26 @@ const newsreader = Newsreader({
   style: ["normal", "italic"],
 });
 
-// Font per tutto il resto del sito
-const workSans = Work_Sans({
-  variable: "--font-work-sans",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
+// Display, solo per il wordmark e il claim della Hero. Font commerciale fornito
+// dal cliente: il file vive nel repo (`src/app/fonts/`), non su Google Fonts.
+const flaviotte = localFont({
+  src: "./fonts/Flaviotte.woff2",
+  variable: "--font-flaviotte",
+  display: "swap",
+});
+
+// Font per tutto il resto del sito. Anche questo è fornito dal cliente e vive
+// nel repo; sono inclusi solo i tagli effettivamente usati (400/500/600 + il
+// corsivo 400), non tutta la famiglia.
+const generalSans = localFont({
+  src: [
+    { path: "./fonts/GeneralSans-Regular.otf", weight: "400", style: "normal" },
+    { path: "./fonts/GeneralSans-Italic.otf", weight: "400", style: "italic" },
+    { path: "./fonts/GeneralSans-Medium.otf", weight: "500", style: "normal" },
+    { path: "./fonts/GeneralSans-Semibold.otf", weight: "600", style: "normal" },
+  ],
+  variable: "--font-general-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +50,7 @@ export default function RootLayout({
     <html
       lang="it"
       data-scroll-behavior="smooth"
-      className={`${newsreader.variable} ${workSans.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${generalSans.variable} ${flaviotte.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-ink font-body">
         <StickyHeader />

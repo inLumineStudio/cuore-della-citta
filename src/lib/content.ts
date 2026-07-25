@@ -8,16 +8,22 @@ export const siteConfig = {
   shortTagline: "Un rifugio autentico nel cuore del centro storico",
   metaDescription:
     "Dimora Cuore della Città: casa vacanze nel centro storico. Camere curate, ospitalità italiana e la città a due passi dalla porta.",
-  // TODO: sostituire con i recapiti reali forniti dal cliente (telefono/WhatsApp/Telegram/email)
-  phoneDisplay: "+39 000 000 0000",
-  phoneHref: "+390000000000",
-  whatsappHref: "390000000000",
+  // TODO: sostituire Telegram/email con i recapiti reali forniti dal cliente
+  phoneDisplay: "+39 351 496 4713",
+  phoneHref: "+393514964713",
+  whatsappHref: "393514964713",
   telegramUsername: "cuoredellacitta",
   email: "info@cuoredellacitta.it",
   // TODO: URL profilo Instagram reale del cliente
   instagramUrl: "https://instagram.com/cuoredellacitta",
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
+
+// Messaggio precompilato di ogni link WhatsApp del sito: nomina la struttura
+// così come la proprietaria la vede su WhatsApp, per farle capire da dove
+// arriva il contatto. È il default di `whatsappHref()`.
+export const whatsappMessage =
+  "Ciao! Ho visto Cuore Della Città Dimora sul sito e vorrei informazioni sulla disponibilità.";
 
 // TODO: foto provvisoria fornita dal cliente — sostituire con lo scatto definitivo
 export const heroImageSrc: string | undefined = "/images/hero.jpg";
@@ -45,7 +51,6 @@ export const navLinks: NavLink[] = [
   { label: "Servizi & Comfort", href: "/servizi-comfort" },
   { label: "Dove ci Troviamo", href: "/posizione" },
   { label: "I Nostri Partner", href: "/partner" },
-  { label: "FAQ", href: "/faq" },
 ];
 
 // Teaser Intro in home — la storia della Dimora (testo fornito dalla proprietaria).
@@ -146,48 +151,99 @@ export const galleryImages: GalleryImage[] = [
   { alt: "Angolo lettura" },
 ];
 
+// Pannello "posizione" della home (secondo pannello dello scroll orizzontale desktop).
+// WebP q92: con `images.unoptimized` il browser riceve esattamente questo file,
+// quindi il formato lo scegliamo noi (a pari qualità pesa la metà di un JPEG).
+export const positionImageSrc: string | undefined =
+  "/images/sulmona-piazza-garibaldi-tramonto.webp";
+
+// Reso dal Footer su ogni pagina quando è valorizzato. Serviva per lo scatto di
+// Piazza Garibaldi ripreso da Wikimedia Commons (Lorenzo Testa), che non è più
+// usato da nessun componente: se una foto del sito richiede attribuzione va
+// rimessa qui.
+// TODO: confermare che la foto del tramonto sia della proprietaria
+export const photoCredits: string | undefined = undefined;
+
+export const positionTeaser = {
+  eyebrow: "Dove ci troviamo",
+  title: "Nel cuore della città, letteralmente",
+  description:
+    "A pochi passi dalle meraviglie del centro storico: la base ideale per scoprire la storia di Sulmona a piedi.",
+  cta: "Scopri dove ci troviamo",
+  ctaHref: "/posizione",
+};
+
 export type PointOfInterest = {
   name: string;
   distance: string;
 };
 
-// TODO: sostituire con indirizzo reale e punti di interesse effettivi
+// Ordinati per distanza crescente: l'elenco è reso nell'ordine dell'array.
+// TODO: verificare i tempi di percorrenza con la proprietaria
 export const pointsOfInterest: PointOfInterest[] = [
-  { name: "Piazza principale", distance: "2 min a piedi" },
-  { name: "Centro storico", distance: "5 min a piedi" },
-  { name: "Parcheggio pubblico", distance: "3 min a piedi" },
+  { name: "Complesso della Santissima Annunziata", distance: "2 min a piedi" },
+  { name: "Cattedrale di San Panfilo", distance: "4 min a piedi" },
+  { name: "Piazza Garibaldi", distance: "6 min a piedi" },
 ];
+
+// Terzo pannello dello scroll orizzontale della home. L'immagine fa da fondo
+// alla colonna editoriale: se è undefined resta il pieno `bg-ink`.
+export const faqImageSrc: string | undefined = "/images/statua-di-ovidio.jpg";
+
+export const faqPanel = {
+  eyebrow: "Domande frequenti",
+  title: "Tutto quello che c'è da sapere",
+  description:
+    "Le risposte alle domande che ci fate più spesso. Se la tua non è in elenco, scrivici: rispondiamo noi, senza intermediari.",
+  cta: "Scrivici su WhatsApp",
+};
 
 export type Faq = {
   question: string;
-  answer: string;
+  // Le risposte saranno fornite dalla proprietaria: finché `answer` è
+  // undefined l'accordion mostra un segnaposto invece di una risposta finta.
+  answer?: string;
 };
 
-// TODO: rivedere le risposte con il cliente (orari, politiche reali)
+// TODO: manca solo la risposta a "politica di cancellazione" — le altre otto
+// sono quelle fornite dal cliente
 export const faqs: Faq[] = [
   {
-    question: "A che ora sono il check-in e il check-out?",
+    question: "Quali sono gli orari di check-in e check-out?",
     answer:
-      "Il check-in è disponibile dalle 15:00 tramite self check-in autonomo, il check-out entro le 11:00. Orari diversi possono essere concordati in base alla disponibilità.",
-  },
-  {
-    question: "È possibile ospitare animali domestici?",
-    answer:
-      "Sì, gli animali di piccola taglia sono i benvenuti previa comunicazione al momento della prenotazione.",
-  },
-  {
-    question: "C'è un parcheggio disponibile?",
-    answer:
-      "Nelle vicinanze della struttura è disponibile un parcheggio pubblico a pochi minuti a piedi.",
-  },
-  {
-    question: "Qual è la politica di cancellazione?",
-    answer:
-      "La cancellazione è gratuita fino a 48 ore prima dell'arrivo. Scrivici per maggiori dettagli sul tuo soggiorno.",
+      "Check-in dalle 15:00 alle 20:00; check-out tra le 8:00 e le 10:00.",
   },
   {
     question: "Come posso prenotare?",
     answer:
-      "Puoi scriverci direttamente su WhatsApp o Telegram, oppure chiamarci: ti risponderemo con la disponibilità in tempo reale, senza intermediari.",
+      "Tramite prenotazione diretta, per telefono o su WhatsApp. Il soggiorno minimo è di due notti.",
+  },
+  { question: "Qual è la politica di cancellazione?" },
+  {
+    question: "Il Wi-Fi è gratuito?",
+    answer: "Sì, la connessione Wi-Fi è gratuita.",
+  },
+  {
+    question: "È disponibile un parcheggio?",
+    answer:
+      "Sì, un parcheggio gratuito a 100 metri. È inoltre possibile scaricare i bagagli sotto la struttura dalle 15:00 alle 17:00, esclusi sabato e domenica per la ZTL.",
+  },
+  {
+    question: "Gli animali domestici sono ammessi?",
+    answer: "No, gli animali non sono ammessi.",
+  },
+  {
+    question: "Lenzuola e asciugamani sono inclusi?",
+    answer: "Sì, lenzuola e asciugamani sono inclusi.",
+  },
+  {
+    question: "La cucina è completamente attrezzata?",
+    answer:
+      "Sì, la cucina è completa e attrezzata, con microonde e macchina del caffè a capsule.",
+  },
+  {
+    question: "Come posso contattarvi durante il soggiorno?",
+    answer:
+      "Siamo raggiungibili per telefono o su WhatsApp, allo stesso numero della prenotazione.",
   },
 ];

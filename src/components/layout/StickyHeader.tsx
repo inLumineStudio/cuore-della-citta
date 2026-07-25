@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { navLinks, showFullNav, siteConfig } from "@/lib/content";
+import { NavLink } from "@/components/ui/NavLink";
+import { navLinks, siteConfig } from "@/lib/content";
+import { whatsappHref } from "@/lib/contact";
 
 export function StickyHeader() {
   const pathname = usePathname();
@@ -32,44 +35,42 @@ export function StickyHeader() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="flex items-center justify-between px-6 py-4 sm:px-10 lg:px-14">
-        <a href="/" className="font-brand text-lg tracking-[0.1em] text-ink uppercase">
+      <div className="flex items-center justify-between gap-4 px-6 py-4 sm:px-10 lg:px-14">
+        <Link href="/" className="font-brand text-lg tracking-[0.1em] text-ink uppercase">
           {siteConfig.name}
-        </a>
+        </Link>
 
-        <ul className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) =>
-            showFullNav ? (
+        <div className="flex items-center gap-6 lg:gap-8">
+          <ul className="hidden items-center gap-8 md:flex">
+            {navLinks.map((link) => (
               <li key={link.href}>
-                <a
+                <NavLink
                   href={link.href}
-                  className="inline-block text-sm tracking-wide text-ink-soft transition-[transform,color] duration-300 hover:translate-x-[3px] hover:text-ink hover:italic"
-                >
-                  {link.label}
-                </a>
+                  label={link.label}
+                  className="text-sm tracking-wide text-ink-soft transition-colors duration-300 hover:text-ink"
+                />
               </li>
-            ) : (
-              <li key={link.href}>
-                <span
-                  role="link"
-                  aria-disabled="true"
-                  className="inline-block cursor-pointer text-sm tracking-wide text-ink-soft transition-[transform,color] duration-300 select-none hover:translate-x-[3px] hover:text-ink hover:italic"
-                >
-                  {link.label}
-                </span>
-              </li>
-            )
-          )}
-        </ul>
+            ))}
+          </ul>
 
-        <button
-          type="button"
-          aria-label="Apri il menu"
-          className="text-ink md:hidden"
-          onClick={() => setIsMenuOpen(true)}
-        >
-          <Menu className="h-6 w-6" strokeWidth={1.5} />
-        </button>
+          <a
+            href={whatsappHref()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block whitespace-nowrap border border-terracotta bg-terracotta px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-cream transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark sm:px-4 sm:py-2 sm:text-xs"
+          >
+            Prenota ora
+          </a>
+
+          <button
+            type="button"
+            aria-label="Apri il menu"
+            className="text-ink md:hidden"
+            onClick={() => setIsMenuOpen(true)}
+          >
+            <Menu className="h-6 w-6" strokeWidth={1.5} />
+          </button>
+        </div>
       </div>
 
       <MobileMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
