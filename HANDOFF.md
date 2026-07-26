@@ -1,7 +1,9 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 24 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
-2026 (Fase 1 - UI/UX Design & Wireframing → in corso).
+Stato al 26 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
+2026. Il sito è **uscito dalla bozza** (`showFullNav = true`): tutte le route
+sono raggiungibili e cliccabili, non solo la homepage — si passa dalla Fase 1
+(UI/UX) alla Fase 2 (contenuti reali) del workflow concordato nel preventivo.
 
 ## Cosa esiste oggi
 
@@ -12,18 +14,46 @@ routing reale (non single-page ad anchor):
   modello del riferimento Six Senses scelto dal cliente: niente barra promo,
   solo hamburger a sinistra e CTA "Prenota ora" a destra direttamente sulla
   foto (nella Hero non c'è nav: le voci compaiono nello `StickyHeader` appena
-  si scrolla), al centro wordmark, "Sulmona, Abruzzo", claim e sottotitolo —
-  gli ultimi due solo da `md` in su — e in fondo l'indicatore di scroll. Segue
-  lo **scroll orizzontale desktop**: tre
+  si scrolla), al centro wordmark, "Sulmona, Abruzzo", claim e sottotitolo (il
+  sottotitolo resta visibile anche su mobile, a corpo ridotto) — e in fondo
+  l'indicatore di scroll. Segue lo **scroll orizzontale desktop**: tre
   pannelli a piena schermata — "La Nostra Storia", "Dove ci Troviamo" e le
   **FAQ** (accordion su crema accanto al blocco editoriale sulla foto della
   statua di Ovidio, tutte e nove le risposte reali) — che scorrono lateralmente
   mentre si usa la rotellina in verticale (vedi sotto)
-- **`/la-dimora`** — racconto della struttura + galleria fotografica con
-  lightbox (click per ingrandire, frecce prev/next)
-- **`/servizi-comfort`** — griglia servizi con icone
-- **`/posizione`** — punti di interesse + placeholder mappa
-- **`/partner`** — rete partner e convenzioni
+- **`/la-dimora`** — la **stessa Hero della home**, riusata con un'altra foto
+  (Piazza Garibaldi di giorno) e un claim diverso ("La Nostra Storia" al posto
+  di "Arrivare. Vivere. Restare.", senza sottotitolo), seguita dal racconto
+  esteso della proprietaria (il "director's cut" del teaser di `HomeIntro`) e
+  da una CTA finale a piena larghezza con due bottoni distinti — "Verifica
+  disponibilità" (chiamata) e "Contattaci su WhatsApp"
+- **`/galleria`**, **`/servizi-comfort`**, **`/posizione`**, **`/partner`** —
+  per ora **solo la Hero, senza contenuto sotto**: i blocchi già costruiti
+  (`Gallery`, `Amenities`, `Location`, `Partners`) contengono ancora dati
+  esemplificativi della prima bozza, quindi sono stati **smontati** e il cliente
+  non li vede. I componenti restano in repo, pronti da riagganciare quando
+  arrivano i contenuti reali.
+
+La nav (`navLinks` in `content.ts`) ha oggi sei voci: **Homepage** (punta a `/`),
+La Dimora, Galleria, Comfort & Informazioni (rinominata da "Servizi & Comfort",
+l'URL `/servizi-comfort` non è cambiato), Dove ci Troviamo, I Nostri Partner.
+
+La riga sotto il wordmark nella Hero di ogni sezione ha un testo proprio,
+diverso dall'etichetta di menu, tutti in `pageHeroes` (`content.ts`):
+
+| Route | Voce di menu | Riga nella Hero |
+|---|---|---|
+| `/la-dimora` | La Dimora | La Nostra Storia |
+| `/galleria` | Galleria | La Dimora, Senza Filtri |
+| `/servizi-comfort` | Comfort & Informazioni | Il Tuo Soggiorno |
+| `/posizione` | Dove ci Troviamo | La Posizione & Il Territorio |
+| `/partner` | I Nostri Partner | Vantaggi Esclusivi |
+
+**Nota sullo `StickyHeader` in queste quattro sezioni**: la barra crema non
+compare, perché la pagina è alta solo Hero + footer e non si arriva mai alla
+soglia dell'85% del viewport. È il comportamento giusto e non serve toccarlo:
+appena avranno contenuto sotto la Hero, la soglia diventerà raggiungibile e la
+barra comparirà da sé.
 
 Le FAQ **non hanno più una pagina dedicata**: sono il pannello di chiusura
 della home (accordion su fondo scuro/crema) e la voce è stata tolta dal menu.
@@ -32,14 +62,16 @@ chiudeva quella pagina, la primitiva `Button` (la usava solo lui) e l'helper
 `telegramHref()`. Rimossi anche gli asset non più referenziati
 (`hero-temp.jpg`, `posizione.jpg`, la versione Wikimedia di Piazza Garibaldi).
 
-> **Nota bozza cliente**: `showFullNav` in `content.ts` è oggi `false`, quindi
-> in pratica è online **solo la homepage** — le altre route esistono ma
-> reindirizzano a `/`, e le voci di nav non sono cliccabili. Rimettere a
-> `true` per riattivare l'intero sito.
+> **`showFullNav`** in `content.ts` è oggi **`true`**: tutte le route sono
+> raggiungibili e le voci di nav cliccabili. Rimettendolo a `false` si torna
+> alla bozza (solo homepage, le altre route reindirizzano a `/`) — con
+> un'eccezione: la voce "Homepage" resta comunque cliccabile, perché la home
+> esiste anche in bozza.
 
-`StickyHeader` e `Footer` sono globali (montati in `app/layout.tsx`): su `/`
-lo header resta nascosto finché non si scrolla oltre la Hero, sulle altre
-pagine è sempre visibile fin da subito (non c'è una Hero da sostituire).
+`StickyHeader` e `Footer` sono globali (montati in `app/layout.tsx`): sulle
+route elencate in `routesWithHero` (oggi tutte, perché tutte montano una Hero)
+lo header resta nascosto finché non si scrolla oltre la Hero; su una eventuale
+pagina senza Hero sarebbe visibile da subito.
 Lo header porta la CTA **"Prenota ora"** (WhatsApp) accanto alla nav, così la
 prenotazione è a un click da qualsiasi pagina e non solo dalla Hero, che ha la
 propria CTA gemella ma solo su `/`. Il suo hamburger (sotto `md`) è a sinistra,
@@ -103,22 +135,29 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    Piazza Garibaldi al tramonto nel pannello "Dove ci Troviamo"
    (`sulmona-piazza-garibaldi-tramonto.webp`, fornita dal cliente il 25 luglio
    2026: PNG da 1,6 MB riconvertito in WebP q92 da 137 KB, vedi la nota sul
-   formato in `CLAUDE.md` § Placeholder immagini) e la statua di Ovidio come
-   fondo della colonna editoriale delle FAQ (`statua-di-ovidio.jpg`, stessa data
-   — **da chiarire se servono attribuzioni per entrambe**, vedi punto 9).
+   formato in `CLAUDE.md` § Placeholder immagini), Piazza Garibaldi di giorno
+   nella Hero di "/la-dimora" (`sulmona-piazza-garibaldi-giorno.webp`) e la
+   statua di Ovidio come fondo della colonna editoriale delle FAQ
+   (`statua-di-ovidio.jpg`) — **da chiarire se servono attribuzioni**, vedi
+   punto 9.
    **Manca ancora la foto de "La Nostra Storia"**, che in
-   home mostra tuttora `ImagePlaceholder`; idem Gallery e About. Azione:
-   salvare le foto in `public/images/` e valorizzare il campo corrispondente
-   in `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
-   In `public/images/` restano solo i tre file effettivamente usati: gli asset
-   orfani sono stati rimossi.
+   home mostra tuttora `ImagePlaceholder`. Mancano inoltre le **foto dedicate
+   alle Hero** di galleria, comfort, posizione e partner: finché `imageSrc` non
+   è valorizzato in `pageHeroes`, quelle sezioni usano la foto della camera.
+   Azione: salvare le foto in `public/images/` e valorizzare il campo
+   corrispondente in `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
    (Via Panfilo Scudieri 1, Sulmona) sono quelli veri. Restano placeholder
    **email e URL Instagram** in `siteConfig` (`content.ts`).
-3. **Rete partner reale** — l'elenco in `partners` (`content.ts`) è
-   esemplificativo. Da sostituire con le convenzioni effettive.
-4. **Mappa** — al momento un placeholder testuale; da collegare a Google
-   Maps/OpenStreetMap con l'indirizzo definitivo.
+3. **Contenuti delle quattro sezioni vuote** — galleria, comfort, posizione e
+   partner mostrano solo la Hero. I componenti esistono già ma sono smontati
+   perché i dati sono esemplificativi: `partners` (convenzioni inventate),
+   `amenities` (elenco generico), `galleryImages` (quattro voci che puntano
+   tutte alla stessa foto) e il segnaposto mappa di `Location`. Azione:
+   riscrivere i contenuti col cliente e rimontare i componenti nelle rispettive
+   `page.tsx`.
+4. **Mappa** — al momento un placeholder testuale in `Location` (smontato); da
+   collegare a Google Maps/OpenStreetMap con l'indirizzo definitivo.
 5. **Punti di interesse** — i nomi in `pointsOfInterest` (`content.ts`) sono
    ora quelli reali forniti dal cliente e l'elenco è **ordinato per distanza
    crescente** (Annunziata 2 min, San Panfilo 4 min, Piazza Garibaldi 6 min):
@@ -145,11 +184,12 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
    Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto
    fornito dal cliente, e tenere il credito con quella foto fuori dal sito
-   sarebbe un'attribuzione falsa. **Da confermare con la proprietaria** che
-   `sulmona-piazza-garibaldi-tramonto.jpg` e `statua-di-ovidio.jpg` siano scatti
-   suoi: se una delle due viene da terzi va rimessa l'attribuzione (autore +
-   licenza + link se è una CC), e con due foto da attribuire conviene passare da
-   stringa singola a array.
+   sarebbe un'attribuzione falsa. **Da confermare con la proprietaria** che le
+   foto ora in uso (`sulmona-piazza-garibaldi-tramonto.webp`,
+   `sulmona-piazza-garibaldi-giorno.webp`, `statua-di-ovidio.jpg`) siano scatti
+   suoi: se una viene da terzi va rimessa l'attribuzione (autore + licenza +
+   link se è una CC), e con più foto da attribuire conviene passare da stringa
+   singola a array.
 
 ## Come continuare a lavorarci
 
@@ -167,9 +207,12 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 ## Prossimo passo consigliato
 
-Le nove FAQ sono complete, quindi **il solo placeholder ancora visibile nella
-homepage è la foto de "La Nostra Storia"**: è la prima cosa da chiedere alla
-proprietaria. Poi i contenuti reali elencati sopra (punti 2, 3 e 5 sono i più
-veloci da chiudere). Fatto quello, si può riportare `showFullNav` a `true` e
-passare dalla Fase 1 (UI/UX) alla Fase 2 (sviluppo front-end con contenuti
-reali) del workflow concordato nel preventivo.
+Homepage e "/la-dimora" sono le due sezioni complete. Le altre quattro esistono
+con la loro Hero ma **aspettano i contenuti**: il lavoro naturale è prenderle
+una alla volta col cliente, come è stato fatto per "La Dimora" (copy scritto
+insieme, foto dedicata, blocchi rimontati).
+
+Da chiedere alla proprietaria, in ordine di impatto: la **foto de "La Nostra
+Storia"** (l'unico segnaposto ancora visibile in homepage), le **foto dedicate**
+alle quattro Hero, i **contenuti reali** di servizi, partner e posizione
+(punti 3, 4 e 5), e i **recapiti mancanti** — email e Instagram (punto 2).

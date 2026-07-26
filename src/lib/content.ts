@@ -29,11 +29,11 @@ export const siteUrl = "https://www.cuoredellacitta.it";
 export const whatsappMessage =
   "Ciao! Ho visto Cuore Della Città Dimora sul sito e vorrei informazioni sulla disponibilità.";
 
-// TODO: foto provvisoria fornita dal cliente — sostituire con lo scatto definitivo
+// TODO: foto provvisoria fornita dal cliente - sostituire con lo scatto definitivo
 export const heroImageSrc: string | undefined = "/images/hero.jpg";
 
 // Claim della Hero (mostrato in basso, in maiuscolo via CSS).
-// TODO: testo placeholder — da validare col cliente.
+// TODO: testo placeholder - da validare col cliente.
 export const heroClaim = "Arrivare. Vivere. Restare.";
 
 // Riga sotto il wordmark nel lockup centrato della Hero mobile: dice subito
@@ -50,7 +50,7 @@ export const heroSubtitle =
 // Interruttore temporaneo per la bozza mostrata al cliente: quando false,
 // la nav espone solo la Homepage e le altre route reindirizzano a "/".
 // Rimettere a true per riattivare tutte le pagine.
-export const showFullNav = false;
+export const showFullNav = true;
 
 export type NavLink = {
   label: string;
@@ -58,13 +58,15 @@ export type NavLink = {
 };
 
 export const navLinks: NavLink[] = [
+  { label: "Homepage", href: "/" },
   { label: "La Dimora", href: "/la-dimora" },
-  { label: "Servizi & Comfort", href: "/servizi-comfort" },
+  { label: "Galleria", href: "/galleria" },
+  { label: "Comfort & Informazioni", href: "/servizi-comfort" },
   { label: "Dove ci Troviamo", href: "/posizione" },
   { label: "I Nostri Partner", href: "/partner" },
 ];
 
-// Teaser Intro in home — la storia della Dimora (testo fornito dalla proprietaria).
+// Teaser Intro in home - la storia della Dimora (testo fornito dalla proprietaria).
 // La foto definitiva arriverà dopo: per ora ImagePlaceholder.
 export const homeIntro = {
   eyebrow: "La nostra storia",
@@ -75,6 +77,56 @@ export const homeIntro = {
   ],
   cta: "Scopri la Dimora",
   ctaHref: "/la-dimora",
+};
+
+export type PageHero = {
+  // Riga sotto il wordmark: prende il posto del claim della home.
+  claim: string;
+  // Omesso = la Hero usa i propri default, cioè `heroImageSrc` (la foto della
+  // camera) con l'alt che la descrive. Non è un segnaposto: è una foto vera,
+  // solo non dedicata alla sezione.
+  imageSrc?: string;
+  imageAlt?: string;
+};
+
+// Hero delle sezioni interne. Tutte riusano la Hero della home: cambiano solo
+// la riga sotto il wordmark e la fotografia, il resto della struttura no.
+// TODO: foto dedicate per galleria, comfort, posizione e partner - finché
+// mancano quelle sezioni mostrano la foto della camera.
+export const pageHeroes = {
+  laDimora: {
+    claim: "La Nostra Storia",
+    imageSrc: "/images/sulmona-piazza-garibaldi-giorno.webp",
+    imageAlt:
+      "Piazza Garibaldi a Sulmona, con l'acquedotto medievale e la fontana settecentesca",
+  },
+  galleria: { claim: "La Dimora, Senza Filtri" },
+  comfort: { claim: "Il Tuo Soggiorno" },
+  posizione: { claim: "La Posizione & Il Territorio" },
+  partner: { claim: "Vantaggi Esclusivi" },
+} satisfies Record<string, PageHero>;
+
+// Racconto esteso della proprietaria per la pagina "/la-dimora" (componente
+// `About`). È la versione "director's cut" del teaser `homeIntro`: stessa
+// storia, qui per intero.
+export const aboutPage = {
+  title: "Costruita con il cuore, immersa nella storia di Sulmona.",
+  subtitle:
+    "Dove il calore di una storia di famiglia incontra l'anima millenaria della Valle Peligna.",
+  paragraphs: [
+    "Ci sono luoghi che non nascono da un semplice calcolo, ma da una scelta di vita.",
+    "Un paio d'anni fa, di fronte alla decisione di acquistare una nuova auto, ci siamo fermati a riflettere. Volevamo qualcosa che restasse nel tempo, qualcosa capace di raccogliere valore e trasformarsi in un'eredità d'affetto per i nostri figli. La risposta è stata questa casa.",
+    "Quando ne abbiamo varcato la soglia per la prima volta, era poco più di un guscio dimenticato, disastrato dal tempo. Ma in quella pietra e in quegli spazi abbiamo visto una promessa. Insieme a tutta la nostra famiglia, abbiamo iniziato una ristrutturazione totale: giornate infinite che cominciavano alle 6 del mattino e finivano ben oltre il tramonto, sacrifici condivisi anche dai nostri figli e un'attenzione quasi maniacale per ogni singolo dettaglio.",
+    "Mano a mano che le pareti riprendevano vita e gli arredi trovavano la loro collocazione, chiunque venisse a trovarci ripeteva la stessa frase: “È davvero bellissima, è venuta benissimo.”",
+    "Non è un caso che tutto questo sia accaduto a Sulmona. Patria di Ovidio, il poeta dell'amore e delle Metamorfosi, Sulmona è da secoli la città della pazienza artigiana - la stessa che racchiude nei suoi celebri confetti - e dell'accoglienza sincera racchiusa tra l'Acquedotto Svevo e le vette della Majella.",
+    "Proprio come la nostra città ha saputo trasformare nel corso della storia la pietra e la tradizione in bellezza eterna, noi abbiamo trasformato un cantiere impegnativo in un rifugio accogliente. Questa non è una semplice casa vacanze gestita a distanza: è un pezzo della nostra famiglia che abbiamo scelto di aprire al mondo.",
+    "Ogni angolo che vivrete, ogni comfort di cui godrete, è il frutto di un lavoro fatto a mano con il cuore. Perché crediamo che un soggiorno indimenticabile non sia fatto solo di bei mobili, ma dell'energia di chi in quel posto ha investito sogni, tempo e passione.",
+  ],
+  ctaTitle: "Senti il calore di casa nel cuore di Sulmona.",
+  ctaDescription:
+    "Prenota il tuo soggiorno direttamente con noi: vivi un'esperienza autentica, protetta dalla maestosità dell'Abruzzo e curata in ogni dettaglio.",
+  ctaPrimaryLabel: "Verifica disponibilità",
+  ctaSecondaryLabel: "Contattaci su WhatsApp",
 };
 
 export type Amenity = {
@@ -130,7 +182,7 @@ export type Partner = {
   perk: string;
 };
 
-// TODO: elenco esemplificativo — sostituire con la rete partner reale e le convenzioni attive
+// TODO: elenco esemplificativo - sostituire con la rete partner reale e le convenzioni attive
 export const partners: Partner[] = [
   {
     category: "Ristorazione",

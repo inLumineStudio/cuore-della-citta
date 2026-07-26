@@ -83,7 +83,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
         <nav className="mt-10 flex flex-1 flex-col gap-5 overflow-y-auto px-8">
           {navLinks.map((link) =>
-            showFullNav ? (
+            // La Homepage è sempre raggiungibile, anche a bozza attiva.
+            showFullNav || link.href === "/" ? (
               <a
                 key={link.href}
                 href={link.href}

@@ -1,39 +1,65 @@
-import Image from "next/image";
+import { Phone } from "lucide-react";
+import { Hero } from "@/components/sections/Hero";
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { heroImageSrc } from "@/lib/content";
+import { WhatsappIcon } from "@/components/ui/icons";
+import { aboutPage, pageHeroes } from "@/lib/content";
+import { telHref, whatsappHref } from "@/lib/contact";
 
 export function About() {
   return (
-    <section className="py-24 sm:py-32">
-      <Container className="grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm">
-          {heroImageSrc ? (
-            <Image
-              src={heroImageSrc}
-              alt="Dettaglio degli interni della Dimora"
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <ImagePlaceholder className="h-full w-full" />
-          )}
-        </div>
+    <>
+      <Hero {...pageHeroes.laDimora} subtitle="" showClaimOnMobile />
 
-        <div className="flex flex-col gap-6">
-          <SectionHeading
-            eyebrow="La Dimora"
-            title="Una dimora, non una semplice camera"
-            description="Dimora Cuore della Città nasce per chi vuole vivere la città come un residente, non come un turista di passaggio. Ogni ambiente è stato pensato per unire il comfort di una casa vera all'atmosfera autentica del centro storico che la ospita."
-          />
-          <p className="max-w-xl text-base sm:text-lg text-ink-soft leading-relaxed">
-            A pochi passi dai principali punti di interesse, la struttura
-            offre un punto d&rsquo;appoggio silenzioso e curato nei dettagli,
-            dove tornare dopo una giornata di scoperta.
+      <section className="py-24 sm:py-32">
+        <Container className="mx-auto flex max-w-3xl flex-col gap-10">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-balance font-display text-4xl leading-[1.1] text-ink sm:text-5xl">
+              {aboutPage.title}
+            </h2>
+            <p className="text-pretty text-lg leading-relaxed text-ink-soft sm:text-xl">
+              {aboutPage.subtitle}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            {aboutPage.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="text-pretty text-base leading-relaxed text-ink-soft sm:text-lg">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-gradient-to-br from-terracotta to-terracotta-dark py-20 text-cream sm:py-24">
+        <Container className="flex flex-col items-center gap-8 text-center">
+          <h2 className="max-w-2xl font-display text-3xl leading-tight sm:text-4xl">
+            {aboutPage.ctaTitle}
+          </h2>
+          <p className="max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
+            {aboutPage.ctaDescription}
           </p>
-        </div>
-      </Container>
-    </section>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <a
+              href={telHref()}
+              className="inline-flex items-center gap-2 whitespace-nowrap bg-cream px-5 py-2.5 text-xs font-semibold tracking-[0.08em] text-terracotta-dark uppercase transition-colors duration-300 hover:bg-hero-ivory"
+            >
+              <Phone className="h-4 w-4" strokeWidth={1.5} />
+              {aboutPage.ctaPrimaryLabel}
+            </a>
+            <a
+              href={whatsappHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 whitespace-nowrap border border-cream/60 px-5 py-2.5 text-xs font-semibold tracking-[0.08em] text-cream uppercase transition-colors duration-300 hover:bg-cream hover:text-terracotta-dark"
+            >
+              <WhatsappIcon className="h-4 w-4" />
+              {aboutPage.ctaSecondaryLabel}
+            </a>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

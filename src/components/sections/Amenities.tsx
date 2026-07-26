@@ -27,7 +27,7 @@ export function Amenities() {
     <section className="py-24 sm:py-32">
       <Container className="flex flex-col gap-14">
         <SectionHeading
-          eyebrow="Servizi e Comfort"
+          eyebrow="Comfort & Informazioni"
           title="Tutto ciò che serve, curato nei dettagli"
           align="center"
         />

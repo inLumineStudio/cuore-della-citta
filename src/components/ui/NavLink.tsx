@@ -41,7 +41,9 @@ export function NavLink({
     </>
   );
 
-  if (!showFullNav) {
+  // La Homepage esiste già ed è raggiungibile anche a bozza attiva: solo le
+  // altre route restano disattivate finché `showFullNav` è false.
+  if (!showFullNav && href !== "/") {
     return (
       <span role="link" aria-disabled="true" className={`${wrapper} cursor-pointer select-none`}>
         {content}

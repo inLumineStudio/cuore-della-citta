@@ -29,10 +29,34 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 | Route | Contenuto |
 |---|---|
 | `/` | `Hero` + `HorizontalScroller` (`HomeIntro`, `LocationTeaser`, `Faq`) — vedi sotto |
-| `/la-dimora` | `About` + `Gallery` |
-| `/servizi-comfort` | `Amenities` |
-| `/posizione` | `Location` |
-| `/partner` | `Partners` |
+| `/la-dimora` | `About` (a sua volta `Hero` + racconto editoriale + CTA) |
+| `/galleria` | `Hero` — `Gallery` smontato |
+| `/servizi-comfort` | `Hero` — `Amenities` smontato |
+| `/posizione` | `Hero` — `Location` smontato |
+| `/partner` | `Hero` — `Partners` smontato |
+
+`/la-dimora` e `/galleria` erano un'unica pagina (`About` + `Gallery` insieme)
+finché la nav non ha guadagnato una voce dedicata alla galleria: a quel punto
+tenerle sullo stesso URL avrebbe significato due voci di menu con la stessa
+destinazione, quindi sono state separate. `Gallery` non aveva dipendenze da
+`About`, la separazione è stata un taglio netto.
+
+**Quattro sezioni sono volutamente vuote**: galleria, comfort, posizione e
+partner mostrano **solo la Hero**, perché i loro contenuti attuali sono ancora
+quelli esemplificativi della prima bozza e il cliente non deve vederli. I
+componenti (`Gallery`, `Amenities`, `Location`, `Partners`) **restano in repo
+smontati**, non cancellati: verranno riagganciati quando i contenuti reali
+saranno pronti, e nel frattempo `LocationTeaser` in home continua a usare gli
+stessi dati (`pointsOfInterest`). Sono l'unica eccezione consapevole alla regola
+"niente codice morto".
+
+La Hero di ogni sezione si configura da **`pageHeroes`** (`content.ts`): un
+record con `claim` (la riga sotto il wordmark) e, opzionalmente, `imageSrc` +
+`imageAlt`. Le pagine la passano con lo spread — `<Hero {...pageHeroes.galleria}
+subtitle="" showClaimOnMobile />` — quindi aggiungere una sezione significa
+aggiungere una voce lì, non toccare `Hero`. Chi omette `imageSrc` **non** ottiene
+un segnaposto ma i default della Hero, cioè la foto della camera: è una foto
+vera, solo non dedicata alla sezione.
 
 Le FAQ **non hanno più una route dedicata**: vivono come terzo pannello
 della home e la voce corrispondente è stata tolta da `navLinks`. La cartella
@@ -45,12 +69,19 @@ larghezza, il codice è in `git log` (fino al commit `40a9763`).
 volta in `app/layout.tsx` e valgono per ogni route (chrome globale). `StickyHeader` ha un comportamento
 diverso in base alla pagina (`usePathname`):
 
-- su `/` resta nascosto finché non si scrolla oltre l'altezza della Hero
-  (che ha il proprio overlay full-bleed indipendente, vedi sotto), poi
-  compare come barra solida fissa — ed è **l'unico posto dove le voci di nav
-  sono visibili senza aprire il drawer**, perché la Hero non le espone;
+- sulle route che montano una propria `<Hero />` (oggi `/` e `/la-dimora`,
+  elencate in `routesWithHero`) resta nascosto finché non si scrolla oltre
+  l'altezza della Hero, poi compare come barra solida fissa — ed è **l'unico
+  posto dove le voci di nav sono visibili senza aprire il drawer**, perché la
+  Hero non le espone;
 - su tutte le altre route è sempre visibile da subito, perché non c'è una
   Hero che lo sostituisca in cima alla pagina.
+
+L'effect che ascolta lo scroll ha `pathname` in dipendenza **anche se non lo
+legge nel corpo**: serve a forzare il ricalcolo quando si naviga via `<Link>`
+tra due route che montano entrambe una Hero (`hasHero` non cambia, quindi
+senza `pathname` l'effect non rieseguiva `handleScroll()` e l'header restava
+visibile in cima alla pagina appena aperta, invece di nascondersi di nuovo).
 
 Lo `StickyHeader` include la CTA **"Prenota ora"** (link WhatsApp, terracotta
 pieno) a destra della nav: essendo montata nel chrome globale, è
@@ -261,6 +292,16 @@ tornare in un punto allineato a destra o su uno sfondo scuro:
 (`transition-[scale,background-color]`): con `transition-[transform,...]`
 l'animazione non parte e il filetto scatta.
 
+**"Homepage" resta sempre cliccabile**, anche con `showFullNav = false`: la
+condizione è `!showFullNav && href !== "/"`, non il solo `!showFullNav`. La
+home esiste già ed è raggiungibile a bozza attiva, quindi non ha senso
+disattivarla come le altre voci — sono le route ancora vuote a dover restare
+dietro al flag. Stessa eccezione duplicata in `MobileMenu.tsx`, che non usa
+`NavLink` per le proprie voci (vedi sotto) e ha il suo ramo `showFullNav ||
+link.href === "/"`. Il flag `showFullNav` oggi è `true`: il sito è uscito
+dalla bozza, ma l'eccezione resta nel codice come rete di sicurezza per un
+eventuale ritorno a `false` in una fase di redesign.
+
 ### Drawer di navigazione (`components/layout/MobileMenu.tsx`)
 
 Nonostante il nome del file, **non è più mobile-only**: da quando l'hamburger
@@ -314,10 +355,21 @@ alternativi con due `<h1>` che si escludevano a vicenda.
   località sono una **coppia stretta** (`gap-3` in un wrapper dedicato) mentre
   il contenitore usa `gap-7`/`md:gap-9`: con gap uniformi la gerarchia
   dipendeva solo dal corpo del testo e il ritmo risultava piatto.
-- **Claim e sottotitolo compaiono solo da `md`** (`hidden md:block`): su 375px
-  sarebbero un muro di testo sulla foto, e il racconto lo riprende `HomeIntro`
-  subito dopo. `heroLocation` invece c'è sempre, perché altrimenti la Hero non
-  dice **dove** siamo a chi arriva da un link o dai social.
+- **Il claim compare solo da `md`** (`hidden md:block` di default, tramite
+  `showClaimOnMobile`): su 375px il claim della home sarebbe un muro di testo
+  sulla foto, e il racconto lo riprende `HomeIntro` subito dopo. Il
+  **sottotitolo invece c'è sempre**, anche su mobile, ma a corpo ridotto
+  (`text-sm`, cresce da `md`). `heroLocation` è sempre presente, perché
+  altrimenti la Hero non dice **dove** siamo a chi arriva da un link o dai
+  social.
+- **Riusata su `/la-dimora`** (`About` → `<Hero imageSrc=... claim=...
+  subtitle="" showClaimOnMobile />`): stessa struttura, tre cose diverse dalla
+  home — la foto (Piazza Garibaldi di giorno, non l'interno), il claim
+  ("La Nostra Storia" invece di "Arrivare. Vivere. Restare.") e nessun
+  sottotitolo (`subtitle=""`, che è diverso da ometterlo: una stringa vuota
+  nasconde il paragrafo, ometterlo userebbe il default `heroSubtitle` della
+  home). Con un claim così corto ha senso **non** nasconderlo su mobile,
+  quindi lì `showClaimOnMobile` passa a `true`; sulla home resta `false`.
 - In fondo due chevron sovrapposti fanno da indicatore di scroll, senza testo
   (`aria-hidden`: sono decorativi, e `motion-reduce:animate-none` ferma il
   rimbalzo per chi riduce le animazioni).
@@ -333,6 +385,24 @@ alternativi con due `<h1>` che si escludevano a vicenda.
   schermi larghi il testo occupa una fascia più stretta, quindi serve meno velo.
 - Overlay foto: gradiente scuro dal basso + filtro `brightness-90 saturate-95`
   sull'immagine per ammorbidire le luci calde e garantire leggibilità.
+
+### "La Dimora" (`components/sections/About.tsx`)
+
+Tre blocchi in sequenza: `Hero` riusata (vedi sopra), il racconto editoriale,
+una CTA a piena larghezza su `bg-gradient-to-br from-terracotta to-terracotta-dark`.
+
+- Il racconto vive in `aboutPage` (`content.ts`): `title`, `subtitle` e
+  `paragraphs` (un array, uno per `<p>` — stesso pattern di `homeIntro.body`).
+  È la versione estesa, "director's cut", del teaser breve mostrato in home da
+  `HomeIntro`: stessa storia della proprietaria, qui per intero.
+- La CTA finale ha **due bottoni distinti**, non due volte lo stesso contatto:
+  `ctaPrimaryLabel` ("Verifica disponibilità") è un `tel:` (`telHref()`),
+  `ctaSecondaryLabel` ("Contattaci su WhatsApp") è `whatsappHref()`. Rispecchia
+  la risposta della FAQ sulla prenotazione ("per telefono o su WhatsApp"), solo
+  su bottoni separati invece che nello stesso testo.
+- Sfondo terracotta pieno: il bottone primario è **pieno crema** (inverte i
+  colori, massimo contrasto), il secondario è **outline crema** — stesso
+  trattamento outline-su-scuro già usato nella CTA della FAQ.
 
 ### FAQ (`components/sections/Faq.tsx`)
 
@@ -444,7 +514,14 @@ un marchio che funziona a 128px non dice nulla su come si comporta in una tab.
 
 La sitemap **si adatta a `showFullNav`**: finché è `false` le altre route
 reindirizzano alla home, quindi elencarle segnalerebbe a Google pagine che
-rimandano altrove. Con `showFullNav = true` entrano automaticamente.
+rimandano altrove. Con `showFullNav = true` entrano automaticamente — tranne
+la voce "Homepage" di `navLinks` (punta a `/`), esclusa esplicitamente per non
+duplicare l'entry `home` già presente.
+
+Ogni pagina imposta solo `title` nel proprio `metadata` (es. `"La Dimora"`,
+mai `"La Dimora | Cuore della Città"`): il `template` in `layout.tsx` aggiunge
+già il suffisso. Scriverlo in entrambi i posti produceva un titolo doppio nel
+tab del browser.
 
 ## Contatti rapidi
 
@@ -474,8 +551,14 @@ nome del profilo WhatsApp Business della proprietaria. Nessun parametro di
 - Niente `<a href="...">` verso route interne: ESLint
   (`@next/next/no-html-link-for-pages`) lo blocca, si usa `<Link>` di
   `next/link`. Gli `<a>` rimasti puntano tutti a risorse esterne
-  (`wa.me`, `tel:`, `mailto:`, Instagram) o sono link disattivati da
-  `showFullNav`.
+  (`wa.me`, `tel:`, `mailto:`, Instagram). Eccezione nota: in `MobileMenu.tsx`
+  le voci di `navLinks` restano `<a href={link.href}>` anche verso route
+  interne — la regola non lo intercetta perché `link.href` è un'espressione,
+  non una stringa letterale, ma resta un `<a>` a tutti gli effetti. Da
+  convertire a `<Link>` se un giorno si tocca di nuovo quel file.
+- Niente lineette tipografiche (`—`/`–`) nei testi del sito: solo trattini
+  (`-`). Verifica con `grep -rn "[—–]" src/lib/content.ts` prima di considerare
+  chiuso un intervento sui copy.
 - Niente `setState` dentro `useEffect`: la regola
   `react-hooks/set-state-in-effect` lo segnala come errore. Per il classico
   flag "sono sul client" (serve a `MobileMenu` per il portale) si usa

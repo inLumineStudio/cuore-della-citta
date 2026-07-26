@@ -9,15 +9,28 @@ import { NavLink } from "@/components/ui/NavLink";
 import { bookCtaLabel, navLinks, siteConfig } from "@/lib/content";
 import { whatsappHref } from "@/lib/contact";
 
+// Route che montano la propria <Hero />: lì lo StickyHeader deve restare
+// nascosto finché non si scrolla oltre, esattamente come in home. Oggi sono
+// tutte, ma la lista resta esplicita perché una pagina futura senza Hero
+// (es. una privacy policy) deve avere l'header visibile da subito.
+const routesWithHero = [
+  "/",
+  "/la-dimora",
+  "/galleria",
+  "/servizi-comfort",
+  "/posizione",
+  "/partner",
+];
+
 export function StickyHeader() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const hasHero = routesWithHero.includes(pathname);
 
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (!isHome) return;
+    if (!hasHero) return;
 
     function handleScroll() {
       setHasScrolledPastHero(window.scrollY > window.innerHeight * 0.85);
@@ -25,9 +38,13 @@ export function StickyHeader() {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome]);
+    // `pathname` è in dipendenza anche se non letto nel corpo: senza,
+    // navigare via <Link> tra due route con Hero (stesso `hasHero`) non
+    // ricalcola lo stato, e l'header resta visibile in cima alla pagina
+    // appena aperta invece di nascondersi di nuovo.
+  }, [hasHero, pathname]);
 
-  const isVisible = isHome ? hasScrolledPastHero : true;
+  const isVisible = hasHero ? hasScrolledPastHero : true;
 
   return (
     <header

@@ -18,11 +18,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     home,
-    ...navLinks.map((link) => ({
-      url: new URL(link.href, siteUrl).toString(),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    // "Homepage" punta a "/", già coperta da `home`: esclusa per non duplicare
+    // la voce nella sitemap.
+    ...navLinks
+      .filter((link) => link.href !== "/")
+      .map((link) => ({
+        url: new URL(link.href, siteUrl).toString(),
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      })),
   ];
 }

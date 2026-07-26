@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { About } from "@/components/sections/About";
-import { Gallery } from "@/components/sections/Gallery";
 import { showFullNav } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "La Dimora | Cuore della Città",
+  title: "La Dimora",
   description:
-    "Scopri gli ambienti di Dimora Cuore della Città: il racconto della struttura e la galleria fotografica degli spazi.",
+    "Il racconto di Dimora Cuore della Città: la storia della struttura e degli ambienti che la compongono.",
 };
 
 export default function LaDimoraPage() {
@@ -15,10 +14,5 @@ export default function LaDimoraPage() {
     redirect("/");
   }
 
-  return (
-    <>
-      <About />
-      <Gallery />
-    </>
-  );
+  return <About />;
 }
