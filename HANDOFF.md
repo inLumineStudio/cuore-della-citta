@@ -47,6 +47,15 @@ come quello della Hero: il drawer condiviso (`MobileMenu`) entra da sinistra,
 quindi il trigger deve stare dallo stesso lato in entrambi i punti in cui
 compare.
 
+Il drawer (`MobileMenu`) ha una nuova intestazione — X sola sulla prima riga,
+nome del sito sulla riga sotto, sul modello del drawer di Six Senses Rome — ed
+è stato corretto un bug per cui **su desktop cliccare l'hamburger bloccava lo
+scroll senza aprire nulla di visibile**: il pannello aveva ancora `md:hidden`
+da quando l'hamburger era mobile-only, e con l'hamburger della Hero ora
+visibile a ogni larghezza quel residuo lasciava lo stato "aperto" attivo (e lo
+scroll del body bloccato) dietro un pannello invisibile. Dettagli in
+`CLAUDE.md` § Drawer di navigazione.
+
 **Scroll orizzontale della home** (`components/ui/HorizontalScroller.tsx`):
 riproduce l'effetto del riferimento di design fornito dal cliente
 (sylverrappresentanze.it, che lo ottiene con GSAP ScrollTrigger) ma in JS

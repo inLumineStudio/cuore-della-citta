@@ -46,7 +46,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   return createPortal(
     <div
       aria-hidden={!open}
-      className={`fixed inset-0 z-[60] md:hidden ${open ? "" : "pointer-events-none"}`}
+      className={`fixed inset-0 z-[60] ${open ? "" : "pointer-events-none"}`}
     >
       <div
         onClick={onClose}
@@ -63,28 +63,32 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between px-8 pt-8">
-          <span className="font-brand text-[0.7rem] tracking-[0.3em] text-stone uppercase">
-            {siteConfig.name}
-          </span>
+        {/* X sola in alto, il nome della struttura sulla riga sotto: stesso
+            ordine di lettura del riferimento del cliente (Six Senses), non più
+            affiancati sulla stessa riga. */}
+        <div className="px-8 pt-8">
           <button
             type="button"
             aria-label="Chiudi il menu"
             onClick={onClose}
-            className="-mr-1 text-ink-soft transition-colors hover:text-ink"
+            className="-ml-1 cursor-pointer text-ink-soft transition-colors hover:text-ink"
           >
             <X className="h-6 w-6" strokeWidth={1.5} />
           </button>
+
+          <p className="mt-6 font-brand text-[0.7rem] tracking-[0.3em] text-stone uppercase">
+            {siteConfig.name}
+          </p>
         </div>
 
-        <nav className="flex flex-1 flex-col justify-center gap-2 px-8">
+        <nav className="mt-10 flex flex-1 flex-col gap-5 overflow-y-auto px-8">
           {navLinks.map((link) =>
             showFullNav ? (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className="font-hero text-[1.7rem] leading-tight text-ink transition-colors hover:text-terracotta"
+                className="text-lg text-ink-soft transition-colors hover:text-ink"
               >
                 {link.label}
               </a>
@@ -94,7 +98,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 role="link"
                 aria-disabled="true"
                 onClick={onClose}
-                className="cursor-pointer font-hero text-[1.7rem] leading-tight text-ink transition-colors hover:text-terracotta"
+                className="cursor-pointer text-lg text-ink-soft transition-colors hover:text-ink"
               >
                 {link.label}
               </span>

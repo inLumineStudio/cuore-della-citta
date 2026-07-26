@@ -261,7 +261,17 @@ tornare in un punto allineato a destra o su uno sfondo scuro:
 (`transition-[scale,background-color]`): con `transition-[transform,...]`
 l'animazione non parte e il filetto scatta.
 
-### Drawer mobile (`components/layout/MobileMenu.tsx`)
+### Drawer di navigazione (`components/layout/MobileMenu.tsx`)
+
+Nonostante il nome del file, **non è più mobile-only**: da quando l'hamburger
+della Hero è visibile a ogni larghezza (era `md:hidden`, ora non lo è più —
+vedi § Hero), anche il drawer deve funzionare su desktop. In precedenza il suo
+wrapper aveva **anch'esso `md:hidden`**: su desktop il pannello restava
+invisibile per CSS anche quando lo stato React passava a `open = true`, ma
+l'effect che blocca lo scroll del body guarda solo quello stato, non la
+visibilità — risultato, un bug reale: click che sembrava non fare nulla e
+`body { overflow: hidden }` bloccato senza alcuna UI visibile per chiuderlo
+(l'unica via d'uscita era l'Escape, che nessuno prova a scoprire). Rimosso.
 
 **Due istanze** vivono nel DOM contemporaneamente: una montata da `Hero`, una
 da `StickyHeader` — ognuna con il proprio hamburger e il proprio stato
@@ -279,6 +289,16 @@ percepibile a ogni apertura. Nello `StickyHeader` l'hamburger è il primo figlio
 della riga (prima del logo) solo per effetto del suo stesso `md:hidden`: da
 `md` in su sparisce e il logo torna a essere il primo elemento visibile,
 esattamente come prima di questo cambio.
+
+**Intestazione del pannello** (riferimento scelto dal cliente: il drawer di
+Six Senses Rome): la X sta da sola sulla sua riga, il nome del sito segue
+**sulla riga sotto**, non più affiancato — sono stati provati insieme sulla
+stessa riga in una prima versione, ma il cliente ha chiesto esplicitamente
+l'ordine di lettura verticale del riferimento. Il nome resta in `font-brand`
+(General Sans, non Newsreader): una prova col font editoriale in corsivo è
+stata scartata, "non toccare il font" è stato esplicito. La nav sotto è
+`mt-10` e non più centrata verticalmente (`justify-center`), per aprirsi
+subito dopo l'intestazione come nel riferimento.
 
 ### Hero (`components/sections/Hero.tsx`)
 
