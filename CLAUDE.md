@@ -140,7 +140,7 @@ src/
   components/
     layout/             # StickyHeader, Footer — montati in layout.tsx
     sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, ScrollToTop, CursorSquare, icons)
+    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, CursorSquare, icons)
   lib/
     content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
     contact.ts           # Helper per i link rapidi (tel:, wa.me)
@@ -225,6 +225,45 @@ riesposta a Tailwind via `@theme inline`:
 
 Usa sempre questi token (`bg-terracotta`, `text-ink-soft`, ecc.) invece di
 colori Tailwind di default, per mantenere coerenza visiva.
+
+### Animazioni di ingresso (`components/ui/Reveal.tsx`)
+
+Fade + micro-movimento quando un blocco entra nel viewport, valutato come
+alternativa "soft" a GSAP ScrollTrigger: `IntersectionObserver` + CSS
+transition, zero dipendenze aggiunte, stessa filosofia di
+`HorizontalScroller` (che riproduce un effetto GSAP del riferimento in JS
+puro).
+
+- **`variant="slide"`** (default, per i testi): `translate-y-4 opacity-0` →
+  `translate-y-0 opacity-100`. Usato per i blocchi editoriali — `About`
+  (titolo+sottotitolo, un `Reveal` per paragrafo con `delayMs` scaglionato,
+  CTA finale), `HomeIntro`, `LocationTeaser`, la colonna editoriale di `Faq`.
+- **`variant="scale"`** (per le immagini): `scale-95 opacity-0` →
+  `scale-100 opacity-100`. Applicato ai contenitori immagine di `HomeIntro`,
+  `LocationTeaser` e `Faq` (non alla Hero, che resta ferma — un eventuale
+  Ken Burns lì sarebbe un'animazione continua, non un ingresso, e non è stato
+  ancora implementato).
+- **Attenzione Tailwind v4**: `translate-y-*` scrive `translate`, `scale-*`
+  scrive `scale` — **non** `transform`, in entrambi i casi (stessa trappola
+  già vista su `NavLink` con `scale-x-*`). Le classi `transition-[...]` dei
+  due varianti elencano la proprietà per nome, non `transform`.
+- Il `div` di `Reveal` **sostituisce** il contenitore originale (stesso
+  `className` passato via prop), non lo avvolge in più: per le immagini con
+  `fill` di `next/image` il wrapper riceve `absolute inset-0 h-full w-full`
+  al posto del contenitore che prima portava quelle classi, altrimenti
+  l'immagine perderebbe il riferimento di dimensionamento.
+- Rispetta `prefers-reduced-motion` **letto in modo sincrono** con
+  `useSyncExternalStore` (stesso pattern del flag "sono sul client" di
+  `MobileMenu`/`CursorSquare`): chi lo attiva vede il contenuto già visibile,
+  senza passare dalla transizione. Leggerlo con un `setState` in un effect
+  avrebbe violato `react-hooks/set-state-in-effect`.
+- Funziona anche **dentro lo scroll orizzontale** della home: i pannelli
+  fuori vista sono traslati (non nascosti), e `IntersectionObserver` valuta
+  la posizione reale a schermo dopo il transform, quindi non scattano finché
+  non entrano davvero in vista scorrendo.
+- L'accordion delle FAQ (a destra) **non** ha `Reveal`: è una lista
+  interattiva, non testo editoriale — resta fuori dal perimetro di questa
+  animazione.
 
 ### Cursore e ritorno in cima
 

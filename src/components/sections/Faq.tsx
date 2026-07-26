@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import Image from "next/image";
 import { CircleMinus, CirclePlus } from "lucide-react";
+import { Reveal } from "@/components/ui/Reveal";
 import { faqImageSrc, faqPanel, faqs } from "@/lib/content";
 import { whatsappHref } from "@/lib/contact";
 
@@ -14,12 +15,14 @@ export function Faq() {
     <section className="grid w-full grid-cols-1 lg:h-full lg:grid-cols-[5fr_7fr]">
       <div className="relative order-1 flex flex-col justify-center bg-ink p-8 md:p-16 lg:order-none lg:p-20">
         {faqImageSrc ? (
-          <Image
-            src={faqImageSrc}
-            alt="La statua di Ovidio a Sulmona"
-            fill
-            className="object-cover object-center brightness-[0.75] saturate-95"
-          />
+          <Reveal variant="scale" className="absolute inset-0 h-full w-full">
+            <Image
+              src={faqImageSrc}
+              alt="La statua di Ovidio a Sulmona"
+              fill
+              className="object-cover object-center brightness-[0.75] saturate-95"
+            />
+          </Reveal>
         ) : null}
 
         <div
@@ -27,7 +30,7 @@ export function Faq() {
           className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/65 to-ink/40"
         />
 
-        <div className="relative flex flex-col gap-6">
+        <Reveal className="relative flex flex-col gap-6">
           <span className="text-xs font-semibold tracking-[0.25em] text-terracotta uppercase">
             {faqPanel.eyebrow}
           </span>
@@ -48,7 +51,7 @@ export function Faq() {
           >
             {faqPanel.cta}
           </a>
-        </div>
+        </Reveal>
       </div>
 
       <div className="order-2 flex flex-col justify-center bg-cream-soft px-8 py-12 md:px-16 lg:order-none lg:px-20 lg:py-10">

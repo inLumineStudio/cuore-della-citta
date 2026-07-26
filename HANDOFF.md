@@ -115,6 +115,15 @@ Su desktop un **quadratino terracotta semitrasparente segue il puntatore**
 (`CursorSquare`, la freccia di sistema resta visibile) e un pulsante in basso a
 destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in `CLAUDE.md`.
 
+**Animazioni di ingresso** (`components/ui/Reveal.tsx`): fade + micro-movimento
+quando testi e immagini entrano nel viewport, valutata come alternativa
+"soft" a GSAP — niente dipendenze nuove, `IntersectionObserver` + CSS
+transition. Applicata al racconto di "La Dimora", a `HomeIntro`,
+`LocationTeaser` e alla colonna editoriale delle FAQ (variante "slide" per i
+testi) e alle loro immagini (variante "scale", leggero ingrandimento). Non
+tocca la Hero né l'accordion delle FAQ. Dettagli in `CLAUDE.md` § Animazioni
+di ingresso.
+
 **SEO on-page**: fatto, tutto tramite convenzioni file dell'App Router —
 favicon disegnata (casa + statua, `icon.svg`), `apple-icon.png`, immagine di
 preview 1200×630 per i social, Open Graph e Twitter card, canonical,
