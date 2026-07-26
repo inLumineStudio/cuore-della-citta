@@ -111,9 +111,11 @@ vengono più caricati. Palette terracotta/ambra. Dettagli in `CLAUDE.md`.
 Micro-interazioni della nav e CTA: le voci di menu hanno un **filetto che si
 espande** all'hover (`components/ui/NavLink.tsx`, ha sostituito l'hover corsivo)
 e le CTA "Prenota ora" sono **sempre piene** in terracotta, non più outline.
-Su desktop un **quadratino terracotta semitrasparente segue il puntatore**
-(`CursorSquare`, la freccia di sistema resta visibile) e un pulsante in basso a
-destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in `CLAUDE.md`.
+Su desktop un **quadrato terracotta pieno segue il puntatore invertendo i
+colori sotto di sé** (`CursorSquare`, `mix-blend-mode: difference`, riferimento
+mondriantribute.com; la freccia di sistema resta visibile) e un pulsante in
+basso a destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in
+`CLAUDE.md`.
 
 **Animazioni di ingresso** (`components/ui/Reveal.tsx`): fade + micro-movimento
 quando testi e immagini entrano nel viewport, valutata come alternativa

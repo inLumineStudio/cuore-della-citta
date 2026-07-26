@@ -267,10 +267,14 @@ puro).
 
 ### Cursore e ritorno in cima
 
-`CursorSquare` (`components/ui/`) disegna un **quadratino terracotta
-semitrasparente** (14px, `bg-terracotta/60`) che segue il puntatore. Non è un
+`CursorSquare` (`components/ui/`) disegna un **quadrato terracotta pieno**
+(20px, `bg-terracotta`) che segue il puntatore, con `mix-blend-mode:
+difference` — riferimento: mondriantribute.com. Non è un tono semitrasparente:
+il colore pieno **inverte otticamente** i pixel sotto di sé, quindi resta
+leggibile su qualsiasi sfondo attraversi senza bisogno di varianti per
+contesto (a differenza del filetto di `NavLink`, che ne ha bisogno). Non è un
 `cursor: url(...)`: quello **sostituirebbe** la freccia di sistema, che invece
-deve restare visibile insieme al quadratino. Conseguenze di questa scelta:
+deve restare visibile insieme al quadrato. Conseguenze di questa scelta:
 
 - la posizione viene scritta con `style.transform` direttamente sul nodo DOM,
   senza stato React — un `setState` per `pointermove` ri-renderizzerebbe

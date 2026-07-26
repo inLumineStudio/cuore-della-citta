@@ -2,11 +2,15 @@
 
 import { useEffect, useRef } from "react";
 
-// Quadratino terracotta semitrasparente che segue il puntatore. Non è un
-// `cursor: url(...)`: quello sostituirebbe la freccia di sistema, che qui
-// vogliamo restare visibile. La posizione è scritta direttamente sul nodo DOM,
-// senza stato React, perché un `setState` per ogni `pointermove` farebbe
-// ri-renderizzare l'albero decine di volte al secondo.
+// Quadrato terracotta pieno che segue il puntatore, con `mix-blend-mode:
+// difference` (riferimento: mondriantribute.com) — non è un tono
+// semitrasparente, è un colore pieno che inverte otticamente i pixel sotto di
+// sé, quindi resta leggibile su qualsiasi sfondo attraversi senza bisogno di
+// varianti di colore per contesto (a differenza del filetto di `NavLink`).
+// Non è un `cursor: url(...)`: quello sostituirebbe la freccia di sistema,
+// che qui vogliamo restare visibile. La posizione è scritta direttamente sul
+// nodo DOM, senza stato React, perché un `setState` per ogni `pointermove`
+// farebbe ri-renderizzare l'albero decine di volte al secondo.
 export function CursorSquare() {
   const squareRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +23,7 @@ export function CursorSquare() {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     function handleMove(event: PointerEvent) {
-      square!.style.transform = `translate3d(${event.clientX - 7}px, ${event.clientY - 7}px, 0)`;
+      square!.style.transform = `translate3d(${event.clientX - 10}px, ${event.clientY - 10}px, 0)`;
       square!.style.opacity = "1";
     }
 
@@ -41,7 +45,7 @@ export function CursorSquare() {
     <div
       ref={squareRef}
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0 z-[100] h-3.5 w-3.5 bg-terracotta/60 opacity-0 transition-opacity duration-200"
+      className="pointer-events-none fixed top-0 left-0 z-[100] h-5 w-5 mix-blend-difference bg-terracotta opacity-0 transition-opacity duration-200"
     />
   );
 }
