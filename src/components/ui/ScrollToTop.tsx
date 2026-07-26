@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 
+// Solo sotto md: su desktop la rotellina e la scrollbar bastano, e il pulsante
+// fisso finirebbe sopra i contenuti. La firma nel footer non gli va mai sotto
+// perché il footer riserva spazio in fondo alla sua ultima riga (vedi Footer).
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -23,7 +26,7 @@ export function ScrollToTop() {
       // con lo scroll orizzontale la home è alta tre viewport e l'animazione
       // durerebbe secondi.
       onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
-      className={`fixed right-6 bottom-6 z-40 flex h-11 w-11 cursor-pointer items-center justify-center bg-terracotta text-cream shadow-lg transition-[opacity,transform,background-color] duration-300 hover:bg-terracotta-dark lg:right-8 lg:bottom-8 ${
+      className={`fixed right-5 bottom-5 z-40 flex h-11 w-11 cursor-pointer items-center justify-center bg-terracotta text-cream shadow-lg transition-[opacity,transform,background-color] duration-300 hover:bg-terracotta-dark md:hidden ${
         isVisible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
       }`}
     >

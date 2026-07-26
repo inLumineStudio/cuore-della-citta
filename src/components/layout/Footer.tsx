@@ -64,7 +64,9 @@ export function Footer() {
         </nav>
       </Container>
 
-      <Container className="border-t border-cream/10 py-6 text-xs">
+      {/* Il `pb-24` sotto md tiene copyright e firma sopra il pulsante
+          "torna in cima", che è fisso in basso a destra solo su mobile. */}
+      <Container className="border-t border-cream/10 pt-6 pb-24 text-xs md:pb-6">
         {photoCredits ? <p className="mb-4 text-cream/50">{photoCredits}</p> : null}
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

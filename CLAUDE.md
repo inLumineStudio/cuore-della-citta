@@ -47,7 +47,8 @@ diverso in base alla pagina (`usePathname`):
 
 - su `/` resta nascosto finché non si scrolla oltre l'altezza della Hero
   (che ha il proprio overlay full-bleed indipendente, vedi sotto), poi
-  compare come barra solida fissa;
+  compare come barra solida fissa — ed è **l'unico posto dove le voci di nav
+  sono visibili senza aprire il drawer**, perché la Hero non le espone;
 - su tutte le altre route è sempre visibile da subito, perché non c'è una
   Hero che lo sostituisca in cima alla pagina.
 
@@ -144,11 +145,11 @@ header trasparente su barra promo con gradiente ambra/terracotta.
   `font-display` non vanno usate utility di peso (`font-semibold`, `font-bold`)
   né `italic` — il browser le sintetizzerebbe sporcando le aste. Oggi nessun
   heading lo fa: i titoli si differenziano per corpo, non per peso.
-- **Font editoriale della nav** (`font-hero`): [Newsreader](https://fonts.google.com/specimen/Newsreader) —
+- **Font editoriale del drawer** (`font-hero`): [Newsreader](https://fonts.google.com/specimen/Newsreader) —
   serif editoriale con grazie morbide (preferito a un Didone ad alto
   contrasto come Bodoni Moda, giudicato troppo estremo per un brand di
-  ospitalità). Da quando i titoli sono passati a Flaviotte gli resta la nav
-  dell'overlay Hero, le voci del drawer mobile e il glifo decorativo di
+  ospitalità). Dopo il passaggio dei titoli a Flaviotte e la rimozione della nav
+  dalla Hero gli restano **le voci del drawer** e il glifo decorativo di
   `ImagePlaceholder`. Va usato **solo a dimensioni ampie** — per questo la
   nav dello `StickyHeader` (compatta, su fondo crema) resta nel font body.
 - **Tutto il resto** (`font-body` / `font-brand`): **General Sans**, anch'esso
@@ -211,11 +212,18 @@ deve restare visibile insieme al quadratino. Conseguenze di questa scelta:
 - gira solo dove c'è un puntatore vero (`(hover: hover) and (pointer: fine)`):
   su touch il quadratino resterebbe fermo dove capita l'ultimo tap.
 
-`ScrollToTop` (`components/ui/`) è il pulsante terracotta in basso a destra:
-compare oltre un viewport di scroll e riporta in cima con
-`behavior: "instant"`, che sovrascrive lo `scroll-behavior: smooth` globale —
-con lo scroll orizzontale la home è alta tre viewport e l'animazione morbida
-durerebbe secondi.
+`ScrollToTop` (`components/ui/`) è il pulsante terracotta in basso a destra,
+**solo sotto `md`**: su desktop rotellina e scrollbar bastano e un elemento
+fisso finirebbe sopra i contenuti. Compare oltre un viewport di scroll e riporta
+in cima con `behavior: "instant"`, che sovrascrive lo `scroll-behavior: smooth`
+globale — con lo scroll orizzontale la home è alta tre viewport e l'animazione
+morbida durerebbe secondi.
+
+Perché non copra la firma "Realizzato da inLumine Studio", l'ultima riga del
+`Footer` **riserva spazio in fondo** (`pb-24 md:pb-6`) invece di nascondere il
+pulsante quando il footer entra in campo: in fondo alla pagina è proprio il
+momento in cui serve. Attenzione all'ordine delle utility: `py-6 pb-24` non
+funziona, la scorciatoia verticale vince sul `pb`; va scritto `pt-6 pb-24`.
 
 La scrollbar globale (`globals.css`) è in stile "classico": track scuro
 (`#57534E`), thumb bianco arrotondato con bordo che fa da padding, e pulsanti
@@ -225,69 +233,84 @@ supportati).
 
 ### Link di navigazione (`components/ui/NavLink.tsx`)
 
-Unico punto in cui vive il markup delle voci di nav: lo usano sia l'overlay
-della Hero sia lo `StickyHeader` (prima il blocco era duplicato quattro volte,
-per via del ramo `showFullNav`, che ora è dentro il componente).
+Unico punto in cui vive il markup delle voci di nav, incluso il ramo
+`showFullNav` (prima il blocco era duplicato quattro volte). Da quando la Hero
+non ha più una nav, **l'unico consumatore è lo `StickyHeader`**.
 
 L'hover è un **filetto che si espande**: il `<span>` è sempre a `w-full` e a
 riposo viene compresso a `scale-x-[0.34]`, all'hover torna a `scale-x-100` con
 virata al colore acceso. L'offset verticale è in `em` (`bottom-[-0.28em]`,
-`h-px`) perché la stessa primitiva serve la nav grande della Hero (`text-2xl`) e
-quella compatta dello header (`text-sm`). Ha sostituito il precedente hover
-corsivo + slide orizzontale.
+`h-px`) così l'effetto resta proporzionato a qualsiasi corpo. Ha sostituito il
+precedente hover corsivo + slide orizzontale.
 
-Due parametri per contesto:
+Due parametri per contesto — **oggi lo `StickyHeader` usa entrambi sui valori
+di default**, ma restano parametrizzati perché la primitiva è pensata per
+tornare in un punto allineato a destra o su uno sfondo scuro:
 
 - `align` (`"start"` default, `"end"`) decide il `transform-origin`, cioè da
   quale lato il filetto si espande. **Va fatto combaciare con l'allineamento
-  della lista**: la nav della Hero è `items-end`, quindi `align="end"` e il
-  filetto cresce da destra verso il testo; lo `StickyHeader` è una riga normale
-  e resta su `start`. Con l'ancoraggio al centro (la prima versione) la lineetta
-  a riposo sembrava fuori asse rispetto alla bandiera del testo.
-- `lineClassName` decide il colore: terracotta scuro → terracotta sul crema
-  dello header, sabbia → avorio sulla foto della Hero, dove il terracotta
-  scompariva.
+  della lista**, altrimenti la lineetta a riposo sembra fuori asse rispetto alla
+  bandiera del testo — era il caso della vecchia nav verticale della Hero
+  (`items-end`, quindi `align="end"`), rimossa insieme alla nav stessa.
+- `lineClassName` decide il colore: il default terracotta scuro → terracotta
+  funziona sul crema dello header. Su uno sfondo scuro servirebbe una coppia
+  chiara (es. sabbia/avorio), perché il terracotta ci sparisce sopra.
 
 **Attenzione**: in Tailwind v4 `scale-x-*` scrive la proprietà `scale`, non
 `transform`. La transizione deve quindi elencare `scale`
 (`transition-[scale,background-color]`): con `transition-[transform,...]`
 l'animazione non parte e il filetto scatta.
 
+### Drawer mobile (`components/layout/MobileMenu.tsx`)
+
+**Due istanze** vivono nel DOM contemporaneamente: una montata da `Hero`, una
+da `StickyHeader` — ognuna con il proprio hamburger e il proprio stato
+`isMenuOpen`, ma stesso componente. Ha senso perché ciascuna Hero/header apre
+*il proprio* drawer; non c'è uno stato condiviso da sincronizzare. Chi debugga
+via `document.querySelector('aside[role="dialog"]')` prende la prima
+istanza incontrata (quella dello `StickyHeader`, montato prima nell'albero),
+non necessariamente quella aperta — va filtrata per `aria-hidden` o per
+antenato (`closest('header')` vs `closest('section')`).
+
+Il drawer **entra da sinistra** (`left-0`, chiuso a `-translate-x-full`). Per
+questo l'hamburger è a sinistra **sia nella Hero sia nello `StickyHeader`**:
+un trigger a destra con un drawer che entra da sinistra sarebbe un disallineamento
+percepibile a ogni apertura. Nello `StickyHeader` l'hamburger è il primo figlio
+della riga (prima del logo) solo per effetto del suo stesso `md:hidden`: da
+`md` in su sparisce e il logo torna a essere il primo elemento visibile,
+esattamente come prima di questo cambio.
+
 ### Hero (`components/sections/Hero.tsx`)
 
-La Hero ha **due impaginati diversi**, non uno responsive: sotto `md` un lockup
-centrato, da `md` in su l'impaginato editoriale asimmetrico. I due non
-convivono mai, si escludono con `hidden` / `md:hidden`.
+**Un solo impaginato a tutte le larghezze**: lockup centrato, sul modello del
+riferimento Six Senses Rome scelto dal cliente. Mobile è la versione stretta
+dello stesso blocco, non un layout separato — prima erano due impaginati
+alternativi con due `<h1>` che si escludevano a vicenda.
 
 - Occupa **sempre l'intero viewport**: la `<section>` usa `min-h-dvh`
   (dynamic viewport height, robusto anche su mobile con barra URL variabile).
-- **Da `md` in su**: il titolo "Cuore della Città" è il wordmark in alto a
-  sinistra, in `font-display` (Flaviotte) su tre righe — la `max-w-[10ch]`
-  sull'`<h1>` forza il ritorno a capo e la `leading-[0.9]` chiude l'interlinea.
-  È un `<Link>` a `/`, quindi fa anche da logo. In basso a destra sottotitolo e
-  claim. (Una prima bozza rendeva il wordmark full-bleed bordo-a-bordo via SVG
-  `textLength`; l'approccio è stato abbandonato con il passaggio
-  all'impaginato attuale, dove il wordmark convive con la nav verticale sullo
-  stesso asse.)
-- **Sotto `md`** (riferimento scelto dal cliente: Six Senses Rome) al centro
-  dello schermo stanno wordmark e `heroLocation` ("Sulmona, Abruzzo"), la CTA di
-  prenotazione sta in alto a sinistra — nel posto liberato dal wordmark, a
-  bilanciare l'hamburger a destra — e in fondo due chevron sovrapposti fanno da
-  indicatore di scroll, senza testo (`aria-hidden`: sono decorativi, e
-  `motion-reduce:animate-none` ferma il rimbalzo per chi riduce le animazioni).
-  Sottotitolo e claim sono nascosti: su 375px sarebbero un muro di testo sulla
-  foto, e il racconto lo riprende `HomeIntro` subito dopo. `heroLocation` esiste
-  perché la Hero altrimenti non dice **dove** siamo a chi arriva da un link o
-  dai social.
-- Ci sono due `<h1>` nel markup, uno per impaginato, entrambi con il nome del
-  sito. Non si sovrappongono mai: `display: none` toglie l'altro anche
-  dall'albero di accessibilità.
-- La CTA della barra promo è `hidden md:inline-block`: sotto `md` la
-  prenotazione è già in alto a sinistra, a pochi pixel da lì, e due CTA
-  identiche si indebolirebbero. Su mobile resta comunque raggiungibile anche
-  dallo `StickyHeader` appena si scrolla.
-- Sotto `md` c'è un velo piatto in più (`bg-ink/35`) oltre al gradiente: il
-  lockup cade a metà foto, dove il copriletto chiaro mangerebbe il testo avorio.
+- Il blocco centrale, in ordine: wordmark (`<h1>`, `<Link>` a `/` così fa anche
+  da logo), `heroLocation` ("Sulmona, Abruzzo"), claim e sottotitolo. Wordmark e
+  località sono una **coppia stretta** (`gap-3` in un wrapper dedicato) mentre
+  il contenitore usa `gap-7`/`md:gap-9`: con gap uniformi la gerarchia
+  dipendeva solo dal corpo del testo e il ritmo risultava piatto.
+- **Claim e sottotitolo compaiono solo da `md`** (`hidden md:block`): su 375px
+  sarebbero un muro di testo sulla foto, e il racconto lo riprende `HomeIntro`
+  subito dopo. `heroLocation` invece c'è sempre, perché altrimenti la Hero non
+  dice **dove** siamo a chi arriva da un link o dai social.
+- In fondo due chevron sovrapposti fanno da indicatore di scroll, senza testo
+  (`aria-hidden`: sono decorativi, e `motion-reduce:animate-none` ferma il
+  rimbalzo per chi riduce le animazioni).
+- **Nella Hero non c'è nav e non c'è barra promo**: la riga in alto ha solo
+  l'hamburger a sinistra e la CTA "Prenota ora" a destra, direttamente sulla
+  foto, a ogni larghezza. L'hamburger apre `MobileMenu`, unico accesso alle
+  sezioni dalla Hero; le voci tornano visibili nello `StickyHeader` appena si
+  scrolla oltre la Hero. Anche questo viene dal riferimento, dove il desktop
+  non espone né la nav né una fascia sopra la riga hamburger/CTA (prima qui
+  c'era una barra promo ambra/terracotta, rimossa insieme a `promoBarMessage`).
+- Oltre al gradiente c'è un velo piatto (`bg-ink/35`, `md:bg-ink/25`): il lockup
+  cade a metà foto, dove il copriletto chiaro mangerebbe il testo avorio. Su
+  schermi larghi il testo occupa una fascia più stretta, quindi serve meno velo.
 - Overlay foto: gradiente scuro dal basso + filtro `brightness-90 saturate-95`
   sull'immagine per ammorbidire le luci calde e garantire leggibilità.
 

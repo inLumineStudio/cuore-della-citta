@@ -36,6 +36,18 @@ export function StickyHeader() {
       }`}
     >
       <div className="flex items-center justify-between gap-4 px-6 py-4 sm:px-10 lg:px-14">
+        {/* Sotto md l'hamburger sta a sinistra, come nella Hero: stesso lato da
+            cui entra il drawer condiviso (`MobileMenu`). Da md in su è
+            nascosto e il logo torna a essere il primo elemento della riga. */}
+        <button
+          type="button"
+          aria-label="Apri il menu"
+          className="cursor-pointer text-ink transition-colors duration-300 hover:text-terracotta md:hidden"
+          onClick={() => setIsMenuOpen(true)}
+        >
+          <Menu className="h-6 w-6" strokeWidth={1.5} />
+        </button>
+
         <Link href="/" className="font-brand text-lg tracking-[0.1em] text-ink uppercase">
           {siteConfig.name}
         </Link>
@@ -61,15 +73,6 @@ export function StickyHeader() {
           >
             {bookCtaLabel}
           </a>
-
-          <button
-            type="button"
-            aria-label="Apri il menu"
-            className="text-ink md:hidden"
-            onClick={() => setIsMenuOpen(true)}
-          >
-            <Menu className="h-6 w-6" strokeWidth={1.5} />
-          </button>
         </div>
       </div>
 

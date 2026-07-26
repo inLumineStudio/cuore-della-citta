@@ -8,12 +8,13 @@ Stato al 24 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
 Sito multi-pagina (Next.js 16 + TS + Tailwind v4), componentizzato, con
 routing reale (non single-page ad anchor):
 
-- **`/`** — Hero full-bleed, con **due impaginati distinti**: da `md` in su
-  barra promo + logo + nav verticale ancorati ai bordi (che scompaiono
-  scorrendo) e claim in basso a destra; sotto `md` un lockup centrato con
-  wordmark e "Sulmona, Abruzzo", CTA di prenotazione in alto a sinistra e
-  indicatore di scroll in fondo, sul modello del riferimento Six Senses Rome
-  scelto dal cliente. Segue lo **scroll orizzontale desktop**: tre
+- **`/`** — Hero full-bleed con **lockup centrato a tutte le larghezze**, sul
+  modello del riferimento Six Senses scelto dal cliente: niente barra promo,
+  solo hamburger a sinistra e CTA "Prenota ora" a destra direttamente sulla
+  foto (nella Hero non c'è nav: le voci compaiono nello `StickyHeader` appena
+  si scrolla), al centro wordmark, "Sulmona, Abruzzo", claim e sottotitolo —
+  gli ultimi due solo da `md` in su — e in fondo l'indicatore di scroll. Segue
+  lo **scroll orizzontale desktop**: tre
   pannelli a piena schermata — "La Nostra Storia", "Dove ci Troviamo" e le
   **FAQ** (accordion su crema accanto al blocco editoriale sulla foto della
   statua di Ovidio, tutte e nove le risposte reali) — che scorrono lateralmente
@@ -40,8 +41,11 @@ chiudeva quella pagina, la primitiva `Button` (la usava solo lui) e l'helper
 lo header resta nascosto finché non si scrolla oltre la Hero, sulle altre
 pagine è sempre visibile fin da subito (non c'è una Hero da sostituire).
 Lo header porta la CTA **"Prenota ora"** (WhatsApp) accanto alla nav, così la
-prenotazione è a un click da qualsiasi pagina e non solo dalla barra promo
-della Hero, che sparisce appena si scrolla.
+prenotazione è a un click da qualsiasi pagina e non solo dalla Hero, che ha la
+propria CTA gemella ma solo su `/`. Il suo hamburger (sotto `md`) è a sinistra,
+come quello della Hero: il drawer condiviso (`MobileMenu`) entra da sinistra,
+quindi il trigger deve stare dallo stesso lato in entrambi i punti in cui
+compare.
 
 **Scroll orizzontale della home** (`components/ui/HorizontalScroller.tsx`):
 riproduce l'effetto del riferimento di design fornito dal cliente
@@ -50,16 +54,16 @@ puro, **senza aggiungere dipendenze**. Da `lg:` in su i pannelli sono
 `100vw × 100dvh` e traslano 1:1 con lo scroll; sotto `lg` l'effetto è
 disattivato e i pannelli si impilano in verticale. Dettagli in `CLAUDE.md`.
 
-**Hero**: occupa sempre l'intero viewport (`min-h-dvh`); il wordmark "Cuore
-della Città" è in alto a sinistra su desktop e al centro dello schermo su
-mobile, dove sostituisce sottotitolo e claim (vedi `CLAUDE.md` § Hero). La
-scrollbar del sito è in stile classico, track scuro e thumb bianco.
+**Hero**: occupa sempre l'intero viewport (`min-h-dvh`) e ha **un solo
+impaginato a tutte le larghezze** — il lockup centrato, non più un layout
+desktop separato da quello mobile (vedi `CLAUDE.md` § Hero). La scrollbar del
+sito è in stile classico, track scuro e thumb bianco.
 
 Direzione estetica validata con il cliente: stile editoriale/caldo ispirato
 al riferimento "BEPD:HOTEL". Font, tutti forniti dal cliente tranne Newsreader:
 **Megdira** — **in prova** — sul wordmark e sul claim della Hero; **Flaviotte**
 su tutti gli altri titoli; **General Sans** per copy e interfaccia;
-**Newsreader** per la nav dell'overlay Hero e del drawer mobile. Work Sans,
+**Newsreader** per il drawer mobile. Work Sans,
 Bodoni Moda e Inter, usati nelle bozze precedenti, sono stati scartati e non
 vengono più caricati. Palette terracotta/ambra. Dettagli in `CLAUDE.md`.
 

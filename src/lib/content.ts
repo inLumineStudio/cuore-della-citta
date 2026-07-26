@@ -40,8 +40,7 @@ export const heroClaim = "Arrivare. Vivere. Restare.";
 // dove siamo a chi arriva da un link o dai social.
 export const heroLocation = "Sulmona, Abruzzo";
 
-// Etichetta condivisa da tutte le CTA di prenotazione (barra promo, header,
-// lockup mobile della Hero).
+// Etichetta condivisa da tutte le CTA di prenotazione (Hero, header).
 export const bookCtaLabel = "Prenota ora";
 
 // Sottotitolo introduttivo della Hero.

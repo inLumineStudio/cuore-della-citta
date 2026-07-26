@@ -59,8 +59,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Menu di navigazione"
-        className={`absolute inset-y-0 right-0 flex h-full w-[86%] max-w-sm flex-col bg-cream text-ink shadow-2xl transition-transform duration-300 ease-out ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`absolute inset-y-0 left-0 flex h-full w-[86%] max-w-sm flex-col bg-cream text-ink shadow-2xl transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between px-8 pt-8">
