@@ -5,6 +5,7 @@ import { StickyHeader } from "@/components/layout/StickyHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { CursorSquare } from "@/components/ui/CursorSquare";
+import { siteConfig, siteUrl } from "@/lib/content";
 import "./globals.css";
 
 // Usato esclusivamente per il titolo "Cuore della Città" nella Hero
@@ -15,11 +16,20 @@ const newsreader = Newsreader({
   style: ["normal", "italic"],
 });
 
-// Display, solo per il wordmark e il claim della Hero. Font commerciale fornito
-// dal cliente: il file vive nel repo (`src/app/fonts/`), non su Google Fonts.
+// Display degli heading. Font commerciale fornito dal cliente: il file vive nel
+// repo (`src/app/fonts/`), non su Google Fonts.
 const flaviotte = localFont({
   src: "./fonts/Flaviotte.woff2",
   variable: "--font-flaviotte",
+  display: "swap",
+});
+
+// In prova sui due elementi grandi della Hero (wordmark e claim), dove ha
+// sostituito Flaviotte. Del kit sta in repo solo il taglio regular: il corsivo
+// non serve a nessuno dei due.
+const megdira = localFont({
+  src: "./fonts/Megdira.woff2",
+  variable: "--font-megdira",
   display: "swap",
 });
 
@@ -37,10 +47,30 @@ const generalSans = localFont({
   display: "swap",
 });
 
+// Tenuto sotto i ~60 caratteri: oltre, Google tronca il titolo in SERP.
+const homeTitle = `Dimora ${siteConfig.name} | Casa vacanze a Sulmona`;
+
 export const metadata: Metadata = {
-  title: "Dimora Cuore della Città | Casa vacanze nel centro storico",
-  description:
-    "Dimora Cuore della Città: un rifugio autentico nel cuore del centro storico. Camere curate, ospitalità italiana e la città a due passi dalla porta.",
+  // Serve a rendere assoluti gli URL di Open Graph e i canonical: senza,
+  // Next emette percorsi relativi che i social non sanno risolvere.
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: homeTitle,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.metaDescription,
+  applicationName: siteConfig.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "it_IT",
+    url: "/",
+    siteName: siteConfig.fullName,
+    title: homeTitle,
+    description: siteConfig.metaDescription,
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -52,7 +82,7 @@ export default function RootLayout({
     <html
       lang="it"
       data-scroll-behavior="smooth"
-      className={`${newsreader.variable} ${generalSans.variable} ${flaviotte.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${generalSans.variable} ${flaviotte.variable} ${megdira.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-ink font-body">
         <StickyHeader />

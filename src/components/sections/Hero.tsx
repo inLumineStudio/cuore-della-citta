@@ -73,7 +73,7 @@ export function Hero() {
           <h1 className="hidden max-w-[10ch] md:block">
             <Link
               href="/"
-              className="font-display text-4xl leading-[0.9] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl"
+              className="font-wordmark text-4xl leading-[0.9] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl"
             >
               {siteConfig.name}
             </Link>
@@ -114,7 +114,7 @@ export function Hero() {
         <h1>
           <Link
             href="/"
-            className="block font-display text-4xl leading-[1.05] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+            className="block font-wordmark text-4xl leading-[1.05] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
           >
             {siteConfig.name}
           </Link>
@@ -140,7 +140,7 @@ export function Hero() {
           {heroSubtitle}
         </p>
 
-        <p className="font-display text-4xl uppercase leading-[0.95] tracking-tight text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
+        <p className="font-wordmark text-4xl uppercase leading-[0.95] tracking-tight text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
           {heroClaim}
         </p>
       </div>

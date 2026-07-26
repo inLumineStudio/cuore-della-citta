@@ -31,6 +31,7 @@
 
   --font-hero: var(--font-newsreader);
   --font-display: var(--font-flaviotte);
+  --font-wordmark: var(--font-megdira);
   --font-body: var(--font-general-sans);
   --font-brand: var(--font-general-sans);
 }

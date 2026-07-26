@@ -26,8 +26,10 @@ routing reale (non single-page ad anchor):
 
 Le FAQ **non hanno più una pagina dedicata**: sono il pannello di chiusura
 della home (accordion su fondo scuro/crema) e la voce è stata tolta dal menu.
-`src/app/faq/` è stata eliminata; il componente `ContactCta`, che chiudeva
-quella pagina, non è più montato da nessuna route.
+`src/app/faq/` è stata eliminata, e con essa il componente `ContactCta` che
+chiudeva quella pagina, la primitiva `Button` (la usava solo lui) e l'helper
+`telegramHref()`. Rimossi anche gli asset non più referenziati
+(`hero-temp.jpg`, `posizione.jpg`, la versione Wikimedia di Piazza Garibaldi).
 
 > **Nota bozza cliente**: `showFullNav` in `content.ts` è oggi `false`, quindi
 > in pratica è online **solo la homepage** — le altre route esistono ma
@@ -54,13 +56,12 @@ mobile, dove sostituisce sottotitolo e claim (vedi `CLAUDE.md` § Hero). La
 scrollbar del sito è in stile classico, track scuro e thumb bianco.
 
 Direzione estetica validata con il cliente: stile editoriale/caldo ispirato
-al riferimento "BEPD:HOTEL". Font, tutti e tre in `src/app/fonts/` o da Google:
-**Flaviotte** (display fornito dal cliente) per **tutti i titoli**, il wordmark
-e il claim della Hero; **General Sans** (anch'esso del cliente) per copy e
-interfaccia; **Newsreader** per la nav dell'overlay Hero e del drawer mobile.
-Work Sans, Bodoni Moda e Inter, usati nelle bozze precedenti, sono stati
-scartati e non vengono più caricati. Palette terracotta/ambra. Dettagli in
-`CLAUDE.md`.
+al riferimento "BEPD:HOTEL". Font, tutti forniti dal cliente tranne Newsreader:
+**Megdira** — **in prova** — sul wordmark e sul claim della Hero; **Flaviotte**
+su tutti gli altri titoli; **General Sans** per copy e interfaccia;
+**Newsreader** per la nav dell'overlay Hero e del drawer mobile. Work Sans,
+Bodoni Moda e Inter, usati nelle bozze precedenti, sono stati scartati e non
+vengono più caricati. Palette terracotta/ambra. Dettagli in `CLAUDE.md`.
 
 Micro-interazioni della nav e CTA: le voci di menu hanno un **filetto che si
 espande** all'hover (`components/ui/NavLink.tsx`, ha sostituito l'hover corsivo)
@@ -68,6 +69,12 @@ e le CTA "Prenota ora" sono **sempre piene** in terracotta, non più outline.
 Su desktop un **quadratino terracotta semitrasparente segue il puntatore**
 (`CursorSquare`, la freccia di sistema resta visibile) e un pulsante in basso a
 destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in `CLAUDE.md`.
+
+**SEO on-page**: fatto, tutto tramite convenzioni file dell'App Router —
+favicon disegnata (casa + statua, `icon.svg`), `apple-icon.png`, immagine di
+preview 1200×630 per i social, Open Graph e Twitter card, canonical,
+`/sitemap.xml` e `/robots.txt`. Verificato nel `<head>` servito. Manca solo il
+dominio definitivo in `siteUrl` — vedi TODO 8. Dettagli in `CLAUDE.md` § SEO.
 
 Verificato: type-check pulito (`npx tsc --noEmit`), nessun errore console,
 testato su viewport desktop e mobile (menu hamburger incluso) e su tutte le
@@ -90,13 +97,11 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    home mostra tuttora `ImagePlaceholder`; idem Gallery e About. Azione:
    salvare le foto in `public/images/` e valorizzare il campo corrispondente
    in `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
-   Nota: `public/images/posizione.jpg`, `hero-temp.jpg` e
-   `sulmona-piazza-garibaldi.jpg` (la versione Wikimedia, sostituita dallo
-   scatto al tramonto) non sono più referenziati da nessun componente — si
-   possono eliminare se non servono.
+   In `public/images/` restano solo i tre file effettivamente usati: gli asset
+   orfani sono stati rimossi.
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
    (Via Panfilo Scudieri 1, Sulmona) sono quelli veri. Restano placeholder
-   **email, Telegram e URL Instagram** in `siteConfig` (`content.ts`).
+   **email e URL Instagram** in `siteConfig` (`content.ts`).
 3. **Rete partner reale** — l'elenco in `partners` (`content.ts`) è
    esemplificativo. Da sostituire con le convenzioni effettive.
 4. **Mappa** — al momento un placeholder testuale; da collegare a Google
@@ -106,19 +111,23 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    crescente** (Annunziata 2 min, San Panfilo 4 min, Piazza Garibaldi 6 min):
    l'ordine dell'array è l'ordine reso a schermo, quindi va mantenuto
    aggiungendo voci. Restano da **verificare i tempi di percorrenza**.
-6. **Font locali da ottimizzare** — Flaviotte e General Sans stanno in
-   `src/app/fonts/` nel formato consegnato dal cliente: un `.woff2` (18 KB) per
-   Flaviotte, ma **quattro `.otf` da ~46 KB** per General Sans (400, 400
-   corsivo, 500, 600), circa 200 KB in tutto. `next/font/local` serve i file
-   così come sono, senza convertirli né subsettarli. Prima della messa online:
-   procurarsi i `.woff2` di General Sans (il kit di Fontshare li include) o
-   convertirli, ed eventualmente subsettare al latino. Verificare anche la
-   **licenza d'uso web** di entrambi i font, dato che ora sono serviti dal sito.
+6. **Font locali da ottimizzare** — in `src/app/fonts/` stanno tre famiglie nel
+   formato consegnato dal cliente: `.woff2` per Flaviotte (18 KB) e Megdira
+   (17 KB), ma **quattro `.otf` da ~46 KB** per General Sans (400, 400 corsivo,
+   500, 600), circa 215 KB in tutto. `next/font/local` serve i file così come
+   sono, senza convertirli né subsettarli. Prima della messa online: procurarsi
+   i `.woff2` di General Sans (il kit di Fontshare li include) o convertirli, ed
+   eventualmente subsettare al latino. Verificare anche la **licenza d'uso web**
+   dei tre font, dato che ora sono serviti dal sito.
 7. **Multilingua IT/EN** — offerto nel preventivo ma non ancora implementato
    (richiede decisione su approccio: `next-intl` vs routing manuale).
-8. **SEO on-page** — metadata di base già presenti in `layout.tsx`; mancano
-   ancora Open Graph image, sitemap, robots.txt e favicon dedicato (quello
-   di default è stato rimosso in fase di pulizia scaffold).
+8. **Dominio definitivo** — `siteUrl` in `content.ts` è un **placeholder**
+   (`https://www.cuoredellacitta.it`) e alimenta `metadataBase`, la sitemap e
+   robots.txt: va confermato col cliente, altrimenti canonical e `og:url`
+   puntano a un dominio che potrebbe non essere il suo. È l'unico punto da
+   cambiare. Il resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
+   metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
+   canonical, sitemap e robots.
 9. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
    il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
    Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto

@@ -7,17 +7,21 @@ export const siteConfig = {
   fullName: 'Dimora "Cuore della Città"',
   shortTagline: "Un rifugio autentico nel cuore del centro storico",
   metaDescription:
-    "Dimora Cuore della Città: casa vacanze nel centro storico. Camere curate, ospitalità italiana e la città a due passi dalla porta.",
-  // TODO: sostituire Telegram/email con i recapiti reali forniti dal cliente
+    "Casa vacanze nel centro storico di Sulmona, in Abruzzo: ambienti curati, prenotazione diretta senza intermediari e le meraviglie della città a pochi passi dalla porta.",
   phoneDisplay: "+39 351 496 4713",
   phoneHref: "+393514964713",
   whatsappHref: "393514964713",
-  telegramUsername: "cuoredellacitta",
+  // TODO: email reale del cliente
   email: "info@cuoredellacitta.it",
   // TODO: URL profilo Instagram reale del cliente
   instagramUrl: "https://instagram.com/cuoredellacitta",
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
+
+// Dominio di produzione: serve a `metadataBase`, alla sitemap e agli URL
+// assoluti di Open Graph, che non accettano percorsi relativi.
+// TODO: confermare il dominio definitivo con il cliente prima della messa online
+export const siteUrl = "https://www.cuoredellacitta.it";
 
 // Messaggio precompilato di ogni link WhatsApp del sito: nomina la struttura
 // così come la proprietaria la vede su WhatsApp, per farle capire da dove

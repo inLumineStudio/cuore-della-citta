@@ -36,9 +36,10 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 
 Le FAQ **non hanno più una route dedicata**: vivono come terzo pannello
 della home e la voce corrispondente è stata tolta da `navLinks`. La cartella
-`src/app/faq/` è stata eliminata. `ContactCta` (`components/sections/`) era
-usato solo da quella pagina ed è oggi orfano: resta in repo come blocco
-riutilizzabile, ma non è montato da nessuna route.
+`src/app/faq/` è stata eliminata, e con essa `ContactCta` — il blocco che
+chiudeva quella pagina — insieme alla primitiva `Button`, che usava solo lui, e
+all'helper `telegramHref()`. Se servisse di nuovo una CTA di contatto a piena
+larghezza, il codice è in `git log` (fino al commit `40a9763`).
 
 `StickyHeader`, `Footer`, `ScrollToTop` e `CursorSquare` sono montati una sola
 volta in `app/layout.tsx` e valgono per ogni route (chrome globale). `StickyHeader` ha un comportamento
@@ -93,22 +94,24 @@ ScrollTrigger; qui è riprodotta in JS puro, senza dipendenze aggiuntive):
 ```
 src/
   app/
-    fonts/             # Flaviotte + General Sans (font del cliente, next/font/local)
+    fonts/             # Flaviotte, General Sans, Megdira (font del cliente, next/font/local)
     layout.tsx        # font, metadata, chrome globale (StickyHeader, Footer, ScrollToTop, CursorSquare)
     page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
     la-dimora/page.tsx
     servizi-comfort/page.tsx
     posizione/page.tsx
     partner/page.tsx
-    faq/page.tsx
+    icon.svg / icon.png / apple-icon.png      # favicon (convenzioni file di Next)
+    opengraph-image.jpg / .alt.txt            # preview per social
+    sitemap.ts / robots.ts                    # generati da Next su /sitemap.xml e /robots.txt
     globals.css        # design token (colori, font) via @theme
   components/
     layout/             # StickyHeader, Footer — montati in layout.tsx
     sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Button, Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, ScrollToTop, CursorSquare)
+    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, ScrollToTop, CursorSquare, icons)
   lib/
     content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
-    contact.ts           # Helper per i link rapidi (tel:, wa.me, t.me)
+    contact.ts           # Helper per i link rapidi (tel:, wa.me)
 public/
   images/                # Asset immagine statici
 ```
@@ -127,11 +130,16 @@ header trasparente su barra promo con gradiente ambra/terracotta.
 
 ### Font
 
+- **Wordmark e claim della Hero** (`font-wordmark`): **Megdira**, in prova su
+  questi due soli elementi — "Cuore della Città" (in entrambi gli impaginati
+  della Hero) e "Arrivare. Vivere. Restare.". Del kit sta in repo solo il
+  `.woff2` regular (17 KB): il corsivo non serve a nessuno dei due. Verificato
+  che copra `à`/`À` e la punteggiatura, quindi "Città" e i punti del claim non
+  cadono sul fallback.
 - **Titoli** (`font-display`): **Flaviotte**, font commerciale fornito dal
-  cliente. Lo usano **tutti gli heading** del sito (h1/h2/h3), il wordmark
-  "Cuore della Città" e il claim della Hero. Non è su Google Fonts: il
-  `.woff2` (18 KB, dal kit "Web-PS") vive in `src/app/fonts/` e si carica con
-  `next/font/local`.
+  cliente. Lo usano **tutti gli altri heading** del sito (h2/h3). Non è su
+  Google Fonts: il `.woff2` (18 KB, dal kit "Web-PS") vive in `src/app/fonts/`
+  e si carica con `next/font/local`.
   **Vincolo**: ha un solo peso (regular) e nessun corsivo, quindi con
   `font-display` non vanno usate utility di peso (`font-semibold`, `font-bold`)
   né `italic` — il browser le sintetizzerebbe sporcando le aste. Oggi nessun
@@ -157,16 +165,16 @@ reale, non sintetizzato dal browser); di General Sans il corsivo è il file
 vedi `NavLink` — ma serve ai testi in `italic` sparsi nelle sezioni (es. il
 segnaposto "Risposta in arrivo." delle FAQ).
 
-Newsreader arriva da `next/font/google`, Flaviotte e General Sans da
-`next/font/local`; tutti e tre sono esposti come CSS var in
-`src/app/layout.tsx` (`--font-newsreader`, `--font-flaviotte`,
-`--font-general-sans`) e mappati sui token semantici in `globals.css`:
-`--font-display` → Flaviotte, `--font-hero` → Newsreader, `--font-body` e
-`--font-brand` → General Sans.
+Newsreader arriva da `next/font/google`, Flaviotte, General Sans e Megdira da
+`next/font/local`; tutti sono esposti come CSS var in `src/app/layout.tsx`
+(`--font-newsreader`, `--font-flaviotte`, `--font-general-sans`,
+`--font-megdira`) e mappati sui token semantici in `globals.css`:
+`--font-wordmark` → Megdira, `--font-display` → Flaviotte, `--font-hero` →
+Newsreader, `--font-body` e `--font-brand` → General Sans.
 
-I file dei due font locali sono **OTF/WOFF2 non subsettati** (≈200 KB in
-tutto): `next/font/local` li serve così come sono, senza convertirli. Prima
-della messa online conviene passare ai `.woff2` — vedi `HANDOFF.md`.
+I file dei font locali sono **OTF/WOFF2 non subsettati** (≈215 KB in tutto):
+`next/font/local` li serve così come sono, senza convertirli. Flaviotte e
+Megdira sono già `.woff2`; General Sans no — vedi `HANDOFF.md`.
 
 ### Colore
 
@@ -355,18 +363,52 @@ copyright, quindi visibile su ogni pagina) **solo se è valorizzata**.
 Oggi è `undefined`: serviva per lo scatto di Piazza Garibaldi ripreso da
 Wikimedia Commons (Lorenzo Testa), sostituito dalla foto al tramonto fornita dal
 cliente — con quella foto fuori dal sito, tenere il credito in footer sarebbe
-un'attribuzione falsa. Il file `public/images/sulmona-piazza-garibaldi.jpg`
-resta in repo ma non è più referenziato.
+un'attribuzione falsa. Il file Wikimedia è stato rimosso dal repo insieme agli
+altri asset non referenziati.
 
 Se una foto torna a richiedere attribuzione basta valorizzare la stringa; se le
 foto da attribuire diventano più d'una, conviene passare a un array.
 
+## SEO e metadati
+
+Tutto passa dalle **convenzioni file dell'App Router**, non da `<head>` scritti
+a mano: Next genera i `<link>` e i `<meta>` dai file in `src/app/`.
+
+| File | Cosa produce |
+|---|---|
+| `icon.svg` + `icon.png` (32px) | favicon; l'SVG copre i browser moderni, il PNG quelli che non lo supportano |
+| `apple-icon.png` (180px) | icona per la schermata home iOS |
+| `opengraph-image.jpg` (1200×630) + `.alt.txt` | preview per social, con `og:image:*` e dimensioni compilate da Next |
+| `sitemap.ts` | `/sitemap.xml` |
+| `robots.ts` | `/robots.txt`, che punta alla sitemap |
+
+`metadata` in `layout.tsx` definisce `metadataBase` (obbligatorio: senza, gli
+URL Open Graph resterebbero relativi e i social non li risolvono), `title` con
+`template` per le sottopagine, `alternates.canonical`, il blocco `openGraph` e
+`twitter: { card: "summary_large_image" }` — la card di X pesca da `og:image`,
+quindi non serve un `twitter-image` separato.
+
+Il dominio vive in **`siteUrl`** (`content.ts`) ed è l'unico punto da cambiare:
+lo leggono `metadataBase`, la sitemap e robots. Oggi è un **placeholder**
+(`https://www.cuoredellacitta.it`), da confermare col cliente.
+
+La **favicon** è un marchio disegnato a mano (`icon.svg`): fondo terracotta,
+casa in tratto avorio e la sagoma di una statua dentro l'arcata — casa +
+statua, i due segni chiesti dal cliente per evocare Sulmona. È stata verificata
+rasterizzando a 32px e 16px: a 16px la statua diventa una macchia e regge solo
+la casa, che è il segno portante. Se si ridisegna, va rifatta quella verifica —
+un marchio che funziona a 128px non dice nulla su come si comporta in una tab.
+
+La sitemap **si adatta a `showFullNav`**: finché è `false` le altre route
+reindirizzano alla home, quindi elencarle segnalerebbe a Google pagine che
+rimandano altrove. Con `showFullNav = true` entrano automaticamente.
+
 ## Contatti rapidi
 
-`src/lib/contact.ts` genera i link `tel:`, `https://wa.me/...` e
-`https://t.me/...` a partire dai valori in `siteConfig` (`content.ts`).
-Telefono/WhatsApp e indirizzo sono quelli reali; email, Telegram e Instagram
-sono ancora placeholder — vedi `HANDOFF.md`.
+`src/lib/contact.ts` genera i link `tel:` e `https://wa.me/...` a partire dai
+valori in `siteConfig` (`content.ts`). Telefono/WhatsApp e indirizzo sono quelli
+reali; email e Instagram sono ancora placeholder — vedi `HANDOFF.md`. Il ramo
+Telegram è stato rimosso con `ContactCta`, che era l'unico a usarlo.
 
 Il messaggio precompilato dei link WhatsApp sta in **un solo posto**,
 `whatsappMessage` in `content.ts`, ed è il valore di default di
