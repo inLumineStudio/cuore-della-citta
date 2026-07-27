@@ -32,12 +32,37 @@ export function StickyHeader() {
   useEffect(() => {
     if (!hasHero) return;
 
+    // La soglia va misurata una volta, non ad ogni scroll: su mobile la
+    // barra degli indirizzi si espande/collassa durante lo scroll stesso,
+    // e `window.innerHeight` cambia con lei. Ricalcolarla ad ogni evento
+    // scroll faceva oscillare la soglia in tempo reale insieme alla UI del
+    // browser, con l'header che appariva e spariva per un istante pur
+    // scorrendo sempre nella stessa direzione. Il resize dovuto
+    // all'animazione della toolbar va quindi ignorato con un debounce,
+    // altrimenti il problema si ripresenta lì.
+    let threshold = window.innerHeight * 0.85;
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+
     function handleScroll() {
-      setHasScrolledPastHero(window.scrollY > window.innerHeight * 0.85);
+      setHasScrolledPastHero(window.scrollY > threshold);
     }
+
+    function handleResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        threshold = window.innerHeight * 0.85;
+        handleScroll();
+      }, 200);
+    }
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
     // `pathname` è in dipendenza anche se non letto nel corpo: senza,
     // navigare via <Link> tra due route con Hero (stesso `hasHero`) non
     // ricalcola lo stato, e l'header resta visibile in cima alla pagina

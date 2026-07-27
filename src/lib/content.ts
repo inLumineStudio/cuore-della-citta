@@ -110,8 +110,8 @@ export const homeIntro = {
   eyebrow: "La nostra storia",
   title: "Il cuore, prima di tutto.",
   body: [
-    "Abbiamo cercato un luogo da far crescere, qualcosa che restasse ai nostri figli e che non perdesse mai di valore. L'abbiamo trovata in condizioni difficili e l'abbiamo ristrutturata da cima a fondo, con il tempo, la cura e i sacrifici di tutta la famiglia.",
-    "Per questo non è soltanto una casa vacanze, ma un affetto che abbiamo deciso di condividere: il cuore che ci abbiamo messo, oggi, nel cuore della città.",
+    "Un guscio dimenticato dal tempo, in cui abbiamo intravisto fin da subito la promessa di un rifugio autentico nel cuore della Valle Peligna. Da lì è iniziato un lungo percorso di ristrutturazione, curato nei minimi dettagli.",
+    "Non una struttura ricettiva gestita a distanza, ma un progetto nato dalla passione per il nostro territorio: il cuore che ci abbiamo messo, oggi, nel cuore della città.",
   ],
   cta: "Scopri la Dimora",
   ctaHref: "/la-dimora",
@@ -160,13 +160,12 @@ export const aboutPage = {
   subtitle:
     "Dove il calore di una storia di famiglia incontra l'anima millenaria della Valle Peligna.",
   paragraphs: [
-    "Ci sono luoghi che non nascono da un semplice calcolo, ma da una scelta di vita.",
-    "Un paio d'anni fa, di fronte alla decisione di acquistare una nuova auto, ci siamo fermati a riflettere. Volevamo qualcosa che restasse nel tempo, qualcosa capace di raccogliere valore e trasformarsi in un'eredità d'affetto per i nostri figli. La risposta è stata questa casa.",
-    "Quando ne abbiamo varcato la soglia per la prima volta, era poco più di un guscio dimenticato, disastrato dal tempo. Ma in quella pietra e in quegli spazi abbiamo visto una promessa. Insieme a tutta la nostra famiglia, abbiamo iniziato una ristrutturazione totale: giornate infinite che cominciavano alle 6 del mattino e finivano ben oltre il tramonto, sacrifici condivisi anche dai nostri figli e un'attenzione quasi maniacale per ogni singolo dettaglio.",
-    "Mano a mano che le pareti riprendevano vita e gli arredi trovavano la loro collocazione, chiunque venisse a trovarci ripeteva la stessa frase: “È davvero bellissima, è venuta benissimo.”",
-    "Non è un caso che tutto questo sia accaduto a Sulmona. Patria di Ovidio, il poeta dell'amore e delle Metamorfosi, Sulmona è da secoli la città della pazienza artigiana - la stessa che racchiude nei suoi celebri confetti - e dell'accoglienza sincera racchiusa tra l'Acquedotto Svevo e le vette della Majella.",
-    "Proprio come la nostra città ha saputo trasformare nel corso della storia la pietra e la tradizione in bellezza eterna, noi abbiamo trasformato un cantiere impegnativo in un rifugio accogliente. Questa non è una semplice casa vacanze gestita a distanza: è un pezzo della nostra famiglia che abbiamo scelto di aprire al mondo.",
-    "Ogni angolo che vivrete, ogni comfort di cui godrete, è il frutto di un lavoro fatto a mano con il cuore. Perché crediamo che un soggiorno indimenticabile non sia fatto solo di bei mobili, ma dell'energia di chi in quel posto ha investito sogni, tempo e passione.",
+    "Ci sono luoghi che non nascono per caso, ma dalla volontà precisa di dare nuova vita a una visione.",
+    "Quando ne abbiamo varcato la soglia per la prima volta, questa struttura era un guscio dimenticato, segnato dal tempo. Ma in quelle pietre e in quegli spazi abbiamo intravisto fin da subito un potenziale unico: la promessa di un rifugio autentico nel cuore della Valle Peligna.",
+    "È iniziato così un lungo e appassionato percorso di ristrutturazione totale. Un lavoro curato nei minimi dettagli, giorno dopo giorno, guidato da una dedizione costante per trasformare un cantiere impegnativo in un ambiente elegante, calmo e accogliente.",
+    "Non è un caso che tutto questo prenda forma a Sulmona. Patria di Ovidio, il poeta delle Metamorfosi, Sulmona è da secoli la città della pazienza artigiana e dell'accoglienza sincera, racchiusa tra la maestosità dell'Acquedotto Svevo e le vette della Majella.",
+    "Proprio come la nostra città ha saputo trasformare nel tempo la pietra e la tradizione in bellezza eterna, abbiamo voluto restituire a questo spazio un'anima contemporanea senza perderne la radice storica.",
+    "Questa non è una semplice struttura ricettiva gestita a distanza: è un progetto nato dalla passione per il nostro territorio e dal desiderio di offrire un'esperienza autentica. Ogni angolo, ogni arredo e ogni comfort sono stati pensati con cura, perché crediamo che un soggiorno indimenticabile non sia fatto solo di design, ma dell'energia di chi in un luogo ha investito sogni, tempo e dedizione.",
   ],
   ctaTitle: "Senti il calore di casa nel cuore di Sulmona.",
   ctaDescription:

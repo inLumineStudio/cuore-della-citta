@@ -73,10 +73,10 @@ larghezza, il codice è in `git log` (fino al commit `40a9763`).
 volta in `app/layout.tsx` e valgono per ogni route (chrome globale). `StickyHeader` ha un comportamento
 diverso in base alla pagina (`usePathname`):
 
-- sulle route che montano una propria `<Hero />` (oggi `/` e `/la-dimora`,
-  elencate in `routesWithHero`) resta nascosto finché non si scrolla oltre
-  l'altezza della Hero, poi compare come barra solida fissa — ed è **l'unico
-  posto dove le voci di nav sono visibili senza aprire il drawer**, perché la
+- sulle route che montano una propria `<Hero />` (oggi tutte, elencate in
+  `routesWithHero`) resta nascosto finché non si scrolla oltre l'altezza
+  della Hero, poi compare come barra solida fissa — ed è **l'unico posto
+  dove le voci di nav sono visibili senza aprire il drawer**, perché la
   Hero non le espone;
 - su tutte le altre route è sempre visibile da subito, perché non c'è una
   Hero che lo sostituisca in cima alla pagina.
@@ -86,6 +86,21 @@ legge nel corpo**: serve a forzare il ricalcolo quando si naviga via `<Link>`
 tra due route che montano entrambe una Hero (`hasHero` non cambia, quindi
 senza `pathname` l'effect non rieseguiva `handleScroll()` e l'header restava
 visibile in cima alla pagina appena aperta, invece di nascondersi di nuovo).
+
+**Bug corretto (segnalato dal cliente con un video, 27 luglio 2026)**: su
+mobile l'header lampeggiava — appariva e spariva per un istante — durante
+uno scroll continuo nella stessa direzione. Causa: la soglia era
+`window.innerHeight * 0.85`, ricalcolata a **ogni evento scroll**; sui
+browser mobile `window.innerHeight` cambia mentre la barra degli indirizzi
+si espande/collassa durante lo scroll stesso, quindi la soglia oscillava in
+tempo reale insieme alla UI del browser. Individuato analizzando un video
+dell'utente frame per frame (estratti con `ffmpeg`, confrontati con `sharp`
+per isolare i frame con variazione anomala nella sola fascia superiore dello
+schermo). Fix: la soglia si misura **una sola volta** all'avvio dell'effect e
+si aggiorna solo su `resize`, con un debounce di 200ms — così un resize
+transitorio dovuto all'animazione della toolbar (che altrimenti
+ripresenterebbe lo stesso problema) viene ignorato finché il layout non si
+stabilizza.
 
 Lo `StickyHeader` include la CTA **"Prenota ora"** (link WhatsApp, terracotta
 pieno) a destra della nav: essendo montata nel chrome globale, è
@@ -442,7 +457,16 @@ una CTA a piena larghezza su `bg-gradient-to-br from-terracotta to-terracotta-da
 - Il racconto vive in `aboutPage` (`content.ts`): `title`, `subtitle` e
   `paragraphs` (un array, uno per `<p>` — stesso pattern di `homeIntro.body`).
   È la versione estesa, "director's cut", del teaser breve mostrato in home da
-  `HomeIntro`: stessa storia della proprietaria, qui per intero.
+  `HomeIntro`: stesso racconto (un guscio dimenticato trasformato in rifugio,
+  a Sulmona), qui per intero. **Riscritto il 27 luglio 2026** su richiesta
+  esplicita del cliente: la prima versione era una narrazione personale in
+  prima persona (l'acquisto della casa al posto di un'auto, i figli coinvolti
+  nella ristrutturazione, una citazione diretta di chi visitava il cantiere).
+  Il cliente l'ha sostituita con un tono più istituzionale, incentrato sulla
+  visione del progetto e sul legame con Sulmona, senza dettagli familiari —
+  `homeIntro.body` è stato riallineato allo stesso tono nella stessa occasione,
+  altrimenti teaser e racconto esteso avrebbero raccontato due storie diverse,
+  non la stessa in forma breve e lunga.
 - La CTA finale ha **due bottoni distinti**, non due volte lo stesso contatto:
   `ctaPrimaryLabel` ("Verifica disponibilità") è un `tel:` (`telHref()`),
   `ctaSecondaryLabel` ("Contattaci su WhatsApp") è `whatsappHref()`. Rispecchia

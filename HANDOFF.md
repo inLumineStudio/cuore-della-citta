@@ -24,8 +24,10 @@ routing reale (non single-page ad anchor):
 - **`/la-dimora`** — la **stessa Hero della home**, riusata con un'altra foto
   (Piazza Garibaldi di giorno) e un claim diverso ("La Nostra Storia" al posto
   di "Arrivare. Vivere. Restare.", senza sottotitolo), seguita dal racconto
-  esteso della proprietaria (il "director's cut" del teaser di `HomeIntro`) e
-  da una CTA finale a piena larghezza con due bottoni distinti — "Verifica
+  esteso della Dimora (il "director's cut" del teaser di `HomeIntro`, tono
+  istituzionale non più personale/familiare - riscritto il 27 luglio 2026 su
+  richiesta del cliente) e da una CTA finale a piena larghezza con due
+  bottoni distinti — "Verifica
   disponibilità" (chiamata) e "Contattaci su WhatsApp"
 - **`/servizi-comfort`** — Hero + **`Amenities`**, con i contenuti reali forniti
   dalla proprietaria: due blocchi ("Comfort & Dotazioni" e "Informazioni &
