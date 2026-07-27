@@ -125,7 +125,11 @@ export const pageHeroes = {
   },
   galleria: { claim: "La Dimora, Senza Filtri" },
   comfort: { claim: "L'Esperienza in Dimora" },
-  posizione: { claim: "La Posizione & Il Territorio" },
+  posizione: {
+    claim: "La Posizione & Il Territorio",
+    imageSrc: "/images/sulmona-acquedotto-medievale.webp",
+    imageAlt: "Gli archi dell'acquedotto medievale di Sulmona, in Piazza Garibaldi",
+  },
   partner: { claim: "Vantaggi Esclusivi" },
 } satisfies Record<string, PageHero>;
 
@@ -378,17 +382,52 @@ export const positionTeaser = {
   ctaHref: "/posizione",
 };
 
+// Pagina "Dove ci Troviamo" (`/posizione`, componente `Location`) — diversa da
+// `positionTeaser` qui sopra, che resta il pannello breve della home.
+export const locationPage = {
+  eyebrow: "Posizione",
+  title: "La bellezza di Sulmona, appena fuori dalla porta",
+  description:
+    "Abitare in Via Panfilo Scudieri significa immergersi nel ritmo più autentico di Sulmona. Varcata la soglia di casa, non servono mappe né auto: i vicoli storici, le piazze scenografiche, i caffè storici e le meraviglie dell'architettura secolare si svelano tutti intorno a voi, a pochissimi passi di passeggiata. Una posizione privilegiata che vi permette di vivere la città non da semplici turisti, ma da veri protagonisti.",
+};
+
 export type PointOfInterest = {
   name: string;
   distance: string;
+  // Usata solo da `Location` (pagina "Dove ci Troviamo"): `LocationTeaser`,
+  // il pannello breve della home, mostra solo nome e distanza.
+  description?: string;
 };
 
 // Ordinati per distanza crescente: l'elenco è reso nell'ordine dell'array.
-// TODO: verificare i tempi di percorrenza con la proprietaria
+// TODO: verificare i tempi di percorrenza con la proprietaria (la voce sulla
+// statua di Ovidio è stata aggiunta dopo le altre tre ed è una stima, non
+// ancora verificata nemmeno lei).
 export const pointsOfInterest: PointOfInterest[] = [
-  { name: "Complesso della Santissima Annunziata", distance: "2 min a piedi" },
-  { name: "Cattedrale di San Panfilo", distance: "4 min a piedi" },
-  { name: "Piazza Garibaldi", distance: "6 min a piedi" },
+  {
+    name: "Complesso della Santissima Annunziata",
+    distance: "2 min a piedi",
+    description:
+      "Il monumento simbolo di Sulmona: facciata tardo-gotica e rinascimentale affiancate, oggi sede del Museo Civico.",
+  },
+  {
+    name: "Cattedrale di San Panfilo",
+    distance: "4 min a piedi",
+    description:
+      "Sorge su un tempio italico-romano: cripta e origini romaniche dedicate al patrono della città.",
+  },
+  {
+    name: "Statua di Ovidio, Piazza XX Settembre",
+    distance: "5 min a piedi",
+    description:
+      "Omaggio al poeta latino nato a Sulmona: \"Sulmo mihi patria est\", come scrisse lui stesso nei Tristia.",
+  },
+  {
+    name: "Piazza Garibaldi",
+    distance: "6 min a piedi",
+    description:
+      "Il salotto della città, bordato dagli archi dell'acquedotto medievale: qui si corre la Giostra Cavalleresca.",
+  },
 ];
 
 // Terzo pannello dello scroll orizzontale della home. L'immagine fa da fondo

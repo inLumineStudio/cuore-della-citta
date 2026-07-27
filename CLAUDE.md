@@ -32,7 +32,7 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 | `/la-dimora` | `About` (a sua volta `Hero` + racconto editoriale + CTA) |
 | `/galleria` | `Hero` — `Gallery` smontato |
 | `/servizi-comfort` | `Hero` + `Amenities` |
-| `/posizione` | `Hero` — `Location` smontato |
+| `/posizione` | `Hero` + `Location` |
 | `/partner` | `Hero` — `Partners` smontato |
 
 `/la-dimora` e `/galleria` erano un'unica pagina (`About` + `Gallery` insieme)
@@ -41,16 +41,15 @@ tenerle sullo stesso URL avrebbe significato due voci di menu con la stessa
 destinazione, quindi sono state separate. `Gallery` non aveva dipendenze da
 `About`, la separazione è stata un taglio netto.
 
-**Tre sezioni restano volutamente vuote**: galleria, posizione e partner
-mostrano **solo la Hero**, perché i loro contenuti attuali sono ancora quelli
+**Due sezioni restano volutamente vuote**: galleria e partner mostrano
+**solo la Hero**, perché i loro contenuti attuali sono ancora quelli
 esemplificativi della prima bozza e il cliente non deve vederli. I componenti
-(`Gallery`, `Location`, `Partners`) **restano in repo smontati**, non
-cancellati: verranno riagganciati quando i contenuti reali saranno pronti, e
-nel frattempo `LocationTeaser` in home continua a usare gli stessi dati
-(`pointsOfInterest`). Sono l'unica eccezione consapevole alla regola "niente
-codice morto". `Amenities` (comfort) è uscita da questo gruppo: ha ricevuto i
-contenuti reali della proprietaria e la sua route la monta — vedi
-§ "Comfort & Informazioni" più sotto.
+(`Gallery`, `Partners`) **restano in repo smontati**, non cancellati:
+verranno riagganciati quando i contenuti reali saranno pronti. Sono l'unica
+eccezione consapevole alla regola "niente codice morto". `Amenities`
+(comfort) e `Location` (posizione) sono uscite da questo gruppo: hanno
+ricevuto contenuti reali e le rispettive route le montano — vedi
+§ "Comfort & Informazioni" e § "Dove ci Troviamo" più sotto.
 
 La Hero di ogni sezione si configura da **`pageHeroes`** (`content.ts`): un
 record con `claim` (la riga sotto il wordmark) e, opzionalmente, `imageSrc` +
@@ -142,7 +141,7 @@ src/
   components/
     layout/             # StickyHeader, Footer — montati in layout.tsx
     sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, icons)
+    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, AbruzzoMap, icons)
   lib/
     content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
     contact.ts           # Helper per i link rapidi (tel:, wa.me)
@@ -477,6 +476,76 @@ che invece la incorpora).
   già visto con `Amenity["icon"]` prima di questa riscrittura, solo con più
   voci (16 icone contro le 8 originali).
 
+### "Dove ci Troviamo" (`components/sections/Location.tsx`)
+
+Seconda sezione tra le quattro inizialmente vuote a uscire da quello stato.
+A differenza di `Amenities`/`About`, qui **Hero e sezione restano due elementi
+separati**: `posizione/page.tsx` monta `<Hero {...pageHeroes.posizione} ... />`
+e poi `<Location />`. La Hero ha finalmente una foto dedicata (vedi
+`pageHeroes.posizione` — gli archi dell'acquedotto medievale di Sulmona in
+Piazza Garibaldi, luce diurna), non più il default camera da letto. Quattro
+blocchi in sequenza dentro `Location`: intestazione + elenco punti di
+interesse (colonna sinistra) accanto alla mappa illustrativa dell'Abruzzo
+(colonna destra); poi indirizzo e contatti; poi il link "Indicazioni
+stradali"; infine a piena larghezza la mappa Google Maps vera.
+
+- **Testi** in **`locationPage`** (`content.ts`), non `positionTeaser`: quel
+  secondo oggetto resta il pannello breve della home (`LocationTeaser`), che
+  ha titolo e descrizione propri e più corti. Il titolo di `locationPage`
+  ("La bellezza di Sulmona, appena fuori dalla porta") e la descrizione sono
+  copy scritto dal cliente, non generato.
+- **Mappa illustrativa** (`components/ui/AbruzzoMap.tsx`): un SVG con la
+  sagoma reale delle quattro province abruzzesi (non un disegno stilizzato),
+  ispirato al riferimento del cliente (sylverrappresentanze.it, § Scroll
+  orizzontale) che evidenzia in tinta unita la regione di competenza con un
+  pallino sulla sede. I confini vengono da un file di pubblico dominio di
+  Wikimedia Commons ("Map of region of Abruzzo, Italy", autore Vonvikken):
+  disegna già ogni provincia come un'unica sagoma colorata in modo uniforme,
+  quindi bastava isolare i quattro `path`, traslarli in una viewBox comune e
+  colorarli con `fill-ink` (nessuno `stroke` a parte un filo dello stesso
+  colore, per eliminare il micro-gap di anti-aliasing tra sagome adiacenti).
+  Sulmona **non è nei dati sorgente** (che disegnano solo i confini di
+  provincia): il pallino è posizionato a mano confrontando le coordinate
+  reali della città con l'estensione della provincia di L'Aquila, verificato
+  rendendo l'SVG a schermo e controllando che cadesse nella Valle Peligna,
+  vicino al confine con Pescara e Chieti (dove realmente si trova). Il
+  pallino non anima da solo (scartato un `animate-ping` continuo, giudicato
+  di troppo): all'hover mostra invece un badge con la scritta "Sulmona"
+  (`opacity-0` → `group-hover:opacity-100`, puro CSS via la classe `group` su
+  un `<g>`, senza stato React). Il cerchio visibile ha raggio 18 in una
+  viewBox da oltre 2000 unità: sotto c'è un secondo cerchio trasparente di
+  raggio 60 che allarga l'area cliccabile/hoverabile, altrimenti il target
+  sarebbe troppo piccolo da centrare col mouse. **Nessuno sfondo card dietro
+  l'SVG**: il cliente ha chiesto esplicitamente lo stesso crema della pagina,
+  non un riquadro `bg-cream-soft` — la sagoma scura galleggia direttamente
+  sul fondo, come nel riferimento.
+- **Indirizzo e contatti** ripetuti sopra la mappa Google (nome della
+  struttura, indirizzo, icone WhatsApp/telefono/mail/Instagram — stesso set
+  del `Footer`, colori adattati al fondo chiaro): richiesta esplicita del
+  cliente, perché chi scorre fino in fondo alla pagina non deve risalire per
+  trovarli. Il link **"Indicazioni stradali" sta fra questo blocco e la mappa
+  Google**, non più accanto all'elenco punti di interesse in alto: posizione
+  scelta dal cliente, apre Google Maps con l'indirizzo (`mapsDirectionsHref()`
+  in `contact.ts`), non la scheda dell'attività.
+- **Mappa Google** (`mapsEmbedSrc()` in `contact.ts`): un `<iframe>` a piena
+  larghezza in fondo, generato dal solo indirizzo (`siteConfig.addressLine`),
+  non da un Place ID — il profilo Google Business della struttura non è
+  ancora pubblicato (va aperto col cliente in seguito). Quando lo sarà,
+  `mapsEmbedSrc()`/`mapsDirectionsHref()` vanno aggiornati con l'ID del
+  profilo.
+- **`pointsOfInterest` (`content.ts`) ha guadagnato un campo `description`**
+  (opzionale): un cenno editoriale su cosa rende ciascun luogo degno di una
+  visita, non solo nome e distanza. `LocationTeaser` (il pannello breve della
+  home) continua a leggere lo stesso array ma ignora `description` — mostra
+  ancora solo nome e distanza, il formato compatto ha senso lì. In
+  `Location`, viceversa, **la distanza non viene resa affatto**: ripeterla
+  qui sopra la mappa vera (che dà indicazioni precise) era ridondante, tolta
+  su richiesta esplicita del cliente — il campo resta nel tipo solo per
+  `LocationTeaser`. Aggiunta anche una quarta voce, la statua di Ovidio in
+  Piazza XX Settembre (il poeta latino è nato a Sulmona), con una distanza
+  stimata alla pari delle altre tre — vedi il TODO in `content.ts` sulla
+  verifica dei tempi di percorrenza.
+
 ### FAQ (`components/sections/Faq.tsx`)
 
 Terzo e ultimo pannello dello scroll orizzontale. Layout a due colonne
@@ -644,6 +713,11 @@ reception).
 valori in `siteConfig` (`content.ts`). Telefono/WhatsApp e indirizzo sono quelli
 reali; email e Instagram sono ancora placeholder — vedi `HANDOFF.md`. Il ramo
 Telegram è stato rimosso con `ContactCta`, che era l'unico a usarlo.
+
+Lo stesso file espone anche `mapsEmbedSrc()` e `mapsDirectionsHref()`, usati
+da `Location` (§ "Dove ci Troviamo"): entrambi costruiscono l'URL Google Maps
+dal solo `siteConfig.addressLine`, in attesa del profilo Google Business
+della struttura (non ancora pubblicato).
 
 Il messaggio precompilato dei link WhatsApp sta in **un solo posto**,
 `whatsappMessage` in `content.ts`, ed è il valore di default di
