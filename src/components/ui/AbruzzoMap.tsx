@@ -23,6 +23,25 @@ const PROVINCE_PATHS = [
 // Peligna, vicino al confine con Pescara e Chieti.
 const SULMONA = { cx: 1150, cy: 1480 };
 
+// I quattro capoluoghi, aggiunti come riferimento territoriale ma senza
+// competere con Sulmona (cerchio ed etichetta più piccoli e smorzati - vedi
+// gerarchia visiva sotto). Posizione calcolata, non a occhio come Sulmona:
+// trasformazione lineare lon/lat -> viewBox calibrata su due punti noti
+// (bounding box reale della regione Abruzzo da OpenStreetMap/Nominatim, e la
+// posizione di Sulmona già verificata qui sopra, usata per correggere lo
+// scarto introdotto dalla semplificazione dei confini nel file sorgente).
+// Coordinate reali dei capoluoghi anch'esse da Nominatim. Scarto misurato sul
+// punto di controllo (Sulmona): meno dell'1% delle dimensioni della mappa.
+// `labelSide`: Pescara è a ridosso della costa, il lato orientale della
+// mappa - un'etichetta a destra del pallino cadrebbe fuori dalla sagoma
+// (testo chiaro su sfondo crema, invisibile) invece che sull'ink scuro.
+const PROVINCE_CAPITALS = [
+  { name: "Teramo", cx: 863, cy: 427, labelSide: "right" as const },
+  { name: "Pescara", cx: 1500, cy: 756, labelSide: "left" as const },
+  { name: "Chieti", cx: 1449, cy: 970, labelSide: "right" as const },
+  { name: "L'Aquila", cx: 486, cy: 963, labelSide: "right" as const },
+];
+
 export function AbruzzoMap({ className = "" }: AbruzzoMapProps) {
   return (
     <svg
@@ -34,36 +53,31 @@ export function AbruzzoMap({ className = "" }: AbruzzoMapProps) {
       {PROVINCE_PATHS.map((d, index) => (
         <path key={index} d={d} className="fill-ink stroke-ink" strokeWidth={2} />
       ))}
-      <g className="group cursor-pointer">
-        {/* Area di hover più ampia del pallino visibile, per non richiedere
-            una mira millimetrica su un target di 18 unità in una viewBox da
-            oltre 2000. */}
-        <circle cx={SULMONA.cx} cy={SULMONA.cy} r={60} fill="transparent" />
-        <circle cx={SULMONA.cx} cy={SULMONA.cy} r={18} className="fill-terracotta stroke-cream" strokeWidth={6} />
 
-        <g
-          className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-          style={{ pointerEvents: "none" }}
-        >
-          <rect
-            x={SULMONA.cx - 210}
-            y={SULMONA.cy - 200}
-            width={420}
-            height={120}
-            rx={60}
-            className="fill-ink"
-          />
+      {PROVINCE_CAPITALS.map((capital) => (
+        <g key={capital.name}>
+          <circle cx={capital.cx} cy={capital.cy} r={10} className="fill-stone-light" />
           <text
-            x={SULMONA.cx}
-            y={SULMONA.cy - 140}
-            textAnchor="middle"
+            x={capital.labelSide === "left" ? capital.cx - 26 : capital.cx + 26}
+            y={capital.cy}
+            textAnchor={capital.labelSide === "left" ? "end" : "start"}
             dominantBaseline="middle"
-            className="fill-cream text-[64px] font-semibold"
+            className="fill-stone-light text-[50px] font-semibold tracking-wide uppercase"
           >
-            Sulmona
+            {capital.name}
           </text>
         </g>
-      </g>
+      ))}
+
+      <circle cx={SULMONA.cx} cy={SULMONA.cy} r={18} className="fill-terracotta stroke-cream" strokeWidth={6} />
+      <text
+        x={SULMONA.cx + 30}
+        y={SULMONA.cy}
+        dominantBaseline="middle"
+        className="fill-terracotta text-[68px] font-semibold tracking-wide uppercase"
+      >
+        Sulmona
+      </text>
     </svg>
   );
 }

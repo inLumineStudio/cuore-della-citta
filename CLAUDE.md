@@ -510,15 +510,38 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
   rendendo l'SVG a schermo e controllando che cadesse nella Valle Peligna,
   vicino al confine con Pescara e Chieti (dove realmente si trova). Il
   pallino non anima da solo (scartato un `animate-ping` continuo, giudicato
-  di troppo): all'hover mostra invece un badge con la scritta "Sulmona"
-  (`opacity-0` → `group-hover:opacity-100`, puro CSS via la classe `group` su
-  un `<g>`, senza stato React). Il cerchio visibile ha raggio 18 in una
-  viewBox da oltre 2000 unità: sotto c'è un secondo cerchio trasparente di
-  raggio 60 che allarga l'area cliccabile/hoverabile, altrimenti il target
-  sarebbe troppo piccolo da centrare col mouse. **Nessuno sfondo card dietro
-  l'SVG**: il cliente ha chiesto esplicitamente lo stesso crema della pagina,
-  non un riquadro `bg-cream-soft` — la sagoma scura galleggia direttamente
-  sul fondo, come nel riferimento.
+  di troppo): mostra **sempre** l'etichetta "Sulmona" accanto a sé (non solo
+  all'hover, come in una prima versione: su mobile l'hover non esiste, e il
+  cliente ha chiesto che l'etichetta sia visibile a ogni larghezza). Stessa
+  struttura pallino+testo dei quattro capoluoghi qui sotto (in una prima
+  versione l'etichetta di Sulmona era un badge scuro sopra il pallino,
+  scartato su richiesta del cliente per uniformità visiva): la differenza è
+  solo di colore e dimensione. Il cerchio visibile ha raggio 18 in una
+  viewBox da oltre 2000 unità.
+  **`PROVINCE_CAPITALS`** aggiunge un pallino con etichetta anche per i
+  quattro capoluoghi (L'Aquila, Teramo, Pescara, Chieti), ma smorzato per
+  gerarchia rispetto a Sulmona — raggio 10 invece di 18, testo a 50px invece
+  che 68px, `fill-stone-light` invece di `fill-terracotta` — così Sulmona
+  resta l'unico punto che spicca davvero, pur condividendo lo stesso
+  linguaggio visivo. A differenza del pallino di Sulmona (posizionato a
+  occhio), questi quattro sono calcolati:
+  trasformazione lineare longitudine/latitudine → viewBox, calibrata su due
+  punti noti — il bounding box reale della regione Abruzzo (Nominatim/
+  OpenStreetMap) e la posizione già verificata di Sulmona, usata per
+  correggere il piccolo scarto introdotto dalla semplificazione dei confini
+  nel file sorgente (i vertici del tracciato sono meno numerosi di quelli
+  reali). Le coordinate dei quattro capoluoghi vengono anch'esse da
+  Nominatim (centroide del comune, non della provincia — occhio a
+  `addresstype`: `city`/`town`, non `county`). Scarto misurato sul punto di
+  controllo: sotto l'1% delle dimensioni della mappa. **`labelSide`** decide
+  se l'etichetta sta a destra o a sinistra del pallino: di default a destra,
+  ma Pescara è a ridosso della costa (il lato orientale della sagoma) e
+  un'etichetta a destra cadrebbe fuori dalla forma, su crema, illeggibile —
+  quindi va a sinistra, verso l'interno. **Nessuno sfondo card
+  dietro l'SVG**: il cliente ha chiesto esplicitamente lo stesso crema della
+  pagina, non un riquadro
+  `bg-cream-soft` — la sagoma scura galleggia direttamente sul fondo, come
+  nel riferimento.
 - **Indirizzo e contatti** ripetuti sopra la mappa Google (nome della
   struttura, indirizzo, icone WhatsApp/telefono/mail/Instagram — stesso set
   del `Footer`, colori adattati al fondo chiaro): richiesta esplicita del
@@ -545,6 +568,19 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
   Piazza XX Settembre (il poeta latino è nato a Sulmona), con una distanza
   stimata alla pari delle altre tre — vedi il TODO in `content.ts` sulla
   verifica dei tempi di percorrenza.
+- **`locationPage.mapCaption`** (sotto la mappa illustrativa, non sotto quella
+  Google) nomina in prosa vera i quattro capoluoghi già presenti come
+  etichette nell'SVG (`AbruzzoMap`): un pallino con un nome accanto non è
+  testo indicizzabile (l'SVG ha `role="img"` con un unico `aria-label`, i
+  `<text>` interni non sono esposti singolarmente), quindi se i nomi devono
+  contare per la SEO vanno ripetuti come contenuto reale. **Non** dice che
+  Sulmona è "centrale" fra i quattro capoluoghi (richiesta iniziale del
+  cliente): verificato che è falso — il baricentro geografico dei quattro
+  capoluoghi cade ~46 km a nord di Sulmona, che sta ai margini sud del
+  gruppo, non al centro. Riformulato come raggiungibilità: i tempi (Chieti
+  ~50 min, Pescara ~1h, L'Aquila ~1h15, Teramo ~1h30) vengono da un servizio
+  di routing stradale reale (OSRM), non dalla distanza in linea d'aria —
+  quest'ultima li avrebbe sottostimati parecchio, vista l'Appennino di mezzo.
 
 ### FAQ (`components/sections/Faq.tsx`)
 
@@ -634,6 +670,7 @@ a mano: Next genera i `<link>` e i `<meta>` dai file in `src/app/`.
 | `icon.svg` + `icon.png` (32px) | favicon; l'SVG copre i browser moderni, il PNG quelli che non lo supportano |
 | `apple-icon.png` (180px) | icona per la schermata home iOS |
 | `opengraph-image.jpg` (1200×630) + `.alt.txt` | preview per social, con `og:image:*` e dimensioni compilate da Next |
+| `<route>/opengraph-image.jpg` + `.alt.txt` | stessa convenzione, per route: sovrascrive quella di `app/` solo per quella pagina |
 | `sitemap.ts` | `/sitemap.xml` |
 | `robots.ts` | `/robots.txt`, che punta alla sitemap |
 
@@ -665,9 +702,19 @@ mai `"La Dimora | Cuore della Città"`): il `template` in `layout.tsx` aggiunge
 già il suffisso. Scriverlo in entrambi i posti produceva un titolo doppio nel
 tab del browser.
 
+**Preview per social pagina per pagina**: `/la-dimora` e `/posizione` hanno
+ciascuna il proprio `opengraph-image.jpg` (ritagliato 1200×630 dalla foto
+reale della rispettiva Hero, `sharp` con `fit: "cover"` e strategia
+`attention` per centrare il ritaglio sul soggetto) invece di ereditare quello
+generico della camera da letto in `app/`: chi condivide il link di una
+pagina specifica vede un'anteprima coerente col contenuto. `/servizi-comfort`
+**non** ne ha ancora una propria (nessuna foto dedicata disponibile per
+Amenities oggi) e continua a ereditare quella di `app/` — da rifare quando
+arriverà una foto reale per quella sezione.
+
 ### Dati strutturati (JSON-LD)
 
-`src/lib/structuredData.ts` esporta due funzioni, entrambe pure e senza stato:
+`src/lib/structuredData.ts` esporta tre funzioni, tutte pure e senza stato:
 ricalcolano l'oggetto ogni volta leggendo da `content.ts`, quindi **si
 aggiornano da sole** quando cambiano i contenuti reali (indirizzo, contatti,
 comfort, FAQ) — non serve toccare questo file quando cambia un dato che già
@@ -679,14 +726,19 @@ reception).
   volta in `app/layout.tsx` (come `StickyHeader`/`Footer`): è l'entità del
   sito, presente su ogni pagina non solo in home. Legge `siteConfig`
   (nome, telefono, email, `instagramUrl`), `addressParts` (indirizzo
-  scomposto in `PostalAddress`), `propertyFacts` (check-in/checkout,
-  `petsAllowed`, `numberOfRooms`) e `amenitiesPage.comfortGroups` (mappati su
+  scomposto in `PostalAddress`), `propertyCoordinates` (`geo`,
+  `GeoCoordinates`), `propertyFacts` (check-in/checkout, `petsAllowed`,
+  `numberOfRooms`) e `amenitiesPage.comfortGroups` (mappati su
   `amenityFeature`, un `LocationFeatureSpecification` per voce).
   `addressParts` e `propertyFacts` (`content.ts`) esistono solo per questo:
   duplicano in forma strutturata dati già scritti come prosa altrove
   (`siteConfig.addressLine`, i testi di `amenitiesPage`/`faqs`) — i commenti
   su ciascuno segnalano quale prosa va tenuta in sync se cambia il fatto
-  sottostante (es. cambia il numero di camere).
+  sottostante (es. cambia il numero di camere). **`propertyCoordinates` è una
+  stima**: geocoding di `siteConfig.addressLine` via Nominatim/OpenStreetMap
+  (precisione di via, non di numero civico), non un dato fornito dal cliente
+  — da sostituire con le coordinate esatte quando arriverà il profilo Google
+  Business (vedi TODO in `HANDOFF.md`).
 - **`faqPageJsonLd()`** — tipo `FAQPage`, montato solo in `app/page.tsx`
   (home): è l'unica pagina dove il pannello FAQ è davvero visibile, i dati
   strutturati devono rispecchiare il contenuto reso e non esistere altrove nel
@@ -696,6 +748,14 @@ reception).
   falso in pasto a Google, non solo un placeholder visivo. Se un giorno tutte
   le risposte restassero `undefined`, la funzione ritorna `null` e lo script
   non viene reso — gestito in `page.tsx` con un controllo prima del render.
+- **`breadcrumbListJsonLd(href)`** — tipo `BreadcrumbList` a due livelli
+  (Homepage > pagina corrente): il sito non ha gerarchie più profonde. `href`
+  deve combaciare con una voce di `navLinks`, da cui la funzione legge
+  l'etichetta — così titolo del breadcrumb e voce di menu non possono
+  disallinearsi. Montato solo nelle pagine con contenuto reale sotto la Hero
+  (`la-dimora`, `servizi-comfort`, `posizione`), non in home (è già la
+  radice) né nelle sezioni ancora smontate (galleria, partner) — da
+  aggiungere lì quando riceveranno i loro contenuti.
 - Resi con `<script type="application/ld+json" dangerouslySetInnerHTML={{
   __html: JSON.stringify(...) }} />`: JSON-LD non deve stare per forza in
   `<head>` (Google lo legge ovunque nell'HTML), quindi vive dove ha senso nel

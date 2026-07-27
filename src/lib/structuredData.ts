@@ -8,6 +8,8 @@ import {
   amenitiesPage,
   faqs,
   heroImageSrc,
+  navLinks,
+  propertyCoordinates,
   propertyFacts,
   siteConfig,
   siteUrl,
@@ -27,6 +29,11 @@ export function lodgingBusinessJsonLd() {
       "@type": "PostalAddress",
       ...addressParts,
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: propertyCoordinates.latitude,
+      longitude: propertyCoordinates.longitude,
+    },
     sameAs: [siteConfig.instagramUrl],
     checkinTime: propertyFacts.checkinTime,
     checkoutTime: propertyFacts.checkoutTime,
@@ -39,6 +46,31 @@ export function lodgingBusinessJsonLd() {
         value: true,
       }))
     ),
+  };
+}
+
+// Breadcrumb a due livelli (Homepage > pagina corrente): il sito non ha
+// gerarchie più profonde di questa. `href` deve combaciare con una voce di
+// `navLinks`, da cui viene letta l'etichetta - così titolo del breadcrumb e
+// voce di menu non possono disallinearsi. Va chiamata solo dalle pagine reali
+// (oggi "/la-dimora", "/servizi-comfort", "/posizione"): non ha senso su "/"
+// (è già la radice) né sulle sezioni ancora smontate (galleria, partner).
+export function breadcrumbListJsonLd(href: string) {
+  const current = navLinks.find((link) => link.href === href);
+  if (!current) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Homepage", item: siteUrl },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: current.label,
+        item: new URL(href, siteUrl).toString(),
+      },
+    ],
   };
 }
 

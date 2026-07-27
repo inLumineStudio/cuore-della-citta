@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
 import { Amenities } from "@/components/sections/Amenities";
 import { pageHeroes, showFullNav } from "@/lib/content";
+import { breadcrumbListJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "Comfort & Informazioni",
@@ -17,6 +18,10 @@ export default function ServiziComfortPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("/servizi-comfort")) }}
+      />
       <Hero {...pageHeroes.comfort} subtitle="" showClaimOnMobile />
       <Amenities />
     </>

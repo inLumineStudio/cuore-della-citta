@@ -35,9 +35,15 @@ export function Location() {
             </ul>
           </Reveal>
 
-          <Reveal variant="scale" className="flex aspect-square w-full items-center justify-center p-6 lg:aspect-[4/5]">
-            <AbruzzoMap className="h-full w-full" />
-          </Reveal>
+          <div className="flex flex-col gap-6">
+            <Reveal variant="scale" className="flex aspect-square w-full items-center justify-center p-6 lg:aspect-[4/5]">
+              <AbruzzoMap className="h-full w-full" />
+            </Reveal>
+
+            <Reveal>
+              <p className="text-center text-sm leading-relaxed text-ink-soft">{locationPage.mapCaption}</p>
+            </Reveal>
+          </div>
         </div>
 
         <Reveal className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

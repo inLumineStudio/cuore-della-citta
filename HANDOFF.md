@@ -37,8 +37,11 @@ routing reale (non single-page ad anchor):
   editoriale su ciascuno (compresa la statua di Ovidio, nato a Sulmona), una
   mappa illustrativa dell'Abruzzo disegnata a partire da dati geografici
   reali (`AbruzzoMap`, confini di pubblico dominio da Wikimedia Commons) con
-  un pallino su Sulmona che mostra "Sulmona" in un badge all'hover, indirizzo
-  e contatti ripetuti con link "Indicazioni stradali", e la mappa Google Maps
+  un pallino su Sulmona con la scritta "Sulmona" in un badge sempre visibile
+  (anche su mobile) più un pallino più piccolo e smorzato per ciascuno dei
+  quattro capoluoghi di provincia (posizioni calcolate via geocoding
+  Nominatim, non a occhio), indirizzo e contatti ripetuti con link
+  "Indicazioni stradali", e la mappa Google Maps
   vera basata sull'indirizzo. È la seconda delle quattro sezioni inizialmente
   vuote a uscire da quello stato.
 - **`/galleria`**, **`/partner`** — per ora **solo la Hero, senza contenuto
@@ -141,14 +144,24 @@ di ingresso.
 
 **SEO on-page**: fatto, tutto tramite convenzioni file dell'App Router —
 favicon disegnata (casa + statua, `icon.svg`), `apple-icon.png`, immagine di
-preview 1200×630 per i social, Open Graph e Twitter card, canonical,
-`/sitemap.xml` e `/robots.txt`. Verificato nel `<head>` servito. Aggiunti anche
-i **dati strutturati JSON-LD** (`src/lib/structuredData.ts`): `LodgingBusiness`
-su ogni pagina (indirizzo, contatti, comfort) e `FAQPage` solo in home, dove il
-pannello FAQ è davvero visibile. Entrambi si ricalcolano da `content.ts`, quindi
-si aggiornano da soli quando cambia un contenuto reale — dettagli in
-`CLAUDE.md` § Dati strutturati. Manca solo il
+preview 1200×630 per i social (più una dedicata per `/la-dimora` e
+`/posizione`, ritagliata dalla foto reale di ciascuna Hero), Open Graph e
+Twitter card, canonical, `/sitemap.xml` e `/robots.txt`. Verificato nel
+`<head>` servito. Aggiunti anche i **dati strutturati JSON-LD**
+(`src/lib/structuredData.ts`): `LodgingBusiness` su ogni pagina (indirizzo,
+contatti, comfort, coordinate geografiche stimate via geocoding
+dell'indirizzo), `FAQPage` solo in home (dove il pannello FAQ è davvero
+visibile) e `BreadcrumbList` sulle pagine con contenuto reale
+(`la-dimora`, `servizi-comfort`, `posizione`). Tutti si ricalcolano da
+`content.ts`, quindi si aggiornano da soli quando cambia un contenuto reale —
+dettagli in `CLAUDE.md` § Dati strutturati. Manca solo il
 dominio definitivo in `siteUrl` — vedi TODO 8. Dettagli in `CLAUDE.md` § SEO.
+
+> Il cliente ha chiesto di **potenziare la SEO ogni volta che si aggiungono
+> contenuti nuovi**, senza bisogno di richiederlo esplicitamente ogni volta
+> (2026-07-27): dati strutturati, immagini OG dedicate, coordinate, breadcrumb
+> e simili vanno considerati parte del lavoro standard su ogni nuova sezione,
+> non un extra da proporre a parte.
 
 Verificato: type-check pulito (`npx tsc --noEmit`), nessun errore console,
 testato su viewport desktop e mobile (menu hamburger incluso) e su tutte le
@@ -212,7 +225,11 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    cambiare. Il resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
    metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
    canonical, sitemap, robots e dati strutturati JSON-LD
-   (`LodgingBusiness`/`FAQPage`).
+   (`LodgingBusiness`/`FAQPage`/`BreadcrumbList`). Le coordinate in
+   `propertyCoordinates` (`content.ts`) sono una stima da geocoding
+   dell'indirizzo: da sostituire con quelle esatte quando arriva il profilo
+   Google Business (che risolve anche questo punto e il punto successivo
+   sull'indirizzo nella mappa embed di `Location`).
 9. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
    il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
    Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { About } from "@/components/sections/About";
 import { showFullNav } from "@/lib/content";
+import { breadcrumbListJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "La Dimora",
@@ -14,5 +15,13 @@ export default function LaDimoraPage() {
     redirect("/");
   }
 
-  return <About />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("/la-dimora")) }}
+      />
+      <About />
+    </>
+  );
 }

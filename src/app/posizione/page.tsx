@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
 import { Location } from "@/components/sections/Location";
 import { pageHeroes, showFullNav } from "@/lib/content";
+import { breadcrumbListJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "Posizione & Mappa",
@@ -17,6 +18,10 @@ export default function PosizionePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("/posizione")) }}
+      />
       <Hero {...pageHeroes.posizione} subtitle="" showClaimOnMobile />
       <Location />
     </>

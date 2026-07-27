@@ -29,6 +29,15 @@ export const addressParts = {
   addressCountry: "IT",
 } as const;
 
+// Coordinate di Via Panfilo Scudieri (precisione di via, non del numero
+// civico): geocoding via Nominatim/OpenStreetMap su `siteConfig.addressLine`,
+// non fornite dal cliente. Da sostituire con quelle esatte se e quando arriva
+// il profilo Google Business della struttura (vedi TODO in HANDOFF.md).
+export const propertyCoordinates = {
+  latitude: 42.051099,
+  longitude: 13.923446,
+} as const;
+
 // Fatti sulla struttura non ancora esposti come testo altrove (solo per i
 // dati strutturati). `numberOfRooms` e `petsAllowed` rispecchiano voci di
 // `amenitiesPage` ("2 Raffinate Camere Matrimoniali", "Animali Non Ammessi") e
@@ -390,6 +399,12 @@ export const locationPage = {
   description:
     "Abitare in Via Panfilo Scudieri significa immergersi nel ritmo più autentico di Sulmona. Varcata la soglia di casa, non servono mappe né auto: i vicoli storici, le piazze scenografiche, i caffè storici e le meraviglie dell'architettura secolare si svelano tutti intorno a voi, a pochissimi passi di passeggiata. Una posizione privilegiata che vi permette di vivere la città non da semplici turisti, ma da veri protagonisti.",
   poiLabel: "Alcuni dei monumenti da non perdere",
+  // Tempi di percorrenza verificati con un servizio di routing stradale
+  // (non in linea d'aria) dall'indirizzo della struttura: Chieti ~50 min,
+  // Pescara ~1h, L'Aquila ~1h15, Teramo ~1h30. Aggiornare se cambia
+  // l'indirizzo o se emergono tempi più precisi dal cliente.
+  mapCaption:
+    "Da Sulmona si raggiungono comodamente tutti e quattro i capoluoghi di provincia: Chieti in circa 50 minuti, Pescara in un'ora, L'Aquila in un'ora e un quarto, Teramo in un'ora e mezza. Una base strategica per esplorare l'intera regione, dal mare Adriatico alle vette del Gran Sasso e della Majella.",
 };
 
 export type PointOfInterest = {
