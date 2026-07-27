@@ -19,10 +19,14 @@ export function Location() {
               description={locationPage.description}
             />
 
+            <span className="text-xs font-semibold tracking-[0.2em] text-terracotta uppercase">
+              {locationPage.poiLabel}
+            </span>
+
             <ul className="flex flex-col gap-5">
               {pointsOfInterest.map((poi) => (
                 <li key={poi.name} className="flex flex-col gap-1 border-b border-stone-light pb-4">
-                  <span className="text-ink">{poi.name}</span>
+                  <span className="font-semibold text-ink">{poi.name}</span>
                   {poi.description && (
                     <p className="text-sm leading-relaxed text-ink-soft">{poi.description}</p>
                   )}

@@ -389,6 +389,7 @@ export const locationPage = {
   title: "La bellezza di Sulmona, appena fuori dalla porta",
   description:
     "Abitare in Via Panfilo Scudieri significa immergersi nel ritmo più autentico di Sulmona. Varcata la soglia di casa, non servono mappe né auto: i vicoli storici, le piazze scenografiche, i caffè storici e le meraviglie dell'architettura secolare si svelano tutti intorno a voi, a pochissimi passi di passeggiata. Una posizione privilegiata che vi permette di vivere la città non da semplici turisti, ma da veri protagonisti.",
+  poiLabel: "Alcuni dei monumenti da non perdere",
 };
 
 export type PointOfInterest = {
