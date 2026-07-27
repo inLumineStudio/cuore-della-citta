@@ -145,7 +145,11 @@ export const pageHeroes = {
     imageSrc: "/images/sulmona-acquedotto-medievale.webp",
     imageAlt: "Gli archi dell'acquedotto medievale di Sulmona, in Piazza Garibaldi",
   },
-  partner: { claim: "Vantaggi Esclusivi" },
+  partner: {
+    claim: "Vantaggi Esclusivi",
+    imageSrc: "/images/sulmona-portale-santissima-annunziata.webp",
+    imageAlt: "Il portale scolpito del Complesso della Santissima Annunziata a Sulmona",
+  },
 } satisfies Record<string, PageHero>;
 
 // Racconto esteso della proprietaria per la pagina "/la-dimora" (componente
@@ -341,26 +345,23 @@ export type Partner = {
   category: string;
   name: string;
   perk: string;
+  // Se assente, la cella mostra un segnaposto testuale ("Logo in arrivo"),
+  // non un'immagine finta: un logo è un'identità visiva altrui, diversamente
+  // da una foto della struttura non ha senso simularlo con un placeholder
+  // grafico. Stessa filosofia di `faqs[].answer` ("Risposta in arrivo.").
+  logoSrc?: string;
+  logoAlt?: string;
+  // Se presente, l'intera scheda diventa un link verso il sito/social del
+  // partner; se assente resta statica.
+  websiteUrl?: string;
 };
 
-// TODO: elenco esemplificativo - sostituire con la rete partner reale e le convenzioni attive
-export const partners: Partner[] = [
-  {
-    category: "Ristorazione",
-    name: "Trattoria del Borgo",
-    perk: "10% di sconto per gli ospiti della Dimora",
-  },
-  {
-    category: "Tour ed Esperienze",
-    name: "Città in Bici",
-    perk: "Noleggio bici scontato del 15%",
-  },
-  {
-    category: "Benessere",
-    name: "Terme del Centro",
-    perk: "Ingresso agevolato con voucher dedicato",
-  },
-];
+// Ancora vuoto: nessuna attività del territorio ha aderito alla rete di
+// convenzioni. Niente nomi di fantasia come segnaposto (sarebbero informazioni
+// false su un'attività reale, non un semplice placeholder grafico) - quando il
+// primo partner firma la convenzione, basta aggiungere un oggetto qui e la
+// sezione passa da sola dallo stato vuoto alla griglia (vedi `Partners.tsx`).
+export const partners: Partner[] = [];
 
 export type GalleryImage = {
   src?: string;
@@ -381,12 +382,13 @@ export const galleryImages: GalleryImage[] = [
 export const positionImageSrc: string | undefined =
   "/images/sulmona-piazza-garibaldi-tramonto.webp";
 
-// Reso dal Footer su ogni pagina quando è valorizzato. Serviva per lo scatto di
-// Piazza Garibaldi ripreso da Wikimedia Commons (Lorenzo Testa), che non è più
-// usato da nessun componente: se una foto del sito richiede attribuzione va
-// rimessa qui.
-// TODO: confermare che la foto del tramonto sia della proprietaria
-export const photoCredits: string | undefined = undefined;
+// Reso dal Footer su ogni pagina quando è valorizzato. Dicitura generica
+// richiesta dal cliente (non un credito per singola foto): copre tutte le
+// immagini del sito senza specificare quali vengono da terzi (es. Wikimedia
+// Commons) e quali sono scatti originali, a differenza di una vera
+// attribuzione CC che richiederebbe autore e licenza per ogni singola foto.
+export const photoCredits: string | undefined =
+  "Le immagini presenti in questo sito sono di proprietà dei rispettivi autori.";
 
 export const positionTeaser = {
   eyebrow: "Dove ci troviamo",

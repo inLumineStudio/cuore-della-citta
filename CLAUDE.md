@@ -33,7 +33,7 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 | `/galleria` | `Hero` — `Gallery` smontato |
 | `/servizi-comfort` | `Hero` + `Amenities` |
 | `/posizione` | `Hero` + `Location` |
-| `/partner` | `Hero` — `Partners` smontato |
+| `/partner` | `Hero` + `Partners` |
 
 `/la-dimora` e `/galleria` erano un'unica pagina (`About` + `Gallery` insieme)
 finché la nav non ha guadagnato una voce dedicata alla galleria: a quel punto
@@ -41,15 +41,18 @@ tenerle sullo stesso URL avrebbe significato due voci di menu con la stessa
 destinazione, quindi sono state separate. `Gallery` non aveva dipendenze da
 `About`, la separazione è stata un taglio netto.
 
-**Due sezioni restano volutamente vuote**: galleria e partner mostrano
-**solo la Hero**, perché i loro contenuti attuali sono ancora quelli
-esemplificativi della prima bozza e il cliente non deve vederli. I componenti
-(`Gallery`, `Partners`) **restano in repo smontati**, non cancellati:
-verranno riagganciati quando i contenuti reali saranno pronti. Sono l'unica
-eccezione consapevole alla regola "niente codice morto". `Amenities`
-(comfort) e `Location` (posizione) sono uscite da questo gruppo: hanno
-ricevuto contenuti reali e le rispettive route le montano — vedi
-§ "Comfort & Informazioni" e § "Dove ci Troviamo" più sotto.
+**Una sola sezione resta volutamente vuota**: galleria mostra **solo la
+Hero**, perché i suoi contenuti attuali sono ancora quelli esemplificativi
+della prima bozza (`galleryImages`, quattro voci che puntano tutte alla
+stessa foto) e il cliente non deve vederli. Il componente (`Gallery`)
+**resta in repo smontato**, non cancellato: verrà riagganciato quando i
+contenuti reali saranno pronti — è l'unica eccezione consapevole rimasta
+alla regola "niente codice morto". `Amenities` (comfort), `Location`
+(posizione) e `Partners` (partner) sono uscite da questo gruppo: hanno
+ricevuto contenuti reali (o, per `Partners`, uno stato vuoto onesto in
+attesa delle prime adesioni — non più dati di fantasia) e le rispettive
+route le montano — vedi § "Comfort & Informazioni", § "Dove ci Troviamo" e
+§ "I Nostri Partner" più sotto.
 
 La Hero di ogni sezione si configura da **`pageHeroes`** (`content.ts`): un
 record con `claim` (la riga sotto il wordmark) e, opzionalmente, `imageSrc` +
@@ -596,6 +599,42 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
   ~50 min, Pescara ~1h, L'Aquila ~1h15, Teramo ~1h30) vengono da un servizio
   di routing stradale reale (OSRM), non dalla distanza in linea d'aria —
   quest'ultima li avrebbe sottostimati parecchio, vista l'Appennino di mezzo.
+
+### "I Nostri Partner" (`components/sections/Partners.tsx`)
+
+Terza sezione tra le quattro inizialmente vuote a uscire da quello stato, ma
+con una differenza rispetto ad `Amenities`/`Location`: non ci sono ancora
+convenzioni reali da mostrare, quindi montarla non significa avere contenuti
+veri, bensì **uno stato vuoto onesto** al posto dei tre partner di fantasia
+che c'erano prima (`Trattoria del Borgo` e simili, TODO storico). `partners`
+in `content.ts` è oggi un array vuoto: quando la proprietaria firma la prima
+convenzione, basta aggiungere un oggetto e la sezione passa da sola dallo
+stato vuoto alla griglia, senza toccare `Partners.tsx`.
+
+- **Stato vuoto**: icona `Handshake` + "Le prime convenzioni sono in arrivo",
+  al posto della griglia, quando `partners.length === 0`. Stessa filosofia
+  di `Location` prima di avere l'indirizzo definitivo (segnaposto testuale
+  onesto, non un contenuto inventato).
+- **`Partner` (`content.ts`) ha `logoSrc`/`logoAlt` opzionali**: se assente,
+  la cella mostra un riquadro tratteggiato con la scritta "Logo in arrivo",
+  **non** `ImagePlaceholder` — quel componente ha un glifo "CC" pensato per
+  foto a piena cella (Hero, gallery), a scala di logo (una cella di ~80px di
+  altezza) risulterebbe sproporzionato e leggibile male. Un logo è anche
+  l'identità visiva di un'altra attività: simularne uno finto sarebbe più
+  fuorviante che utile, a differenza di una foto della Dimora in arrivo.
+- **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
+  verso il sito o il profilo social del partner; se assente la scheda resta
+  statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
+  l'elemento, non lo stile).
+- **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
+  il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
+  copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
+  non applicata a `Location`, che la usa (`eyebrow="Posizione"`), inconsistenza
+  nota ma non ancora risolta lì.
+- **Griglia a celle divise da hairline** (`gap-px` su `bg-cream/10`, sfondo
+  scuro `bg-ink`): pensata per restare equilibrata con poche voci (3-6), non
+  per decine di partner — da rivedere se la rete crescesse molto oltre quella
+  scala.
 
 ### FAQ (`components/sections/Faq.tsx`)
 
