@@ -22,7 +22,7 @@ export default function PosizionePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("/posizione")) }}
       />
-      <Hero {...pageHeroes.posizione} subtitle="" showClaimOnMobile />
+      <Hero {...pageHeroes.posizione} descriptor="" subtitle="" showClaimOnMobile />
       <Location />
     </>
   );

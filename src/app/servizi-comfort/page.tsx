@@ -22,7 +22,7 @@ export default function ServiziComfortPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("/servizi-comfort")) }}
       />
-      <Hero {...pageHeroes.comfort} subtitle="" showClaimOnMobile />
+      <Hero {...pageHeroes.comfort} descriptor="" subtitle="" showClaimOnMobile />
       <Amenities />
     </>
   );

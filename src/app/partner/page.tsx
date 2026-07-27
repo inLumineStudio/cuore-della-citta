@@ -16,5 +16,5 @@ export default function PartnerPage() {
     redirect("/");
   }
 
-  return <Hero {...pageHeroes.partner} subtitle="" showClaimOnMobile />;
+  return <Hero {...pageHeroes.partner} descriptor="" subtitle="" showClaimOnMobile />;
 }

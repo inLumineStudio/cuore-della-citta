@@ -17,5 +17,5 @@ export default function GalleriaPage() {
     redirect("/");
   }
 
-  return <Hero {...pageHeroes.galleria} subtitle="" showClaimOnMobile />;
+  return <Hero {...pageHeroes.galleria} descriptor="" subtitle="" showClaimOnMobile />;
 }

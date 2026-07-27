@@ -9,7 +9,7 @@ import { telHref, whatsappHref } from "@/lib/contact";
 export function About() {
   return (
     <>
-      <Hero {...pageHeroes.laDimora} subtitle="" showClaimOnMobile />
+      <Hero {...pageHeroes.laDimora} descriptor="" subtitle="" showClaimOnMobile />
 
       <section className="py-24 sm:py-32">
         <Container className="mx-auto flex max-w-3xl flex-col gap-10">
