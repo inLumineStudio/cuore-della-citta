@@ -72,6 +72,12 @@ export const heroClaim = "Arrivare. Vivere. Restare.";
 // dove siamo a chi arriva da un link o dai social.
 export const heroLocation = "Sulmona, Abruzzo";
 
+// Riga subito sotto `heroLocation`: il claim ("Arrivare. Vivere. Restare.") è
+// puramente evocativo e su mobile resta nascosto, quindi senza questa riga
+// non era chiaro a colpo d'occhio che tipo di attività fosse. Sempre visibile
+// (anche su mobile), a differenza del claim.
+export const heroDescriptor = "Una casa vacanze di charme nel cuore del centro storico.";
+
 // Etichetta condivisa da tutte le CTA di prenotazione (Hero, header).
 export const bookCtaLabel = "Prenota ora";
 

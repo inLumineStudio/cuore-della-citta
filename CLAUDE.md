@@ -381,17 +381,26 @@ alternativi con due `<h1>` che si escludevano a vicenda.
 - Occupa **sempre l'intero viewport**: la `<section>` usa `min-h-dvh`
   (dynamic viewport height, robusto anche su mobile con barra URL variabile).
 - Il blocco centrale, in ordine: wordmark (`<h1>`, `<Link>` a `/` così fa anche
-  da logo), `heroLocation` ("Sulmona, Abruzzo"), claim e sottotitolo. Wordmark e
-  località sono una **coppia stretta** (`gap-3` in un wrapper dedicato) mentre
-  il contenitore usa `gap-7`/`md:gap-9`: con gap uniformi la gerarchia
-  dipendeva solo dal corpo del testo e il ritmo risultava piatto.
+  da logo), `heroLocation` ("Sulmona, Abruzzo"), `heroDescriptor` ("Una casa
+  vacanze di charme nel cuore del centro storico."), claim e sottotitolo.
+  Wordmark, località e descrittore sono un **gruppo stretto** (`gap-3` in un
+  wrapper dedicato) mentre il contenitore usa `gap-7`/`md:gap-9`: con gap
+  uniformi la gerarchia dipendeva solo dal corpo del testo e il ritmo
+  risultava piatto.
 - **Il claim compare solo da `md`** (`hidden md:block` di default, tramite
   `showClaimOnMobile`): su 375px il claim della home sarebbe un muro di testo
   sulla foto, e il racconto lo riprende `HomeIntro` subito dopo. Il
-  **sottotitolo invece c'è sempre**, anche su mobile, ma a corpo ridotto
-  (`text-sm`, cresce da `md`). `heroLocation` è sempre presente, perché
-  altrimenti la Hero non dice **dove** siamo a chi arriva da un link o dai
-  social.
+  **sottotitolo e `heroDescriptor` invece ci sono sempre**, anche su mobile
+  (il sottotitolo a corpo ridotto, `text-sm`, cresce da `md`). `heroLocation`
+  è sempre presente, perché altrimenti la Hero non dice **dove** siamo a chi
+  arriva da un link o dai social. `heroDescriptor` è nato da un'osservazione
+  del cliente: senza di lui, su mobile (dove il claim è nascosto) non era
+  chiaro a colpo d'occhio **che tipo di attività** fosse — il claim
+  ("Arrivare. Vivere. Restare.") è puro tono, il sottotitolo parla di
+  "dimora" ma non lo dice esplicitamente. Usa deliberatamente "casa vacanze",
+  la query con cui le persone cercano questo tipo di alloggio: la stessa
+  dicitura vive già in `siteConfig.metaDescription` e nel JSON-LD, ma quei due
+  posti non li legge un visitatore, solo i motori di ricerca.
 - **Riusata su `/la-dimora`** (`About` → `<Hero imageSrc=... claim=...
   subtitle="" showClaimOnMobile />`): stessa struttura, tre cose diverse dalla
   home — la foto (Piazza Garibaldi di giorno, non l'interno), il claim
@@ -400,6 +409,10 @@ alternativi con due `<h1>` che si escludevano a vicenda.
   nasconde il paragrafo, ometterlo userebbe il default `heroSubtitle` della
   home). Con un claim così corto ha senso **non** nasconderlo su mobile,
   quindi lì `showClaimOnMobile` passa a `true`; sulla home resta `false`.
+  `descriptor` non viene passato: resta il default `heroDescriptor`, e va
+  bene così — è un fatto vero ovunque sul sito, non solo in home. Stesso
+  discorso su `/posizione` (`pageHeroes.posizione`, anch'esso senza override
+  di `descriptor`).
 - In fondo due chevron sovrapposti fanno da indicatore di scroll, senza testo
   (`aria-hidden`: sono decorativi, e `motion-reduce:animate-none` ferma il
   rimbalzo per chi riduce le animazioni).

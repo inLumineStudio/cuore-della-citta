@@ -9,6 +9,7 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import {
   bookCtaLabel,
   heroClaim,
+  heroDescriptor,
   heroImageSrc,
   heroLocation,
   heroSubtitle,
@@ -23,6 +24,10 @@ type HeroProps = {
   imageSrc?: string;
   imageAlt?: string;
   claim?: string;
+  // Stringa vuota = nessun descrittore (stessa convenzione di `subtitle` qui
+  // sotto): "non passare nulla" usa il default, "passare stringa vuota" lo
+  // nasconde volutamente.
+  descriptor?: string;
   // Stringa vuota = nessun sottotitolo (non lo stesso del default: qui il
   // "non passare nulla" e "passare esplicitamente niente" sono due cose
   // diverse, la seconda nasconde il paragrafo).
@@ -37,6 +42,7 @@ export function Hero({
   imageSrc = heroImageSrc,
   imageAlt = "Interno della Dimora Cuore della Città",
   claim = heroClaim,
+  descriptor = heroDescriptor,
   subtitle = heroSubtitle,
   showClaimOnMobile = false,
 }: HeroProps) {
@@ -109,6 +115,12 @@ export function Hero({
           <p className="font-body text-[0.8rem] tracking-[0.2em] text-hero-sand uppercase drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
             {heroLocation}
           </p>
+
+          {descriptor && (
+            <p className="font-body text-sm text-hero-ivory/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)] md:text-base">
+              {descriptor}
+            </p>
+          )}
         </div>
 
         <p
