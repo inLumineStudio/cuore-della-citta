@@ -169,6 +169,16 @@ route. Lo scroll orizzontale è stato verificato misurando la traslazione a
 scroll crescente: 0 fino a fine Hero, poi lineare 1:1 fino a fondo corsa, con
 clamp oltre; su mobile pin disattivato e nessun overflow orizzontale.
 
+**Audit codice morto (27 luglio 2026)**: nessun file, componente o export
+inutilizzato nel repo — l'unica eccezione nota (`Gallery`/`Partners` smontati)
+è quella documentata più sopra, non un residuo. Trovata e corretta una cosa
+sola: `sharp` (usato per le conversioni immagine, vedi § Placeholder immagini
+in `CLAUDE.md`) non era mai stato in `package.json`, risultava installato solo
+perché è una `optionalDependency` di `next` (per `next/image`, qui non
+sfruttata: `images.unoptimized: true`) — su una macchina dove quell'installazione
+opzionale fallisse silenziosamente, le conversioni WebP si sarebbero rotte
+senza preavviso. Ora è una devDependency esplicita.
+
 ## Cosa manca / TODO prima della messa online
 
 Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
