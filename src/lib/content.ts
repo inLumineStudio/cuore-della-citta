@@ -18,6 +18,29 @@ export const siteConfig = {
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
 
+// Stesso indirizzo di `siteConfig.addressLine`, scomposto nei campi richiesti
+// da `PostalAddress` (dati strutturati, `structuredData.ts`). Se cambia
+// l'indirizzo va aggiornato in entrambi i punti.
+export const addressParts = {
+  streetAddress: "Via Panfilo Scudieri, 1",
+  postalCode: "67039",
+  addressLocality: "Sulmona",
+  addressRegion: "AQ",
+  addressCountry: "IT",
+} as const;
+
+// Fatti sulla struttura non ancora esposti come testo altrove (solo per i
+// dati strutturati). `numberOfRooms` e `petsAllowed` rispecchiano voci di
+// `amenitiesPage` ("2 Raffinate Camere Matrimoniali", "Animali Non Ammessi") e
+// vanno aggiornati insieme a quelle se cambiano; `checkinTime`/`checkoutTime`
+// rispecchiano la FAQ sugli orari.
+export const propertyFacts = {
+  numberOfRooms: 2,
+  petsAllowed: false,
+  checkinTime: "15:00",
+  checkoutTime: "10:00",
+} as const;
+
 // Dominio di produzione: serve a `metadataBase`, alla sitemap e agli URL
 // assoluti di Open Graph, che non accettano percorsi relativi.
 // TODO: confermare il dominio definitivo con il cliente prima della messa online
@@ -101,7 +124,7 @@ export const pageHeroes = {
       "Piazza Garibaldi a Sulmona, con l'acquedotto medievale e la fontana settecentesca",
   },
   galleria: { claim: "La Dimora, Senza Filtri" },
-  comfort: { claim: "Il Tuo Soggiorno" },
+  comfort: { claim: "L'Esperienza in Dimora" },
   posizione: { claim: "La Posizione & Il Territorio" },
   partner: { claim: "Vantaggi Esclusivi" },
 } satisfies Record<string, PageHero>;
@@ -129,52 +152,171 @@ export const aboutPage = {
   ctaSecondaryLabel: "Contattaci su WhatsApp",
 };
 
-export type Amenity = {
-  icon:
-    | "bed"
-    | "wifi"
-    | "wind"
-    | "coffee"
-    | "key"
-    | "washing-machine"
-    | "parking"
-    | "shower";
+export type AmenityIcon =
+  | "bed-double"
+  | "baby"
+  | "shirt"
+  | "utensils"
+  | "coffee"
+  | "air-vent"
+  | "wifi"
+  | "wand-sparkles"
+  | "clock"
+  | "calendar-days"
+  | "square-parking"
+  | "luggage"
+  | "cigarette-off"
+  | "paw-print"
+  | "utensils-crossed"
+  | "moon";
+
+export type AmenityItem = {
+  icon: AmenityIcon;
   title: string;
   description: string;
 };
 
-export const amenities: Amenity[] = [
-  {
-    icon: "bed",
-    title: "Camere curate",
-    description: "Ambienti rifiniti nei dettagli, pensati per il riposo dopo una giornata in città.",
-  },
-  {
-    icon: "wifi",
-    title: "Wi-Fi ad alta velocità",
-    description: "Connessione veloce in tutta la struttura, per restare collegati senza pensieri.",
-  },
-  {
-    icon: "wind",
-    title: "Climatizzazione",
-    description: "Aria condizionata e riscaldamento autonomo in ogni ambiente.",
-  },
-  {
-    icon: "key",
-    title: "Check-in autonomo",
-    description: "Arrivo flessibile con self check-in, senza vincoli di orario.",
-  },
-  {
-    icon: "coffee",
-    title: "Colazione su richiesta",
-    description: "Prodotti tipici locali per iniziare la giornata con gusto.",
-  },
-  {
-    icon: "washing-machine",
-    title: "Lavanderia",
-    description: "Servizio lavanderia disponibile per i soggiorni più lunghi.",
-  },
-];
+export type AmenityGroup = {
+  title: string;
+  items: AmenityItem[];
+};
+
+// Contenuti reali forniti dalla proprietaria per "/servizi-comfort"
+// (componente `Amenities`). Check-in/checkout, cancellazione, parcheggio/ZTL
+// e cucina ripetono volutamente le stesse informazioni delle FAQ in home: chi
+// arriva direttamente su questa pagina non deve andare altrove per trovarle.
+export const amenitiesPage = {
+  title: "Comfort & Informazioni",
+  subtitle:
+    "Ogni dettaglio è pensato per offrirvi un soggiorno di fascino, relax e massima cura nel cuore di Sulmona.",
+  comfortGroups: [
+    {
+      title: "Spazi & Ospitalità",
+      items: [
+        {
+          icon: "bed-double",
+          title: "2 Raffinate Camere Matrimoniali",
+          description: "Fino a 4 posti letto ampi e confortevoli.",
+        },
+        {
+          icon: "baby",
+          title: "Accoglienza Famiglie",
+          description: "Lettino o culla per bambini disponibile su richiesta.",
+        },
+        {
+          icon: "shirt",
+          title: "Set di Benvenuto",
+          description: "Biancheria da letto e set di asciugamani completi inclusi.",
+        },
+      ],
+    },
+    {
+      title: "Cucina & Risveglio",
+      items: [
+        {
+          icon: "utensils",
+          title: "Cucina Completa",
+          description: "Ambiente interamente attrezzato con elettrodomestici e microonde.",
+        },
+        {
+          icon: "coffee",
+          title: "Il Tuo Buongiorno",
+          description:
+            "Macchina del caffè espresso a capsule in struttura, oppure colazione presso il bar convenzionato.",
+        },
+      ],
+    },
+    {
+      title: "Clima & Servizi",
+      items: [
+        {
+          icon: "air-vent",
+          title: "Microclima Ideale",
+          description: "Aria condizionata a controllo autonomo per ogni stagione.",
+        },
+        {
+          icon: "wifi",
+          title: "Connessione",
+          description: "Wi-Fi ad alta velocità gratuito in tutta la struttura.",
+        },
+        {
+          icon: "wand-sparkles",
+          title: "Beauty",
+          description: "Asciugacapelli in dotazione.",
+        },
+      ],
+    },
+  ] satisfies AmenityGroup[],
+  infoGroups: [
+    {
+      title: "Orari & Soggiorno",
+      items: [
+        {
+          icon: "clock",
+          title: "Check-in",
+          description: "Dalle 15:00 alle 20:00.",
+        },
+        {
+          icon: "clock",
+          title: "Check-out",
+          description: "Tra le 8:00 e le 10:00.",
+        },
+        {
+          icon: "calendar-days",
+          title: "Soggiorno Minimo",
+          description: "Due notti, per garantire un'esperienza di pieno relax.",
+        },
+      ],
+    },
+    {
+      title: "Arrivo & Parcheggio",
+      items: [
+        {
+          icon: "square-parking",
+          title: "Parcheggio Gratuito",
+          description: "A soli 100 metri dalla struttura.",
+        },
+        {
+          icon: "luggage",
+          title: "Accesso Bagagli (ZTL)",
+          description:
+            "Scarico bagagli sotto la struttura dalle 15:00 alle 17:00, dal lunedì al venerdì. Sabato e domenica la zona è interamente pedonale.",
+        },
+      ],
+    },
+    {
+      title: "Cura della Dimora & Politiche",
+      items: [
+        {
+          icon: "cigarette-off",
+          title: "Ambienti Non Fumatori",
+          description: "Struttura interamente non fumatori, con area riservata all'esterno.",
+        },
+        {
+          icon: "paw-print",
+          title: "Animali Non Ammessi",
+          description: "Per garantire la massima igiene a tutti gli ospiti.",
+        },
+        {
+          icon: "utensils-crossed",
+          title: "Rispetto degli Spazi",
+          description:
+            "Cibo e bevande solo nella zona cucina o pranzo, per mantenere freschi gli ambienti notte.",
+        },
+        {
+          icon: "moon",
+          title: "Tranquillità",
+          description: "Fasce di rispetto del riposo dalle 22:00 alle 8:00 e dalle 14:00 alle 16:00.",
+        },
+      ],
+    },
+  ] satisfies AmenityGroup[],
+  ctaTitle: "Prenota direttamente tramite il sito web",
+  ctaDescription:
+    "Nessun costo di intermediazione, miglior tariffa garantita e assistenza telefonica dedicata prima e durante il tuo soggiorno a Sulmona.",
+  ctaPrimaryLabel: "Chiama ora",
+  ctaSecondaryLabel: "Contattaci su WhatsApp",
+};
 
 export type Partner = {
   category: string;

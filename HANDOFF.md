@@ -27,12 +27,16 @@ routing reale (non single-page ad anchor):
   esteso della proprietaria (il "director's cut" del teaser di `HomeIntro`) e
   da una CTA finale a piena larghezza con due bottoni distinti — "Verifica
   disponibilità" (chiamata) e "Contattaci su WhatsApp"
-- **`/galleria`**, **`/servizi-comfort`**, **`/posizione`**, **`/partner`** —
-  per ora **solo la Hero, senza contenuto sotto**: i blocchi già costruiti
-  (`Gallery`, `Amenities`, `Location`, `Partners`) contengono ancora dati
-  esemplificativi della prima bozza, quindi sono stati **smontati** e il cliente
-  non li vede. I componenti restano in repo, pronti da riagganciare quando
-  arrivano i contenuti reali.
+- **`/servizi-comfort`** — Hero + **`Amenities`**, con i contenuti reali forniti
+  dalla proprietaria: due blocchi ("Comfort & Dotazioni" e "Informazioni &
+  Logistica", ciascuno diviso in tre gruppi tematici) e una CTA finale con
+  chiamata/WhatsApp. È la prima delle quattro sezioni inizialmente vuote a
+  uscire da quello stato.
+- **`/galleria`**, **`/posizione`**, **`/partner`** — per ora **solo la Hero,
+  senza contenuto sotto**: i blocchi già costruiti (`Gallery`, `Location`,
+  `Partners`) contengono ancora dati esemplificativi della prima bozza, quindi
+  sono stati **smontati** e il cliente non li vede. I componenti restano in
+  repo, pronti da riagganciare quando arrivano i contenuti reali.
 
 La nav (`navLinks` in `content.ts`) ha oggi sei voci: **Homepage** (punta a `/`),
 La Dimora, Galleria, Comfort & Informazioni (rinominata da "Servizi & Comfort",
@@ -111,11 +115,10 @@ vengono più caricati. Palette terracotta/ambra. Dettagli in `CLAUDE.md`.
 Micro-interazioni della nav e CTA: le voci di menu hanno un **filetto che si
 espande** all'hover (`components/ui/NavLink.tsx`, ha sostituito l'hover corsivo)
 e le CTA "Prenota ora" sono **sempre piene** in terracotta, non più outline.
-Su desktop un **quadrato terracotta pieno segue il puntatore invertendo i
-colori sotto di sé** (`CursorSquare`, `mix-blend-mode: difference`, riferimento
-mondriantribute.com; la freccia di sistema resta visibile) e un pulsante in
-basso a destra riporta in cima alla pagina (`ScrollToTop`). Dettagli in
-`CLAUDE.md`.
+Un pulsante in basso a destra riporta in cima alla pagina (`ScrollToTop`).
+Il cursore custom a quadrato (`CursorSquare`, provato con `mix-blend-mode:
+difference`) è stato rimosso: il cursore è di nuovo quello di sistema.
+Dettagli in `CLAUDE.md`.
 
 **Animazioni di ingresso** (`components/ui/Reveal.tsx`): fade + micro-movimento
 quando testi e immagini entrano nel viewport, valutata come alternativa
@@ -129,7 +132,12 @@ di ingresso.
 **SEO on-page**: fatto, tutto tramite convenzioni file dell'App Router —
 favicon disegnata (casa + statua, `icon.svg`), `apple-icon.png`, immagine di
 preview 1200×630 per i social, Open Graph e Twitter card, canonical,
-`/sitemap.xml` e `/robots.txt`. Verificato nel `<head>` servito. Manca solo il
+`/sitemap.xml` e `/robots.txt`. Verificato nel `<head>` servito. Aggiunti anche
+i **dati strutturati JSON-LD** (`src/lib/structuredData.ts`): `LodgingBusiness`
+su ogni pagina (indirizzo, contatti, comfort) e `FAQPage` solo in home, dove il
+pannello FAQ è davvero visibile. Entrambi si ricalcolano da `content.ts`, quindi
+si aggiornano da soli quando cambia un contenuto reale — dettagli in
+`CLAUDE.md` § Dati strutturati. Manca solo il
 dominio definitivo in `siteUrl` — vedi TODO 8. Dettagli in `CLAUDE.md` § SEO.
 
 Verificato: type-check pulito (`npx tsc --noEmit`), nessun errore console,
@@ -160,13 +168,14 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
    (Via Panfilo Scudieri 1, Sulmona) sono quelli veri. Restano placeholder
    **email e URL Instagram** in `siteConfig` (`content.ts`).
-3. **Contenuti delle quattro sezioni vuote** — galleria, comfort, posizione e
-   partner mostrano solo la Hero. I componenti esistono già ma sono smontati
-   perché i dati sono esemplificativi: `partners` (convenzioni inventate),
-   `amenities` (elenco generico), `galleryImages` (quattro voci che puntano
-   tutte alla stessa foto) e il segnaposto mappa di `Location`. Azione:
-   riscrivere i contenuti col cliente e rimontare i componenti nelle rispettive
-   `page.tsx`.
+3. **Contenuti delle sezioni ancora vuote** — galleria, posizione e partner
+   mostrano solo la Hero. I componenti esistono già ma sono smontati perché i
+   dati sono esemplificativi: `partners` (convenzioni inventate),
+   `galleryImages` (quattro voci che puntano tutte alla stessa foto) e il
+   segnaposto mappa di `Location`. Azione: riscrivere i contenuti col cliente e
+   rimontare i componenti nelle rispettive `page.tsx`. **Comfort è già fatto**
+   (`amenitiesPage` in `content.ts`, contenuti reali forniti dalla
+   proprietaria).
 4. **Mappa** — al momento un placeholder testuale in `Location` (smontato); da
    collegare a Google Maps/OpenStreetMap con l'indirizzo definitivo.
 5. **Punti di interesse** — i nomi in `pointsOfInterest` (`content.ts`) sono
@@ -190,7 +199,8 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    puntano a un dominio che potrebbe non essere il suo. È l'unico punto da
    cambiare. Il resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
    metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
-   canonical, sitemap e robots.
+   canonical, sitemap, robots e dati strutturati JSON-LD
+   (`LodgingBusiness`/`FAQPage`).
 9. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
    il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
    Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto
@@ -218,12 +228,13 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 ## Prossimo passo consigliato
 
-Homepage e "/la-dimora" sono le due sezioni complete. Le altre quattro esistono
-con la loro Hero ma **aspettano i contenuti**: il lavoro naturale è prenderle
-una alla volta col cliente, come è stato fatto per "La Dimora" (copy scritto
-insieme, foto dedicata, blocchi rimontati).
+Homepage, "/la-dimora" e "/servizi-comfort" sono le tre sezioni complete. Le
+altre tre (galleria, posizione, partner) esistono con la loro Hero ma
+**aspettano i contenuti**: il lavoro naturale è prenderle una alla volta col
+cliente, come è stato fatto per "La Dimora" e "Comfort & Informazioni" (copy
+scritto insieme, foto dedicata, blocchi rimontati).
 
 Da chiedere alla proprietaria, in ordine di impatto: la **foto de "La Nostra
 Storia"** (l'unico segnaposto ancora visibile in homepage), le **foto dedicate**
-alle quattro Hero, i **contenuti reali** di servizi, partner e posizione
+alle Hero rimaste senza, i **contenuti reali** di galleria, partner e posizione
 (punti 3, 4 e 5), e i **recapiti mancanti** — email e Instagram (punto 2).

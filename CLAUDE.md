@@ -31,7 +31,7 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 | `/` | `Hero` + `HorizontalScroller` (`HomeIntro`, `LocationTeaser`, `Faq`) — vedi sotto |
 | `/la-dimora` | `About` (a sua volta `Hero` + racconto editoriale + CTA) |
 | `/galleria` | `Hero` — `Gallery` smontato |
-| `/servizi-comfort` | `Hero` — `Amenities` smontato |
+| `/servizi-comfort` | `Hero` + `Amenities` |
 | `/posizione` | `Hero` — `Location` smontato |
 | `/partner` | `Hero` — `Partners` smontato |
 
@@ -41,14 +41,16 @@ tenerle sullo stesso URL avrebbe significato due voci di menu con la stessa
 destinazione, quindi sono state separate. `Gallery` non aveva dipendenze da
 `About`, la separazione è stata un taglio netto.
 
-**Quattro sezioni sono volutamente vuote**: galleria, comfort, posizione e
-partner mostrano **solo la Hero**, perché i loro contenuti attuali sono ancora
-quelli esemplificativi della prima bozza e il cliente non deve vederli. I
-componenti (`Gallery`, `Amenities`, `Location`, `Partners`) **restano in repo
-smontati**, non cancellati: verranno riagganciati quando i contenuti reali
-saranno pronti, e nel frattempo `LocationTeaser` in home continua a usare gli
-stessi dati (`pointsOfInterest`). Sono l'unica eccezione consapevole alla regola
-"niente codice morto".
+**Tre sezioni restano volutamente vuote**: galleria, posizione e partner
+mostrano **solo la Hero**, perché i loro contenuti attuali sono ancora quelli
+esemplificativi della prima bozza e il cliente non deve vederli. I componenti
+(`Gallery`, `Location`, `Partners`) **restano in repo smontati**, non
+cancellati: verranno riagganciati quando i contenuti reali saranno pronti, e
+nel frattempo `LocationTeaser` in home continua a usare gli stessi dati
+(`pointsOfInterest`). Sono l'unica eccezione consapevole alla regola "niente
+codice morto". `Amenities` (comfort) è uscita da questo gruppo: ha ricevuto i
+contenuti reali della proprietaria e la sua route la monta — vedi
+§ "Comfort & Informazioni" più sotto.
 
 La Hero di ogni sezione si configura da **`pageHeroes`** (`content.ts`): un
 record con `claim` (la riga sotto il wordmark) e, opzionalmente, `imageSrc` +
@@ -65,7 +67,7 @@ chiudeva quella pagina — insieme alla primitiva `Button`, che usava solo lui, 
 all'helper `telegramHref()`. Se servisse di nuovo una CTA di contatto a piena
 larghezza, il codice è in `git log` (fino al commit `40a9763`).
 
-`StickyHeader`, `Footer`, `ScrollToTop` e `CursorSquare` sono montati una sola
+`StickyHeader`, `Footer` e `ScrollToTop` sono montati una sola
 volta in `app/layout.tsx` e valgono per ogni route (chrome globale). `StickyHeader` ha un comportamento
 diverso in base alla pagina (`usePathname`):
 
@@ -127,7 +129,7 @@ ScrollTrigger; qui è riprodotta in JS puro, senza dipendenze aggiuntive):
 src/
   app/
     fonts/             # Flaviotte, General Sans, Megdira (font del cliente, next/font/local)
-    layout.tsx        # font, metadata, chrome globale (StickyHeader, Footer, ScrollToTop, CursorSquare)
+    layout.tsx        # font, metadata, chrome globale (StickyHeader, Footer, ScrollToTop)
     page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
     la-dimora/page.tsx
     servizi-comfort/page.tsx
@@ -140,10 +142,11 @@ src/
   components/
     layout/             # StickyHeader, Footer — montati in layout.tsx
     sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, CursorSquare, icons)
+    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, icons)
   lib/
     content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
     contact.ts           # Helper per i link rapidi (tel:, wa.me)
+    structuredData.ts     # Dati strutturati JSON-LD (LodgingBusiness, FAQPage), derivati da content.ts
 public/
   images/                # Asset immagine statici
 ```
@@ -254,9 +257,9 @@ puro).
   l'immagine perderebbe il riferimento di dimensionamento.
 - Rispetta `prefers-reduced-motion` **letto in modo sincrono** con
   `useSyncExternalStore` (stesso pattern del flag "sono sul client" di
-  `MobileMenu`/`CursorSquare`): chi lo attiva vede il contenuto già visibile,
-  senza passare dalla transizione. Leggerlo con un `setState` in un effect
-  avrebbe violato `react-hooks/set-state-in-effect`.
+  `MobileMenu`): chi lo attiva vede il contenuto già visibile, senza passare
+  dalla transizione. Leggerlo con un `setState` in un effect avrebbe violato
+  `react-hooks/set-state-in-effect`.
 - Funziona anche **dentro lo scroll orizzontale** della home: i pannelli
   fuori vista sono traslati (non nascosti), e `IntersectionObserver` valuta
   la posizione reale a schermo dopo il transform, quindi non scattano finché
@@ -265,26 +268,11 @@ puro).
   interattiva, non testo editoriale — resta fuori dal perimetro di questa
   animazione.
 
-### Cursore e ritorno in cima
+### Ritorno in cima
 
-`CursorSquare` (`components/ui/`) disegna un **quadrato terracotta pieno**
-(20px, `bg-terracotta`) che segue il puntatore, con `mix-blend-mode:
-difference` — riferimento: mondriantribute.com. Non è un tono semitrasparente:
-il colore pieno **inverte otticamente** i pixel sotto di sé, quindi resta
-leggibile su qualsiasi sfondo attraversi senza bisogno di varianti per
-contesto (a differenza del filetto di `NavLink`, che ne ha bisogno). Non è un
-`cursor: url(...)`: quello **sostituirebbe** la freccia di sistema, che invece
-deve restare visibile insieme al quadrato. Conseguenze di questa scelta:
-
-- la posizione viene scritta con `style.transform` direttamente sul nodo DOM,
-  senza stato React — un `setState` per `pointermove` ri-renderizzerebbe
-  l'albero decine di volte al secondo;
-- il componente rende sempre il `div` (anche dal server) con `opacity-0`, e
-  l'opacità passa a 1 al primo movimento. Con un gate "sono sul client" il
-  primo render restituiva `null`, quindi l'effect trovava il ref vuoto e non
-  agganciava mai il listener;
-- gira solo dove c'è un puntatore vero (`(hover: hover) and (pointer: fine)`):
-  su touch il quadratino resterebbe fermo dove capita l'ultimo tap.
+Provato e scartato un cursore custom a quadrato (`CursorSquare`,
+`mix-blend-mode: difference`, riferimento mondriantribute.com): il cursore è
+tornato a quello di sistema. Il codice resta recuperabile da `git log`.
 
 `ScrollToTop` (`components/ui/`) è il pulsante terracotta in basso a destra,
 **solo sotto `md`**: su desktop rotellina e scrollbar bastano e un elemento
@@ -447,6 +435,48 @@ una CTA a piena larghezza su `bg-gradient-to-br from-terracotta to-terracotta-da
   colori, massimo contrasto), il secondario è **outline crema** — stesso
   trattamento outline-su-scuro già usato nella CTA della FAQ.
 
+### "Comfort & Informazioni" (`components/sections/Amenities.tsx`)
+
+Prima sezione tra le quattro inizialmente vuote a ricevere i contenuti reali
+dalla proprietaria (vedi TODO 3 in `HANDOFF.md`). A differenza di `Gallery`,
+`Location` e `Partners` — dove Hero e sezione restano due elementi separati
+montati dalla stessa `page.tsx` — questo è ancora il caso qui:
+`servizi-comfort/page.tsx` monta `<Hero {...pageHeroes.comfort} ... />` e poi
+`<Amenities />`, la Hero non fa parte del componente (a differenza di `About`,
+che invece la incorpora).
+
+- I dati vivono in **`amenitiesPage`** (`content.ts`): `eyebrow`/`title`/
+  `subtitle` per l'intestazione, poi due blocchi — `comfortGroups` (Spazi &
+  Ospitalità, Cucina & Risveglio, Clima & Servizi) e `infoGroups` (Orari &
+  Soggiorno, Arrivo & Parcheggio, Cura della Dimora & Politiche) — infine la
+  CTA finale (`ctaTitle`/`ctaDescription`/`ctaPrimaryLabel`/`ctaSecondaryLabel`).
+  Ogni gruppo (`AmenityGroup`) ha un titolo e una lista di voci icona+titolo+
+  testo (`AmenityItem`), rese da `AmenityBlock` in una griglia a tre colonne
+  da `lg:`. **Niente titolo di blocco sopra i due `AmenityBlock`**: un'intestazione
+  come "Comfort & Dotazioni" subito sotto "Comfort & Informazioni" ripeteva la
+  stessa parola a un rigo di distanza — provato e scartato. I due blocchi si
+  distinguono con un cambio di sfondo (`bg-cream-soft` sul secondo,
+  `infoGroups`) invece che con un'altra intestazione.
+- **I titoli delle singole voci (`item.title`, es. "Cucina Completa",
+  "Microclima Ideale") sono in `font-semibold` del font body, non
+  `font-display`**: Flaviotte ha un solo peso regular (vedi § Font), quindi su
+  un testo così breve il contrasto con la descrizione doveva venire dal peso,
+  non da un cambio di famiglia — usarlo qui avrebbe reso il blocco un muro di
+  serif senza gerarchia.
+- **Check-in/checkout, cancellazione, parcheggio/ZTL e cucina ripetono
+  volutamente le stesse informazioni già presenti nelle FAQ della home**: è
+  una scelta deliberata, non una dimenticanza — chi arriva direttamente su
+  questa pagina (da un link diretto, dai social, da un motore di ricerca) non
+  deve dover tornare in home per trovarle.
+- La CTA finale riusa esattamente il trattamento di quella di `About`
+  (sfondo `bg-gradient-to-br from-terracotta to-terracotta-dark`, bottone
+  primario pieno crema per `tel:`, secondario outline crema per WhatsApp), ma
+  con testo e bottoni dedicati (`amenitiesPage.cta*`, non `aboutPage.cta*`).
+- `iconMap` in `Amenities.tsx` mappa ogni `AmenityIcon` (union di stringhe in
+  `content.ts`) al componente `lucide-react` corrispondente — stesso pattern
+  già visto con `Amenity["icon"]` prima di questa riscrittura, solo con più
+  voci (16 icone contro le 8 originali).
+
 ### FAQ (`components/sections/Faq.tsx`)
 
 Terzo e ultimo pannello dello scroll orizzontale. Layout a due colonne
@@ -565,6 +595,48 @@ Ogni pagina imposta solo `title` nel proprio `metadata` (es. `"La Dimora"`,
 mai `"La Dimora | Cuore della Città"`): il `template` in `layout.tsx` aggiunge
 già il suffisso. Scriverlo in entrambi i posti produceva un titolo doppio nel
 tab del browser.
+
+### Dati strutturati (JSON-LD)
+
+`src/lib/structuredData.ts` esporta due funzioni, entrambe pure e senza stato:
+ricalcolano l'oggetto ogni volta leggendo da `content.ts`, quindi **si
+aggiornano da sole** quando cambiano i contenuti reali (indirizzo, contatti,
+comfort, FAQ) — non serve toccare questo file quando cambia un dato che già
+esiste altrove nel sito. Va toccato solo per aggiungere un tipo di dato che
+oggi il sito non ha ancora (es. recensioni, tariffe, orari di apertura di una
+reception).
+
+- **`lodgingBusinessJsonLd()`** — tipo `LodgingBusiness`, montato una sola
+  volta in `app/layout.tsx` (come `StickyHeader`/`Footer`): è l'entità del
+  sito, presente su ogni pagina non solo in home. Legge `siteConfig`
+  (nome, telefono, email, `instagramUrl`), `addressParts` (indirizzo
+  scomposto in `PostalAddress`), `propertyFacts` (check-in/checkout,
+  `petsAllowed`, `numberOfRooms`) e `amenitiesPage.comfortGroups` (mappati su
+  `amenityFeature`, un `LocationFeatureSpecification` per voce).
+  `addressParts` e `propertyFacts` (`content.ts`) esistono solo per questo:
+  duplicano in forma strutturata dati già scritti come prosa altrove
+  (`siteConfig.addressLine`, i testi di `amenitiesPage`/`faqs`) — i commenti
+  su ciascuno segnalano quale prosa va tenuta in sync se cambia il fatto
+  sottostante (es. cambia il numero di camere).
+- **`faqPageJsonLd()`** — tipo `FAQPage`, montato solo in `app/page.tsx`
+  (home): è l'unica pagina dove il pannello FAQ è davvero visibile, i dati
+  strutturati devono rispecchiare il contenuto reso e non esistere altrove nel
+  sito senza contenuto corrispondente. Filtra `faqs` scartando le domande
+  senza risposta reale (`answer` `undefined`, quelle ancora "Risposta in
+  arrivo." nell'accordion): un `FAQPage` con risposte segnaposto sarebbe dato
+  falso in pasto a Google, non solo un placeholder visivo. Se un giorno tutte
+  le risposte restassero `undefined`, la funzione ritorna `null` e lo script
+  non viene reso — gestito in `page.tsx` con un controllo prima del render.
+- Resi con `<script type="application/ld+json" dangerouslySetInnerHTML={{
+  __html: JSON.stringify(...) }} />`: JSON-LD non deve stare per forza in
+  `<head>` (Google lo legge ovunque nell'HTML), quindi vive dove ha senso nel
+  componente — dentro `<body>` in `layout.tsx`, in cima al JSX in `page.tsx`.
+- **`siteConfig.email` e `siteConfig.instagramUrl` sono ancora placeholder**
+  (TODO 2 in `HANDOFF.md`) e finiscono comunque nei dati strutturati: non è
+  una svista, sono già mostrati pubblicamente nel `Footer` con lo stesso
+  contenuto placeholder, quindi il rischio è lo stesso — quando arriveranno i
+  valori reali si aggiornano una volta sola in `siteConfig` e si propagano
+  ovunque, JSON-LD incluso.
 
 ## Contatti rapidi
 

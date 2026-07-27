@@ -4,8 +4,8 @@ import localFont from "next/font/local";
 import { StickyHeader } from "@/components/layout/StickyHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
-import { CursorSquare } from "@/components/ui/CursorSquare";
 import { siteConfig, siteUrl } from "@/lib/content";
+import { lodgingBusinessJsonLd } from "@/lib/structuredData";
 import "./globals.css";
 
 // Usato esclusivamente per il titolo "Cuore della Città" nella Hero
@@ -85,11 +85,16 @@ export default function RootLayout({
       className={`${newsreader.variable} ${generalSans.variable} ${flaviotte.variable} ${megdira.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-ink font-body">
+        {/* LodgingBusiness: presente su ogni pagina, è l'entità del sito
+            (indirizzo, contatti, comfort) - non solo la home. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingBusinessJsonLd()) }}
+        />
         <StickyHeader />
         <main className="flex-1">{children}</main>
         <Footer />
         <ScrollToTop />
-        <CursorSquare />
       </body>
     </html>
   );
