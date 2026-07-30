@@ -6,9 +6,16 @@ import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { galleryImages, heroImageSrc } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { heroImageSrc } from "@/lib/content.shared";
+import type { Locale } from "@/lib/i18n";
 
-export function Gallery() {
+type GalleryProps = {
+  locale: Locale;
+};
+
+export function Gallery({ locale }: GalleryProps) {
+  const { galleryImages, ui } = getContent(locale);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const showNext = () =>
@@ -26,9 +33,9 @@ export function Gallery() {
     <section className="py-24 sm:py-32 bg-cream-soft">
       <Container className="flex flex-col gap-12">
         <SectionHeading
-          eyebrow="Galleria"
-          title="Gli ambienti della Dimora"
-          description="Un assaggio visivo degli spazi che troverai al tuo arrivo."
+          eyebrow={ui.galleryEyebrow}
+          title={ui.galleryTitle}
+          description={ui.galleryDescription}
         />
 
         <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
@@ -64,7 +71,7 @@ export function Gallery() {
         >
           <button
             type="button"
-            aria-label="Chiudi"
+            aria-label={ui.galleryCloseLabel}
             className="absolute top-6 right-6 text-cream"
             onClick={() => setActiveIndex(null)}
           >
@@ -73,7 +80,7 @@ export function Gallery() {
 
           <button
             type="button"
-            aria-label="Immagine precedente"
+            aria-label={ui.galleryPrevLabel}
             className="absolute left-4 sm:left-8 text-cream"
             onClick={(event) => {
               event.stopPropagation();
@@ -101,7 +108,7 @@ export function Gallery() {
 
           <button
             type="button"
-            aria-label="Immagine successiva"
+            aria-label={ui.galleryNextLabel}
             className="absolute right-4 sm:right-8 text-cream"
             onClick={(event) => {
               event.stopPropagation();

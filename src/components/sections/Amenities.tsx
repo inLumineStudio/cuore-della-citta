@@ -22,8 +22,9 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { WhatsappIcon } from "@/components/ui/icons";
-import { amenitiesPage, type AmenityGroup, type AmenityIcon } from "@/lib/content";
+import { getContent, type AmenityGroup, type AmenityIcon } from "@/lib/content";
 import { telHref, whatsappHref } from "@/lib/contact";
+import type { Locale } from "@/lib/i18n";
 
 const iconMap: Record<AmenityIcon, LucideIcon> = {
   "bed-double": BedDouble,
@@ -72,7 +73,13 @@ function AmenityBlock({ groups }: { groups: AmenityGroup[] }) {
   );
 }
 
-export function Amenities() {
+type AmenitiesProps = {
+  locale: Locale;
+};
+
+export function Amenities({ locale }: AmenitiesProps) {
+  const { amenitiesPage, whatsappMessage } = getContent(locale);
+
   return (
     <>
       <section className="py-24 sm:py-32">
@@ -118,7 +125,7 @@ export function Amenities() {
                 {amenitiesPage.ctaPrimaryLabel}
               </a>
               <a
-                href={whatsappHref()}
+                href={whatsappHref(whatsappMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 whitespace-nowrap border border-cream/60 px-5 py-2.5 text-xs font-semibold tracking-[0.08em] text-cream uppercase transition-colors duration-300 hover:bg-cream hover:text-terracotta-dark"

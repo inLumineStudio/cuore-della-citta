@@ -26,3 +26,32 @@ export function WhatsappIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+// Bandiere di pubblico dominio (design geometrico nazionale, non soggetto a
+// copyright) da Wikimedia Commons - "Flag of Italy.svg" e "Flag of the
+// United Kingdom.svg" - stesso criterio di sourcing di `AbruzzoMap.tsx`.
+// L'Union Jack rappresenta l'inglese come lingua (convenzione diffusa sugli
+// switch di lingua), non una scelta di variante regionale.
+export function ItalyFlagIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" aria-hidden="true" className={className}>
+      <rect width="3" height="2" fill="#009246" />
+      <rect width="2" height="2" x="1" fill="#fff" />
+      <rect width="1" height="2" x="2" fill="#ce2b37" />
+    </svg>
+  );
+}
+
+export function UnitedKingdomFlagIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 50 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true" className={className}>
+      <clipPath id="uk-flag-clip">
+        <path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z" />
+      </clipPath>
+      <path d="M0,0v30h50v-30z" fill="#012169" />
+      <path d="M0,0 50,30M50,0 0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 50,30M50,0 0,30" clipPath="url(#uk-flag-clip)" stroke="#C8102E" strokeWidth="4" />
+      <path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" strokeWidth="2" />
+    </svg>
+  );
+}

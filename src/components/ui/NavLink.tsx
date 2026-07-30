@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { showFullNav } from "@/lib/content";
+import { showFullNav } from "@/lib/content.shared";
+import { localizeHref, type Locale } from "@/lib/i18n";
 
 type NavLinkProps = {
   href: string;
   label: string;
+  locale: Locale;
   className?: string;
   // Lato da cui il filetto si espande: va fatto combaciare con l'allineamento
   // della lista che lo contiene, altrimenti la lineetta a riposo sembra
@@ -24,6 +26,7 @@ type NavLinkProps = {
 export function NavLink({
   href,
   label,
+  locale,
   className = "",
   align = "start",
   lineClassName = "bg-terracotta-dark group-hover:bg-terracotta",
@@ -52,7 +55,7 @@ export function NavLink({
   }
 
   return (
-    <Link href={href} className={wrapper}>
+    <Link href={localizeHref(href, locale)} className={wrapper}>
       {content}
     </Link>
   );

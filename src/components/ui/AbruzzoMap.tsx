@@ -1,5 +1,9 @@
+import { getContent } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
+
 type AbruzzoMapProps = {
   className?: string;
+  locale: Locale;
 };
 
 // Confini reali delle quattro province abruzzesi (L'Aquila, Teramo, Pescara,
@@ -42,13 +46,15 @@ const PROVINCE_CAPITALS = [
   { name: "L'Aquila", cx: 486, cy: 963, labelSide: "right" as const },
 ];
 
-export function AbruzzoMap({ className = "" }: AbruzzoMapProps) {
+export function AbruzzoMap({ className = "", locale }: AbruzzoMapProps) {
+  const content = getContent(locale);
+
   return (
     <svg
       viewBox="0 0 2219.3491 2084.8958"
       className={className}
       role="img"
-      aria-label="Mappa della regione Abruzzo con indicata la posizione di Sulmona"
+      aria-label={content.ui.abruzzoMapAriaLabel}
     >
       {PROVINCE_PATHS.map((d, index) => (
         <path key={index} d={d} className="fill-ink stroke-ink" strokeWidth={2} />

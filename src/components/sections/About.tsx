@@ -3,13 +3,20 @@ import { Hero } from "@/components/sections/Hero";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { WhatsappIcon } from "@/components/ui/icons";
-import { aboutPage, pageHeroes } from "@/lib/content";
+import { getContent } from "@/lib/content";
 import { telHref, whatsappHref } from "@/lib/contact";
+import type { Locale } from "@/lib/i18n";
 
-export function About() {
+type AboutProps = {
+  locale: Locale;
+};
+
+export function About({ locale }: AboutProps) {
+  const { aboutPage, pageHeroes, whatsappMessage } = getContent(locale);
+
   return (
     <>
-      <Hero {...pageHeroes.laDimora} descriptor="" subtitle="" showClaimOnMobile />
+      <Hero {...pageHeroes.laDimora} locale={locale} descriptor="" subtitle="" showClaimOnMobile />
 
       <section className="py-24 sm:py-32">
         <Container className="mx-auto flex max-w-3xl flex-col gap-10">
@@ -53,7 +60,7 @@ export function About() {
                 {aboutPage.ctaPrimaryLabel}
               </a>
               <a
-                href={whatsappHref()}
+                href={whatsappHref(whatsappMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 whitespace-nowrap border border-cream/60 px-5 py-2.5 text-xs font-semibold tracking-[0.08em] text-cream uppercase transition-colors duration-300 hover:bg-cream hover:text-terracotta-dark"

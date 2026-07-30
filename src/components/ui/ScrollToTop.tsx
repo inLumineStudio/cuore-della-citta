@@ -2,11 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { getContent } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
+
+type ScrollToTopProps = {
+  locale: Locale;
+};
 
 // Solo sotto md: su desktop la rotellina e la scrollbar bastano, e il pulsante
 // fisso finirebbe sopra i contenuti. La firma nel footer non gli va mai sotto
 // perché il footer riserva spazio in fondo alla sua ultima riga (vedi Footer).
-export function ScrollToTop() {
+export function ScrollToTop({ locale }: ScrollToTopProps) {
+  const content = getContent(locale);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -21,7 +28,7 @@ export function ScrollToTop() {
   return (
     <button
       type="button"
-      aria-label="Torna in cima"
+      aria-label={content.ui.backToTop}
       // `behavior: "instant"` sovrascrive lo `scroll-behavior: smooth` globale:
       // con lo scroll orizzontale la home è alta tre viewport e l'animazione
       // durerebbe secondi.

@@ -140,39 +140,171 @@ ScrollTrigger; qui è riprodotta in JS puro, senza dipendenze aggiuntive):
 - Sotto `lg` l'effetto è completamente disattivato (altezza forzata e
   `transform` azzerati): i pannelli tornano a impilarsi in verticale.
 
+## Multilingua IT/EN
+
+Traduzione inglese prevista dal preventivo, implementata il 30 luglio 2026.
+**Nessuna libreria i18n** (niente `next-intl`): il cliente ha lasciato la
+scelta a inLumine Studio, e il pattern scelto — route groups per più root
+layout — è **documentato ufficialmente da Next.js stesso** per questo
+scenario (locale di default senza prefisso + locale secondaria con
+prefisso), verificato su `node_modules/next/dist/docs/` prima di deciderlo.
+L'alternativa (un solo root layout, locale letta da `headers()`/`proxy.ts`)
+avrebbe forzato l'intero sito a rendering dinamico: Next 16 ha appena
+rimosso `unstable_rootParams`, l'unica API pensata per evitarlo, senza
+sostituto. Con i route groups la locale è nota staticamente per ogni file, e
+il sito resta **interamente statico** come prima. Coerente con la filosofia
+già in uso nel repo (`HorizontalScroller`, `Reveal`, `AbruzzoMap`): niente
+dipendenze nuove quando il problema si risolve con le API native.
+
+**Trade-off accettato**: cambiare lingua è un **full page reload**, non una
+transizione SPA — conseguenza diretta di avere due root layout distinti
+(`(it)/layout.tsx` ed `en/layout.tsx`). Per un click esplicito "cambia
+lingua" è normale, non un bug.
+
+### Struttura URL
+
+- **Italiano**: nessun cambio rispetto a prima, `showFullNav` a parte — `/`,
+  `/la-dimora`, `/galleria`, `/servizi-comfort`, `/posizione`, `/partner`.
+  Vive nel route group `src/app/(it)/`: le parentesi lo rendono invisibile
+  nell'URL.
+- **Inglese**: stessi slug, prefisso `/en` — `/en`, `/en/la-dimora`,
+  `/en/galleria`, `/en/servizi-comfort`, `/en/posizione`, `/en/partner`. Vive
+  in `src/app/en/`, un segmento di route reale (non un route group), quindi
+  compare nell'URL. Nessuna traduzione degli slug: protegge il lavoro SEO già
+  fatto sull'albero italiano e tiene la mappatura fra le due lingue banale.
+
+### Contenuto: split di `content.ts`
+
+- **`src/lib/content.shared.ts`** — tutto ciò che non si traduce e non deve
+  rischiare di disallinearsi fra le lingue: `siteConfigShared` (nome,
+  telefono, email, indirizzo), `addressParts`, `propertyCoordinates`,
+  `propertyFacts`, `siteUrl`, `showFullNav`, `navRoutes` (id + href, senza
+  etichetta), i percorsi immagine (`heroImageSrc`, ecc.), le chiavi icona,
+  `partners` (resta condiviso finché è vuoto — non c'è nulla da tradurre).
+- **`src/lib/content.it.ts`** / **`src/lib/content.en.ts`** — stessa forma
+  esportata, solo prosa tradotta: `heroClaim`, `aboutPage`, `amenitiesPage`,
+  `faqs`, `locationPage`, `homeIntro`, `navLabels`, e un namespace **`ui`**
+  che raccoglie le ~25 stringhe che prima del 30 luglio 2026 erano hardcoded
+  nel JSX dei componenti (aria-label, segnaposto come "Risposta in arrivo.",
+  copy delle sezioni ancora smontate) — un solo posto dove chi traduce deve
+  guardare, non due meccanismi diversi. `content.en.ts` apre con un commento
+  che elenca i nomi propri **mai tradotti**: Sulmona, Cuore della Città,
+  Valle Peligna, Acquedotto Svevo, Majella, Gran Sasso, i nomi dei monumenti,
+  la citazione latina "Sulmo mihi patria est" e la sua fonte (Tristia),
+  l'indirizzo completo. "Ovidio" diventa "Ovid" (il nome inglese standard del
+  poeta, non una traduzione di toponimo); "Dimora" resta in italiano come
+  parola-firma della struttura in tutto il copy inglese (stesso criterio con
+  cui molte strutture italiane tengono una parola italiana per carattere
+  anche nel copy in lingua).
+- **`src/lib/content.ts`** esporta `getContent(locale)`, che unisce
+  `content.shared.ts` con il modulo della lingua richiesta e ricostruisce
+  `navLinks`. Spiana anche `siteConfigShared` e il `siteConfig` per-lingua
+  (shortTagline/metaDescription/metaTitleSuffix) a livello piatto, così i
+  componenti leggono `content.name`/`content.email`/`content.metaDescription`
+  senza sapere in quale file vive ciascun campo.
+- **Verifica statica di forma**: `content.ts` dichiara
+  `const _localeShapeCheck: typeof it = en; void _localeShapeCheck;` — se
+  `content.en.ts` perde o rinomina un campo rispetto a `content.it.ts` (o
+  viceversa), la build smette di compilare invece di far scoprire il
+  disallineamento a runtime in una sola lingua. Ha richiesto di **non** usare
+  `as const` sugli oggetti condivisi fra le due lingue (narrowerebbe a tipi
+  letterali, producendo falsi positivi) e di annotare esplicitamente `: string`
+  le costanti stringa top-level per lo stesso motivo.
+- **`src/lib/i18n.ts`**: `type Locale = "it" | "en"`, `localizeHref(href,
+  locale)` (aggiunge/toglie il prefisso `/en`), `alternateLocalePath(pathname,
+  locale)` (usata dallo switch: calcola l'URL equivalente nell'altra lingua
+  per la pagina corrente, non solo l'homepage).
+
+### Componenti
+
+Ogni componente che legge da `content.ts` riceve un prop `locale: Locale` e
+chiama `getContent(locale)` internamente (Server Component) o lo riceve così
+per i Client Component (prop drilling — l'albero è poco profondo, non serve
+un Context React). Ogni pagina (6 IT + 6 EN) passa `locale="it"` /
+`locale="en"` esplicito. `routesWithHero` in `StickyHeader` è derivato da
+`navRoutes` + `localizeHref` per entrambe le lingue (`locales.flatMap(...)`),
+non scritto a mano.
+
+`whatsappHref()` (`contact.ts`) non ha più un messaggio precompilato di
+default hardcoded (era solo italiano): ogni chiamante passa esplicitamente
+`content.whatsappMessage` della lingua corrente.
+
+### Switch lingua (`components/ui/LanguageSwitcher.tsx`)
+
+Client Component, un solo link che mostra la bandierina della lingua **di
+destinazione** (non quella attiva): SVG di pubblico dominio da Wikimedia
+Commons (stessa fonte già usata per `AbruzzoMap.tsx`), non emoji (rendering
+incoerente fra piattaforme). Il link punta ad `alternateLocalePath(pathname,
+locale)` — l'equivalente della pagina corrente nell'altra lingua, non sempre
+l'homepage. Montato **due volte**: accanto all'hamburger della `Hero` (visibile
+a ogni larghezza, stesso trattamento dell'hamburger stesso) e accanto
+all'hamburger/nav dello `StickyHeader` (una copia in `md:hidden` accanto
+all'hamburger, una in `hidden md:block` vicino alla nav desktop — necessario
+perché l'hamburger dello `StickyHeader` sparisce da `md` in su, ma lo switch
+deve restare raggiungibile a ogni larghezza).
+
+### SEO bilingue
+
+- Ogni `metadata` export (12 pagine, IT+EN) resta **statico**: la locale è
+  nota a build-time, non serve `generateMetadata`. Ciascuno ha
+  `alternates.languages: { "it-IT": ..., "en-US": ... }` e `openGraph.locale`
+  corretto (`it_IT` / `en_US`).
+- `sitemap.ts` emette un entry per URL (24 in tutto, 12 route × 2 lingue),
+  ciascuno con `alternates.languages` che punta alla coppia IT/EN.
+- Immagini OG: riusate le stesse foto (una foto non si traduce). Le pagine
+  `en/la-dimora` ed `en/posizione` impostano `metadata.openGraph.images`
+  esplicito con `alt` inglese, invece di affidarsi al file `.alt.txt` di
+  sidecar (che resta solo per l'albero italiano) — asimmetria minore,
+  accettata per non duplicare ~1MB di JPEG.
+- `structuredData.ts`: le tre funzioni (`lodgingBusinessJsonLd`,
+  `breadcrumbListJsonLd`, `faqPageJsonLd`) prendono tutte un parametro
+  `locale` e leggono da `getContent(locale)`. La stringa "Homepage" del
+  breadcrumb, unica hardcoded fuori da `content.ts` in tutto il repo prima
+  di questa modifica, si è spostata in `ui.homepageBreadcrumb`.
+
 ## Struttura del progetto
 
 ```
 src/
   app/
-    fonts/             # Flaviotte, General Sans, Megdira (font del cliente, next/font/local)
-    layout.tsx        # font, metadata, chrome globale (StickyHeader, Footer, ScrollToTop)
-    page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
-    la-dimora/page.tsx
-    servizi-comfort/page.tsx
-    posizione/page.tsx
-    partner/page.tsx
+    fonts.ts           # le 4 chiamate next/font, condivise da entrambi i root layout
+    (it)/               # route group italiano — invisibile nell'URL, nessun prefisso
+      layout.tsx        # root layout <html lang="it">, chrome globale (StickyHeader, Footer, ScrollToTop)
+      page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
+      la-dimora/page.tsx
+      galleria/page.tsx
+      servizi-comfort/page.tsx
+      posizione/page.tsx
+      partner/page.tsx
+      la-dimora/opengraph-image.jpg / posizione/opengraph-image.jpg  # OG per pagina
+    en/                  # route group inglese — segmento reale, prefisso "/en"
+      layout.tsx        # root layout <html lang="en">, stesso chrome, canonical "/en"
+      page.tsx / la-dimora/ / galleria/ / servizi-comfort/ / posizione/ / partner/
     icon.svg / icon.png / apple-icon.png      # favicon (convenzioni file di Next)
-    opengraph-image.jpg / .alt.txt            # preview per social
-    sitemap.ts / robots.ts                    # generati da Next su /sitemap.xml e /robots.txt
+    opengraph-image.jpg / .alt.txt            # preview per social, di default (IT)
+    sitemap.ts / robots.ts                    # generati da Next su /sitemap.xml e /robots.txt, entrambe le lingue
     globals.css        # design token (colori, font) via @theme
   components/
-    layout/             # StickyHeader, Footer — montati in layout.tsx
-    sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata
-    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, AbruzzoMap, icons)
+    layout/             # StickyHeader, Footer, MobileMenu — montati nei layout, ricevono `locale`
+    sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata, riceve `locale`
+    ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, AbruzzoMap, LanguageSwitcher, icons)
   lib/
-    content.ts          # TUTTI i testi/dati del sito (copy, nav, servizi, partner, faq...)
+    content.shared.ts    # Dati strutturali e nomi propri, identici in ogni lingua (indirizzo, telefono, percorsi immagine, navRoutes)
+    content.it.ts / content.en.ts  # Prosa tradotta, stessa forma nei due file (vedi § Multilingua)
+    content.ts          # getContent(locale) — unisce shared + la lingua richiesta
+    i18n.ts              # Locale, localizeHref(), alternateLocalePath()
     contact.ts           # Helper per i link rapidi (tel:, wa.me)
-    structuredData.ts     # Dati strutturati JSON-LD (LodgingBusiness, FAQPage), derivati da content.ts
+    structuredData.ts     # Dati strutturati JSON-LD (LodgingBusiness, FAQPage, BreadcrumbList), presi con getContent(locale)
 public/
   images/                # Asset immagine statici
 ```
 
 **Regola guida**: i componenti in `sections/` non contengono testo hardcoded
-— leggono da `src/lib/content.ts`. Questo permette di aggiornare i contenuti
-reali (quando arriveranno dal cliente) modificando un solo file, senza
-toccare il JSX. Le sezioni sono componenti "puri" senza `id` di ancoraggio:
-la navigazione avviene per route, non per scroll-to-anchor.
+— chiamano `getContent(locale)` (o ricevono `locale` come prop, per i Client
+Component). Questo permette di aggiornare i contenuti reali (quando
+arriveranno dal cliente) modificando un solo file per lingua, senza toccare
+il JSX. Le sezioni sono componenti "puri" senza `id` di ancoraggio: la
+navigazione avviene per route, non per scroll-to-anchor.
 
 ## Design system
 
@@ -213,20 +345,32 @@ header trasparente su barra promo con gradiente ambra/terracotta.
 
 Newsreader è caricato con `style: ["normal", "italic"]` (corsivo tipografico
 reale, non sintetizzato dal browser); di General Sans il corsivo è il file
-`GeneralSans-Italic.otf`. Il corsivo non è più usato per l'hover della nav —
+`GeneralSans-Italic.woff2`. Il corsivo non è più usato per l'hover della nav —
 vedi `NavLink` — ma serve ai testi in `italic` sparsi nelle sezioni (es. il
 segnaposto "Risposta in arrivo." delle FAQ).
 
 Newsreader arriva da `next/font/google`, Flaviotte, General Sans e Megdira da
-`next/font/local`; tutti sono esposti come CSS var in `src/app/layout.tsx`
+`next/font/local`; tutti sono esposti come CSS var in `src/app/fonts.ts`
 (`--font-newsreader`, `--font-flaviotte`, `--font-general-sans`,
 `--font-megdira`) e mappati sui token semantici in `globals.css`:
 `--font-wordmark` → Megdira, `--font-display` → Flaviotte, `--font-hero` →
 Newsreader, `--font-body` e `--font-brand` → General Sans.
 
-I file dei font locali sono **OTF/WOFF2 non subsettati** (≈215 KB in tutto):
-`next/font/local` li serve così come sono, senza convertirli. Flaviotte e
-Megdira sono già `.woff2`; General Sans no — vedi `HANDOFF.md`.
+I file dei font locali sono tutti **WOFF2 non subsettati** (≈115 KB in
+tutto): `next/font/local` li serve così come sono. I quattro tagli di General
+Sans erano ancora `.otf` (≈186 KB) alla consegna del kit del cliente —
+convertiti in `.woff2` il 30 luglio 2026 con `wawoff2` (pacchetto JS puro,
+nessuna dipendenza nativa; installato temporaneamente con `--no-save` solo
+per la conversione, non è nelle dipendenze del progetto), -48% di peso, stesso
+ordine di grandezza del risparmio già visto sulle immagini WebP. Subsetting al
+latino non fatto: nessuno strumento disponibile in questo ambiente senza
+Python/`fonttools`, e il guadagno oltre alla sola conversione sarebbe comunque
+marginale.
+
+> **Licenza d'uso web non confermata** per Flaviotte e General Sans (il
+> cliente non ne ha una, dichiarato il 30 luglio 2026): sono comunque
+> serviti pubblicamente da questo sito. Da chiarire con la proprietaria prima
+> della messa online — vedi TODO 6 in `HANDOFF.md`.
 
 ### Colore
 

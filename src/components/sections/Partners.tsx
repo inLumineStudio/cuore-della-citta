@@ -2,15 +2,23 @@ import Image from "next/image";
 import { Handshake } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { partners } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { partners } from "@/lib/content.shared";
+import type { Locale } from "@/lib/i18n";
 
-export function Partners() {
+type PartnersProps = {
+  locale: Locale;
+};
+
+export function Partners({ locale }: PartnersProps) {
+  const { ui } = getContent(locale);
+
   return (
     <section className="py-24 sm:py-32 bg-ink text-cream">
       <Container className="flex flex-col gap-14">
         <SectionHeading
-          title="Convenzioni riservate ai nostri ospiti"
-          description="Una selezione di attività del territorio che offrono condizioni dedicate a chi soggiorna alla Dimora."
+          title={ui.partnersTitle}
+          description={ui.partnersDescription}
           tone="light"
         />
 
@@ -18,7 +26,7 @@ export function Partners() {
           <div className="flex flex-col items-center gap-4 rounded-sm border border-dashed border-cream/20 py-20 text-center">
             <Handshake className="h-8 w-8 text-amber" strokeWidth={1.5} />
             <p className="text-xs tracking-[0.2em] text-cream/60 uppercase">
-              Le prime convenzioni sono in arrivo
+              {ui.partnersComingSoon}
             </p>
           </div>
         ) : (
@@ -30,7 +38,7 @@ export function Partners() {
                     <div className="relative h-20 w-full overflow-hidden rounded-sm bg-cream p-4">
                       <Image
                         src={partner.logoSrc}
-                        alt={partner.logoAlt ?? `Logo di ${partner.name}`}
+                        alt={partner.logoAlt ?? `${ui.partnerLogoAltPrefix} ${partner.name}`}
                         fill
                         className="object-contain p-2"
                       />
@@ -38,7 +46,7 @@ export function Partners() {
                   ) : (
                     <div className="flex h-20 w-full items-center justify-center rounded-sm border border-dashed border-cream/20">
                       <span className="text-[0.7rem] tracking-[0.2em] text-cream/40 uppercase">
-                        Logo in arrivo
+                        {ui.partnersLogoComingSoon}
                       </span>
                     </div>
                   )}

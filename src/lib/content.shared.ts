@@ -1,0 +1,165 @@
+// Dati strutturali e nomi propri, identici in ogni lingua: numeri di
+// contatto, coordinate, percorsi immagine, chiavi icona, percorsi di
+// navigazione. Nessuna prosa qui - il testo traducibile vive in
+// `content.it.ts` / `content.en.ts`. Vedi CLAUDE.md § Multilingua.
+
+// `name` e `fullName` sono il marchio: non si traducono, come il nome di
+// un'attività reale non cambia da una lingua all'altra.
+export const siteConfigShared = {
+  name: "Cuore della Città",
+  fullName: 'Dimora "Cuore della Città"',
+  phoneDisplay: "+39 351 496 4713",
+  phoneHref: "+393514964713",
+  whatsappHref: "393514964713",
+  // TODO: email reale del cliente
+  email: "info@cuoredellacitta.it",
+  // TODO: URL profilo Instagram reale del cliente
+  instagramUrl: "https://instagram.com/cuoredellacitta",
+  addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
+} as const;
+
+// Stesso indirizzo di `siteConfigShared.addressLine`, scomposto nei campi
+// richiesti da `PostalAddress` (dati strutturati, `structuredData.ts`). Se
+// cambia l'indirizzo va aggiornato in entrambi i punti.
+export const addressParts = {
+  streetAddress: "Via Panfilo Scudieri, 1",
+  postalCode: "67039",
+  addressLocality: "Sulmona",
+  addressRegion: "AQ",
+  addressCountry: "IT",
+} as const;
+
+// Coordinate di Via Panfilo Scudieri (precisione di via, non del numero
+// civico): geocoding via Nominatim/OpenStreetMap su `siteConfigShared.addressLine`,
+// non fornite dal cliente. Da sostituire con quelle esatte se e quando arriva
+// il profilo Google Business della struttura (vedi TODO in HANDOFF.md).
+export const propertyCoordinates = {
+  latitude: 42.051099,
+  longitude: 13.923446,
+} as const;
+
+// Fatti sulla struttura non ancora esposti come testo altrove (solo per i
+// dati strutturati). `numberOfRooms` e `petsAllowed` rispecchiano voci di
+// `amenitiesPage` e vanno aggiornati insieme a quelle se cambiano;
+// `checkinTime`/`checkoutTime` rispecchiano la FAQ sugli orari.
+export const propertyFacts = {
+  numberOfRooms: 2,
+  petsAllowed: false,
+  checkinTime: "15:00",
+  checkoutTime: "10:00",
+} as const;
+
+// Dominio di produzione: serve a `metadataBase`, alla sitemap e agli URL
+// assoluti di Open Graph, che non accettano percorsi relativi.
+// TODO: confermare il dominio definitivo con il cliente prima della messa online
+export const siteUrl = "https://www.cuoredellacitta.it";
+
+// Interruttore temporaneo per la bozza mostrata al cliente: quando false,
+// la nav espone solo la Homepage (in entrambe le lingue) e le altre route
+// reindirizzano alla home della lingua corrente. Rimettere a true per
+// riattivare tutte le pagine.
+export const showFullNav = true;
+
+// Percorsi neutri (senza prefisso di lingua) e id stabile per ogni voce di
+// nav: le etichette tradotte vivono in `content.it.ts`/`content.en.ts`
+// (`navLabels`), `getContent()` le ricompone in `navLinks`.
+export const navRoutes = [
+  { id: "home", href: "/" },
+  { id: "laDimora", href: "/la-dimora" },
+  { id: "galleria", href: "/galleria" },
+  { id: "comfort", href: "/servizi-comfort" },
+  { id: "posizione", href: "/posizione" },
+  { id: "partner", href: "/partner" },
+] as const;
+
+export type NavRouteId = (typeof navRoutes)[number]["id"];
+
+// TODO: foto provvisoria fornita dal cliente - sostituire con lo scatto definitivo
+export const heroImageSrc: string | undefined = "/images/hero.jpg";
+
+// Pannello "posizione" della home (secondo pannello dello scroll orizzontale
+// desktop). WebP q92: con `images.unoptimized` il browser riceve esattamente
+// questo file, quindi il formato lo scegliamo noi.
+export const positionImageSrc: string | undefined =
+  "/images/sulmona-piazza-garibaldi-tramonto.webp";
+
+// Terzo pannello dello scroll orizzontale della home. L'immagine fa da fondo
+// alla colonna editoriale: se è undefined resta il pieno `bg-ink`.
+export const faqImageSrc: string | undefined = "/images/statua-di-ovidio.jpg";
+
+export type AmenityIcon =
+  | "bed-double"
+  | "baby"
+  | "shirt"
+  | "utensils"
+  | "coffee"
+  | "air-vent"
+  | "wifi"
+  | "wand-sparkles"
+  | "clock"
+  | "calendar-days"
+  | "square-parking"
+  | "luggage"
+  | "cigarette-off"
+  | "paw-print"
+  | "utensils-crossed"
+  | "moon";
+
+export type AmenityItem = {
+  icon: AmenityIcon;
+  title: string;
+  description: string;
+};
+
+export type AmenityGroup = {
+  title: string;
+  items: AmenityItem[];
+};
+
+export type Partner = {
+  category: string;
+  name: string;
+  perk: string;
+  // Se assente, la cella mostra un segnaposto testuale ("Logo in arrivo"),
+  // non un'immagine finta: un logo è un'identità visiva altrui, diversamente
+  // da una foto della struttura non ha senso simularlo con un placeholder
+  // grafico. Stessa filosofia di `faqs[].answer` ("Risposta in arrivo.").
+  logoSrc?: string;
+  logoAlt?: string;
+  // Se presente, l'intera scheda diventa un link verso il sito/social del
+  // partner; se assente resta statica.
+  websiteUrl?: string;
+};
+
+// Ancora vuoto: nessuna attività del territorio ha aderito alla rete di
+// convenzioni. Resta condiviso tra le lingue (non per-locale) perché finché
+// è vuoto non c'è nulla da tradurre; quando arriverà il primo partner reale
+// si valuterà se nome/categoria/perk vadano duplicati per lingua (i nomi di
+// attività terze di norma non si traducono comunque).
+export const partners: Partner[] = [];
+
+export type GalleryImage = {
+  src?: string;
+  alt: string;
+};
+
+export type PageHero = {
+  // Riga sotto il wordmark: prende il posto del claim della home.
+  claim: string;
+  // Omesso = la Hero usa i propri default, cioè `heroImageSrc` (la foto della
+  // camera) con l'alt che la descrive. Non è un segnaposto: è una foto vera,
+  // solo non dedicata alla sezione.
+  imageSrc?: string;
+  imageAlt?: string;
+};
+
+export type PointOfInterest = {
+  name: string;
+  distance: string;
+  description?: string;
+};
+
+export type Faq = {
+  question: string;
+  answer?: string;
+};

@@ -4,12 +4,15 @@ import { useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Mail, Phone, X } from "lucide-react";
 import { InstagramIcon, WhatsappIcon } from "@/components/ui/icons";
-import { navLinks, showFullNav, siteConfig } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { showFullNav } from "@/lib/content.shared";
 import { telHref, whatsappHref } from "@/lib/contact";
+import { localizeHref, type Locale } from "@/lib/i18n";
 
 type MobileMenuProps = {
   open: boolean;
   onClose: () => void;
+  locale: Locale;
 };
 
 // Il portale ha bisogno di `document`, che sul server non esiste: lo snapshot
@@ -17,7 +20,8 @@ type MobileMenuProps = {
 // l'idratazione coincidono senza passare da un setState in effect.
 const neverChanges = () => () => {};
 
-export function MobileMenu({ open, onClose }: MobileMenuProps) {
+export function MobileMenu({ open, onClose, locale }: MobileMenuProps) {
+  const content = getContent(locale);
   const mounted = useSyncExternalStore(
     neverChanges,
     () => true,
@@ -58,7 +62,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="Menu di navigazione"
+        aria-label={content.ui.navMenuLabel}
         className={`absolute inset-y-0 left-0 flex h-full w-[86%] max-w-sm flex-col bg-cream text-ink shadow-2xl transition-transform duration-300 ease-out ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -69,7 +73,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="px-8 pt-8">
           <button
             type="button"
-            aria-label="Chiudi il menu"
+            aria-label={content.ui.closeMenu}
             onClick={onClose}
             className="-ml-1 cursor-pointer text-ink-soft transition-colors hover:text-ink"
           >
@@ -77,17 +81,17 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           </button>
 
           <p className="mt-6 font-brand text-[0.7rem] tracking-[0.3em] text-stone uppercase">
-            {siteConfig.name}
+            {content.name}
           </p>
         </div>
 
         <nav className="mt-10 flex flex-1 flex-col gap-5 overflow-y-auto px-8">
-          {navLinks.map((link) =>
+          {content.navLinks.map((link) =>
             // La Homepage è sempre raggiungibile, anche a bozza attiva.
             showFullNav || link.href === "/" ? (
               <a
                 key={link.href}
-                href={link.href}
+                href={localizeHref(link.href, locale)}
                 onClick={onClose}
                 className="text-lg text-ink-soft transition-colors hover:text-ink"
               >
@@ -109,33 +113,33 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
         <div className="border-t border-stone-light px-8 py-8">
           <p className="mb-4 font-brand text-[0.7rem] tracking-[0.3em] text-stone uppercase">
-            Contatti
+            {content.ui.contactsHeading}
           </p>
           <div className="flex items-center gap-5 text-ink-soft">
             <a
-              href={whatsappHref()}
+              href={whatsappHref(content.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Scrivici su WhatsApp"
+              aria-label={content.ui.whatsappLabel}
               className="transition-colors hover:text-terracotta"
             >
               <WhatsappIcon className="h-5 w-5" />
             </a>
-            <a href={telHref()} aria-label="Chiamaci" className="transition-colors hover:text-terracotta">
+            <a href={telHref()} aria-label={content.ui.callLabel} className="transition-colors hover:text-terracotta">
               <Phone className="h-5 w-5" strokeWidth={1.5} />
             </a>
             <a
-              href={`mailto:${siteConfig.email}`}
-              aria-label="Scrivici una mail"
+              href={`mailto:${content.email}`}
+              aria-label={content.ui.emailLabel}
               className="transition-colors hover:text-terracotta"
             >
               <Mail className="h-5 w-5" strokeWidth={1.5} />
             </a>
             <a
-              href={siteConfig.instagramUrl}
+              href={content.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Seguici su Instagram"
+              aria-label={content.ui.instagramLabel}
               className="transition-colors hover:text-terracotta"
             >
               <InstagramIcon className="h-5 w-5" />

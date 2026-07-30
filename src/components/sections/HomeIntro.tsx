@@ -1,16 +1,23 @@
 import { ArrowRight } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
-import { homeIntro, showFullNav } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { showFullNav } from "@/lib/content.shared";
+import type { Locale } from "@/lib/i18n";
 
-export function HomeIntro() {
+type HomeIntroProps = {
+  locale: Locale;
+};
+
+export function HomeIntro({ locale }: HomeIntroProps) {
+  const { homeIntro, ui } = getContent(locale);
   const paragraphCount = homeIntro.body.length;
 
   return (
     <section className="grid w-full grid-cols-1 lg:h-full lg:grid-cols-2">
       <div className="relative order-1 min-h-[400px] w-full lg:order-none lg:min-h-[600px]">
         <Reveal variant="scale" className="absolute inset-0 h-full w-full">
-          <ImagePlaceholder label="Foto in arrivo" className="h-full w-full" />
+          <ImagePlaceholder label={ui.imagePlaceholder} className="h-full w-full" />
         </Reveal>
       </div>
 

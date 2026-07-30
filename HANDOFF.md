@@ -1,9 +1,10 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 27 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
+Stato al 30 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
 2026. Il sito è **uscito dalla bozza** (`showFullNav = true`): tutte le route
 sono raggiungibili e cliccabili, non solo la homepage — si passa dalla Fase 1
 (UI/UX) alla Fase 2 (contenuti reali) del workflow concordato nel preventivo.
+Il sito è ora anche **bilingue** (italiano + inglese, `/en/...`), vedi § sotto.
 
 ## Cosa esiste oggi
 
@@ -165,11 +166,28 @@ dominio definitivo in `siteUrl` — vedi TODO 8. Dettagli in `CLAUDE.md` § SEO.
 > e simili vanno considerati parte del lavoro standard su ogni nuova sezione,
 > non un extra da proporre a parte.
 
-Verificato: type-check pulito (`npx tsc --noEmit`), nessun errore console,
-testato su viewport desktop e mobile (menu hamburger incluso) e su tutte le
-route. Lo scroll orizzontale è stato verificato misurando la traslazione a
-scroll crescente: 0 fino a fine Hero, poi lineare 1:1 fino a fondo corsa, con
-clamp oltre; su mobile pin disattivato e nessun overflow orizzontale.
+Verificato: type-check pulito (`npx tsc --noEmit`), lint pulito (`npm run
+lint`), nessun errore console, testato su viewport desktop e mobile (menu
+hamburger incluso) e su tutte le 12 route (6 italiane + 6 inglesi). Lo switch
+lingua è stato verificato andata e ritorno pagina per pagina (non solo dalle
+rispettive home), `<html lang>` corretto in entrambi gli alberi, `/sitemap.xml`
+con 24 URL e `alternates.languages` per coppia IT/EN, dati strutturati JSON-LD
+(`LodgingBusiness`/`FAQPage`/`BreadcrumbList`) tradotti correttamente. Lo
+scroll orizzontale è stato verificato misurando la traslazione a scroll
+crescente: 0 fino a fine Hero, poi lineare 1:1 fino a fondo corsa, con clamp
+oltre; su mobile pin disattivato e nessun overflow orizzontale.
+
+**Multilingua IT/EN (30 luglio 2026)**: sito tradotto in inglese, offerto nel
+preventivo. Ogni route italiana ha ora una gemella su `/en/...` (stessi slug,
+prefisso di lingua) con uno switch a bandierina accanto all'hamburger, in Hero
+e `StickyHeader`. Implementato senza librerie i18n: route groups di Next.js
+per due root layout separati (`(it)/` invisibile nell'URL, `en/` con
+prefisso), che tengono il sito interamente statico — l'alternativa con
+`headers()`/`proxy.ts` avrebbe forzato il rendering dinamico su ogni pagina.
+Nomi propri (Sulmona, i monumenti, la citazione latina di Ovidio, l'indirizzo)
+non tradotti per scelta esplicita del cliente. Sitemap, `alternates.languages`
+e dati strutturati JSON-LD aggiornati per entrambe le lingue. Dettagli in
+`CLAUDE.md` § Multilingua IT/EN.
 
 **Audit codice morto (27 luglio 2026)**: nessun file, componente o export
 inutilizzato nel repo — l'unica eccezione nota (`Gallery`/`Partners` smontati)
@@ -193,48 +211,63 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    nella Hero di "/la-dimora" (`sulmona-piazza-garibaldi-giorno.webp`), gli
    archi dell'acquedotto medievale nella Hero di "/posizione"
    (`sulmona-acquedotto-medievale.webp`) e la statua di Ovidio come fondo
-   della colonna editoriale delle FAQ (`statua-di-ovidio.jpg`) — **da
-   chiarire se servono attribuzioni**, vedi punto 9.
+   della colonna editoriale delle FAQ (`statua-di-ovidio.jpg`).
    **Manca ancora la foto de "La Nostra Storia"**, che in
    home mostra tuttora `ImagePlaceholder`. Mancano inoltre le **foto dedicate
    alle Hero** di galleria, comfort e partner: finché `imageSrc` non è
    valorizzato in `pageHeroes`, quelle sezioni usano la foto della camera.
-   Azione: salvare le foto in `public/images/` e valorizzare il campo
-   corrispondente in `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
+   **In arrivo dalla proprietaria venerdì 31 luglio 2026.** Azione: salvare le
+   foto in `public/images/` e valorizzare il campo corrispondente in
+   `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
-   (Via Panfilo Scudieri 1, Sulmona) sono quelli veri. Restano placeholder
-   **email e URL Instagram** in `siteConfig` (`content.ts`).
+   (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato dalla
+   proprietaria il 30 luglio 2026**. Restano placeholder **email e URL
+   Instagram** in `siteConfig` (`content.ts`) — ancora da ricevere.
 3. **Contenuti delle sezioni ancora vuote** — galleria e partner mostrano solo
    la Hero. I componenti esistono già ma sono smontati perché i dati sono
    esemplificativi: `partners` (convenzioni inventate) e `galleryImages`
    (quattro voci che puntano tutte alla stessa foto). Azione: riscrivere i
-   contenuti col cliente e rimontare i componenti nelle rispettive `page.tsx`.
+   contenuti col cliente e rimontare i componenti nelle rispettive `page.tsx`
+   — la galleria può ripartire dalle foto in arrivo venerdì (punto 1); i
+   partner restano legati alle prime convenzioni firmate, non hanno una data.
    **Comfort e Posizione sono già fatte** (`amenitiesPage`/`locationPage` in
    `content.ts`, contenuti reali).
 4. ~~**Mappa**~~ — fatto: `Location` ha sia la mappa illustrativa
    dell'Abruzzo (`AbruzzoMap`) sia l'embed Google Maps vero, entrambi basati
    sull'indirizzo definitivo. Vedi `CLAUDE.md` § "Dove ci Troviamo".
-5. **Punti di interesse** — i nomi in `pointsOfInterest` (`content.ts`) sono
-   ora quelli reali forniti dal cliente e l'elenco è **ordinato per distanza
-   crescente** (Annunziata 2 min, San Panfilo 4 min, statua di Ovidio ~5 min,
-   Piazza Garibaldi 6 min): l'ordine dell'array è l'ordine reso a schermo,
-   quindi va mantenuto aggiungendo voci. Restano da **verificare i tempi di
-   percorrenza**, inclusa la stima aggiunta per la statua di Ovidio.
-6. **Font locali da ottimizzare** — in `src/app/fonts/` stanno tre famiglie nel
-   formato consegnato dal cliente: `.woff2` per Flaviotte (18 KB) e Megdira
-   (17 KB), ma **quattro `.otf` da ~46 KB** per General Sans (400, 400 corsivo,
-   500, 600), circa 215 KB in tutto. `next/font/local` serve i file così come
-   sono, senza convertirli né subsettarli. Prima della messa online: procurarsi
-   i `.woff2` di General Sans (il kit di Fontshare li include) o convertirli, ed
-   eventualmente subsettare al latino. Verificare anche la **licenza d'uso web**
-   dei tre font, dato che ora sono serviti dal sito.
-7. **Multilingua IT/EN** — offerto nel preventivo ma non ancora implementato
-   (richiede decisione su approccio: `next-intl` vs routing manuale).
-8. **Dominio definitivo** — `siteUrl` in `content.ts` è un **placeholder**
-   (`https://www.cuoredellacitta.it`) e alimenta `metadataBase`, la sitemap e
-   robots.txt: va confermato col cliente, altrimenti canonical e `og:url`
-   puntano a un dominio che potrebbe non essere il suo. È l'unico punto da
-   cambiare. Il resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
+5. ~~**Punti di interesse**~~ — fatto: i nomi in `pointsOfInterest`
+   (`content.ts`) sono quelli reali forniti dal cliente, l'elenco è
+   **ordinato per distanza crescente** (Annunziata 2 min, San Panfilo 4 min,
+   statua di Ovidio ~5 min, Piazza Garibaldi 6 min) e i **tempi di
+   percorrenza sono stati confermati dalla proprietaria il 30 luglio 2026**,
+   stima della statua di Ovidio inclusa.
+6. ~~**Font locali**~~ — ottimizzati il 30 luglio 2026: i quattro `.otf` di
+   General Sans (400, 400 corsivo, 500, 600, ~186 KB in tutto) sono stati
+   convertiti in `.woff2` (~97 KB, -48%) con `wawoff2`, stesso ordine di
+   grandezza del risparmio già visto sulle immagini WebP. Subsetting al
+   latino non fatto (nessuno strumento di subsetting disponibile in questo
+   ambiente senza Python/fonttools; il guadagno aggiuntivo sarebbe comunque
+   marginale rispetto alla conversione). **Licenza d'uso web non
+   disponibile**: il cliente ha confermato di non avere la licenza per
+   Flaviotte e General Sans (30 luglio 2026) — i font sono comunque serviti
+   dal sito pubblico. Rischio da chiarire con la proprietaria prima della
+   messa online: verificare presso il fornitore del kit se la licenza
+   posseduta copre l'uso su un sito web pubblico (spesso distinta dalla
+   licenza desktop), o procurarne una che lo copra.
+7. ~~**Multilingua IT/EN**~~ — fatto il 30 luglio 2026: sito interamente
+   tradotto in inglese su `/en/...` (route groups, senza dipendenze — vedi
+   `CLAUDE.md` § Multilingua), con switch a bandierina accanto all'hamburger
+   in Hero e `StickyHeader`. Nomi propri (Sulmona, monumenti, la citazione di
+   Ovidio, l'indirizzo) non tradotti; contenuti ancora vuoti (galleria,
+   partner) restano vuoti in entrambe le lingue finché non arrivano i
+   contenuti reali (punto 3).
+8. **Dominio definitivo** — `siteUrl` in `content.ts` è ancora un
+   **placeholder** (`https://www.cuoredellacitta.it`). **Il cliente lo
+   acquisterà entro la settimana del 27 luglio-2 agosto 2026.** Alimenta
+   `metadataBase`, la sitemap e robots.txt: finché resta il placeholder,
+   canonical e `og:url` puntano a un dominio che potrebbe non essere il suo.
+   Appena acquistato, va aggiornato qui — è l'unico punto da cambiare. Il
+   resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
    metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
    canonical, sitemap, robots e dati strutturati JSON-LD
    (`LodgingBusiness`/`FAQPage`/`BreadcrumbList`). Le coordinate in
@@ -242,16 +275,11 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    dell'indirizzo: da sostituire con quelle esatte quando arriva il profilo
    Google Business (che risolve anche questo punto e il punto successivo
    sull'indirizzo nella mappa embed di `Location`).
-9. **Crediti fotografici** — `photoCredits` (`content.ts`) è oggi `undefined` e
-   il Footer non mostra alcuna riga di attribuzione: la foto Wikimedia di
-   Lorenzo Testa che la richiedeva è stata sostituita dallo scatto al tramonto
-   fornito dal cliente, e tenere il credito con quella foto fuori dal sito
-   sarebbe un'attribuzione falsa. **Da confermare con la proprietaria** che le
-   foto ora in uso (`sulmona-piazza-garibaldi-tramonto.webp`,
-   `sulmona-piazza-garibaldi-giorno.webp`, `statua-di-ovidio.jpg`) siano scatti
-   suoi: se una viene da terzi va rimessa l'attribuzione (autore + licenza +
-   link se è una CC), e con più foto da attribuire conviene passare da stringa
-   singola a array.
+9. ~~**Crediti fotografici**~~ — risolto: `photoCredits` (`content.ts`, per
+   lingua) mostra nel Footer una riga generica ("Le immagini presenti in
+   questo sito sono di proprietà dei rispettivi autori." / l'equivalente
+   inglese), **confermata sufficiente dalla proprietaria il 30 luglio 2026**
+   invece di un'attribuzione per singola foto.
 
 ## Come continuare a lavorarci
 
@@ -275,11 +303,16 @@ ma **aspettano i contenuti**: il lavoro naturale è prenderle una alla volta
 col cliente, come è stato fatto per le sezioni già completate (copy scritto
 insieme, foto dedicata, blocchi rimontati).
 
-Da chiedere alla proprietaria, in ordine di impatto: la **foto de "La Nostra
-Storia"** (l'unico segnaposto ancora visibile in homepage), le **foto
-dedicate** alle Hero di galleria/comfort/partner rimaste senza, i
-**contenuti reali** di galleria e partner (punto 3), la **verifica dei tempi
-di percorrenza** dei punti di interesse (punto 5), l'**apertura del profilo
-Google Business** (per passare `Location` dall'indirizzo al Place ID, vedi
-`CLAUDE.md` § "Dove ci Troviamo") e i **recapiti mancanti** — email e
-Instagram (punto 2).
+**Foto in arrivo venerdì 31 luglio 2026** (punto 1): coprono la "La Nostra
+Storia" ancora in placeholder, le Hero di galleria/comfort/partner e — insieme
+al copy — permettono di rimontare `Gallery`. Il dominio arriva entro la
+settimana del 27 luglio-2 agosto (punto 8): appena acquistato va aggiornato
+`siteUrl`. Resta da chiarire con la proprietaria la **licenza web di
+Flaviotte e General Sans** (punto 6) prima della messa online — rischio non
+ancora risolto, non solo un dettaglio tecnico.
+
+Da chiedere alla proprietaria, in ordine di impatto: i **contenuti reali** di
+partner (punto 3, legato alle prime convenzioni firmate, senza una data),
+l'**apertura del profilo Google Business** (per passare `Location`
+dall'indirizzo al Place ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e i
+**recapiti mancanti** — email e Instagram (punto 2).

@@ -4,10 +4,18 @@ import { useId, useState } from "react";
 import Image from "next/image";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
-import { faqImageSrc, faqPanel, faqs } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { faqImageSrc } from "@/lib/content.shared";
 import { whatsappHref } from "@/lib/contact";
+import type { Locale } from "@/lib/i18n";
 
-export function Faq() {
+type FaqProps = {
+  locale: Locale;
+};
+
+export function Faq({ locale }: FaqProps) {
+  const content = getContent(locale);
+  const { faqPanel, faqs, ui } = content;
   const baseId = useId();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -18,7 +26,7 @@ export function Faq() {
           <Reveal variant="scale" className="absolute inset-0 h-full w-full">
             <Image
               src={faqImageSrc}
-              alt="La statua di Ovidio a Sulmona"
+              alt={ui.faqImageAlt}
               fill
               className="object-cover object-center brightness-[0.75] saturate-95"
             />
@@ -44,7 +52,7 @@ export function Faq() {
           </p>
 
           <a
-            href={whatsappHref()}
+            href={whatsappHref(content.whatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-block w-fit border border-cream/40 px-5 py-2.5 text-xs font-semibold tracking-[0.08em] text-cream uppercase transition-colors duration-300 hover:bg-cream hover:text-ink"
@@ -104,7 +112,7 @@ export function Faq() {
                   className="pr-10 pb-4 text-sm leading-relaxed text-ink-soft"
                 >
                   {faq.answer ?? (
-                    <span className="text-stone italic">Risposta in arrivo.</span>
+                    <span className="text-stone italic">{ui.faqAnswerPending}</span>
                   )}
                 </dd>
               </div>

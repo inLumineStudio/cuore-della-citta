@@ -2,9 +2,17 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
-import { pointsOfInterest, positionImageSrc, positionTeaser, showFullNav } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { positionImageSrc, showFullNav } from "@/lib/content.shared";
+import type { Locale } from "@/lib/i18n";
 
-export function LocationTeaser() {
+type LocationTeaserProps = {
+  locale: Locale;
+};
+
+export function LocationTeaser({ locale }: LocationTeaserProps) {
+  const { pointsOfInterest, positionTeaser, ui } = getContent(locale);
+
   return (
     <section className="grid w-full grid-cols-1 lg:h-full lg:grid-cols-2">
       <div className="relative order-1 min-h-[400px] w-full lg:order-none lg:min-h-[600px]">
@@ -12,12 +20,12 @@ export function LocationTeaser() {
           {positionImageSrc ? (
             <Image
               src={positionImageSrc}
-              alt="Piazza Garibaldi a Sulmona al tramonto, con gli archi dell'acquedotto medievale"
+              alt={ui.locationTeaserImageAlt}
               fill
               className="object-cover"
             />
           ) : (
-            <ImagePlaceholder label="Foto in arrivo" className="h-full w-full" />
+            <ImagePlaceholder label={ui.imagePlaceholder} className="h-full w-full" />
           )}
         </Reveal>
       </div>

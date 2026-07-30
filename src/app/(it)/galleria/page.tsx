@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
-import { pageHeroes, showFullNav } from "@/lib/content";
+import { getContent } from "@/lib/content";
+import { showFullNav } from "@/lib/content.shared";
 
 export const metadata: Metadata = {
   title: "Galleria",
   description:
     "La galleria fotografica di Dimora Cuore della Città: un assaggio visivo degli ambienti che troverai al tuo arrivo.",
+  alternates: { canonical: "/galleria", languages: { "it-IT": "/galleria", "en-US": "/en/galleria" } },
 };
 
 // Per ora solo la Hero, con la foto di default: la griglia fotografica con
@@ -17,5 +19,7 @@ export default function GalleriaPage() {
     redirect("/");
   }
 
-  return <Hero {...pageHeroes.galleria} descriptor="" subtitle="" showClaimOnMobile />;
+  const { pageHeroes } = getContent("it");
+
+  return <Hero {...pageHeroes.galleria} locale="it" descriptor="" subtitle="" showClaimOnMobile />;
 }
