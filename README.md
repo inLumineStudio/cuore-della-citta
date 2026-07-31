@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dimora Cuore della Città
 
-## Getting Started
+Dimora Cuore della Città is an independent vacation home in the historic center of Sulmona, Abruzzo, designed to offer an authentic stay among the streets of Ovid's hometown. The website represents the digital presence of the property: an editorial showcase that tells the story of its spaces, services, and the surrounding territory, with direct booking and no intermediaries.
 
-First, run the development server:
+The visual experience translates the property's identity into a warm, editorial language. Every element is designed to convey authenticity, warmth, and attention to detail, through a terracotta and amber palette, custom brand typography, and full-bleed photography that tells the story of the spaces.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The website presents the story of the Dimora, a photo gallery of the interiors, comfort and practical information, the location within the territory, and partnerships with local businesses, alongside frequently asked questions. The goal is to provide an immediate, engaging experience capable of communicating authenticity and trust from the very first scroll, in both Italian and English.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Aesthetic
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Warm Editorial Hospitality**
+Custom brand typography for the wordmark, headings, and body copy; a warm terracotta and amber palette on cream, full-bleed photography with dark overlays, soft entrance animations, and a desktop horizontal scroll inspired by Italian boutique hospitality.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ⚙️ Stack
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16 (App Router, Turbopack)
+- React 19 + TypeScript (strict)
+- Tailwind CSS v4 (CSS-first config via `@theme`)
+- Lucide React
+- `next/font` for the brand's custom typography (Google + local files)
+- Route groups for IT/EN localization, no i18n library
