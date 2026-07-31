@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Gallery } from "@/components/sections/Gallery";
 import { Hero } from "@/components/sections/Hero";
 import { getContent } from "@/lib/content";
 import { showFullNav } from "@/lib/content.shared";
+import { breadcrumbListJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -17,5 +19,14 @@ export default function EnglishGalleriaPage() {
 
   const { pageHeroes } = getContent("en");
 
-  return <Hero {...pageHeroes.galleria} locale="en" descriptor="" subtitle="" showClaimOnMobile />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("en", "/galleria")) }}
+      />
+      <Hero {...pageHeroes.galleria} locale="en" descriptor="" subtitle="" showClaimOnMobile />
+      <Gallery locale="en" />
+    </>
+  );
 }

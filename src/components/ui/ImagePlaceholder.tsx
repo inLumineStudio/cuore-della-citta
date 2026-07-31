@@ -1,11 +1,15 @@
+import type { CSSProperties } from "react";
+
 type ImagePlaceholderProps = {
   label?: string;
   className?: string;
+  style?: CSSProperties;
 };
 
-export function ImagePlaceholder({ label, className = "" }: ImagePlaceholderProps) {
+export function ImagePlaceholder({ label, className = "", style }: ImagePlaceholderProps) {
   return (
     <div
+      style={style}
       className={`relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-soft/40 via-cream-soft to-stone-light/50 ${className}`}
     >
       <span

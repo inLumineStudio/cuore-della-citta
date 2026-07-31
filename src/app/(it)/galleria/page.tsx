@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Gallery } from "@/components/sections/Gallery";
 import { Hero } from "@/components/sections/Hero";
 import { getContent } from "@/lib/content";
 import { showFullNav } from "@/lib/content.shared";
+import { breadcrumbListJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   title: "Galleria",
@@ -11,9 +13,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/galleria", languages: { "it-IT": "/galleria", "en-US": "/en/galleria" } },
 };
 
-// Per ora solo la Hero, con la foto di default: la griglia fotografica con
-// lightbox (`Gallery`) è pronta ma smontata, in attesa delle foto definitive e
-// di una revisione dei contenuti insieme al cliente.
 export default function GalleriaPage() {
   if (!showFullNav) {
     redirect("/");
@@ -21,5 +20,14 @@ export default function GalleriaPage() {
 
   const { pageHeroes } = getContent("it");
 
-  return <Hero {...pageHeroes.galleria} locale="it" descriptor="" subtitle="" showClaimOnMobile />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd("it", "/galleria")) }}
+      />
+      <Hero {...pageHeroes.galleria} locale="it" descriptor="" subtitle="" showClaimOnMobile />
+      <Gallery locale="it" />
+    </>
+  );
 }

@@ -7,7 +7,6 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { getContent } from "@/lib/content";
-import { heroImageSrc } from "@/lib/content.shared";
 import type { Locale } from "@/lib/i18n";
 
 type GalleryProps = {
@@ -38,26 +37,37 @@ export function Gallery({ locale }: GalleryProps) {
           description={ui.galleryDescription}
         />
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+        {/* Layout a cascata (CSS columns, non grid): righe di altezza
+            uniforme non hanno senso con foto di orientamento diverso, e le
+            colonne ridistribuiscono da sole ogni card nella colonna più
+            corta. `break-inside-avoid` impedisce a una card di spezzarsi fra
+            due colonne. */}
+        <div className="columns-2 gap-4 sm:columns-3 sm:gap-6 lg:columns-4">
           {galleryImages.map((image, index) => (
             <button
               key={image.alt}
               type="button"
               onClick={() => setActiveIndex(index)}
-              className="group relative aspect-square overflow-hidden rounded-sm"
+              className="group relative mb-4 block w-full overflow-hidden rounded-sm break-inside-avoid sm:mb-6"
             >
-              {heroImageSrc ? (
+              {image.src ? (
                 <Image
-                  src={heroImageSrc}
+                  src={image.src}
                   alt={image.alt}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  width={image.width}
+                  height={image.height}
+                  className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
-                <ImagePlaceholder label="" className="h-full w-full" />
+                <ImagePlaceholder
+                  label=""
+                  className="w-full"
+                  style={{ aspectRatio: `${image.width} / ${image.height}` }}
+                />
               )}
-              <div className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-200 group-hover:bg-ink/30 group-hover:opacity-100">
-                <ZoomIn className="h-6 w-6 text-cream" strokeWidth={1.5} />
+              <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-ink/70 via-transparent to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <ZoomIn className="ml-auto h-5 w-5 text-cream" strokeWidth={1.5} />
+                <p className="text-left text-sm leading-snug text-cream">{image.description}</p>
               </div>
             </button>
           ))}
@@ -66,7 +76,7 @@ export function Gallery({ locale }: GalleryProps) {
 
       {activeIndex !== null && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95 px-4"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-ink/95 px-4 py-10"
           onClick={() => setActiveIndex(null)}
         >
           <button
@@ -91,20 +101,28 @@ export function Gallery({ locale }: GalleryProps) {
           </button>
 
           <div
-            className="relative aspect-[4/3] w-full max-w-3xl"
+            className="relative max-h-[75dvh] w-full max-w-3xl"
             onClick={(event) => event.stopPropagation()}
           >
-            {heroImageSrc ? (
+            {galleryImages[activeIndex].src ? (
               <Image
-                src={heroImageSrc}
+                src={galleryImages[activeIndex].src}
                 alt={galleryImages[activeIndex].alt}
-                fill
-                className="object-contain"
+                width={galleryImages[activeIndex].width}
+                height={galleryImages[activeIndex].height}
+                className="h-auto max-h-[75dvh] w-full object-contain"
               />
             ) : (
-              <ImagePlaceholder className="h-full w-full" />
+              <ImagePlaceholder className="aspect-[4/3] w-full" />
             )}
           </div>
+
+          <p
+            className="max-w-xl text-center text-sm text-cream/80"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {galleryImages[activeIndex].description}
+          </p>
 
           <button
             type="button"

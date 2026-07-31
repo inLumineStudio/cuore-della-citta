@@ -196,12 +196,23 @@ export const amenitiesPage = {
   ctaSecondaryLabel: "Contact us on WhatsApp",
 };
 
-// TODO: replace the placeholders with the final photos provided by the client
+// First two real photos provided by the owner on 31 July 2026.
+// TODO: two more still needed to complete a set of four.
 export const galleryImages: GalleryImage[] = [
-  { alt: "The main bedroom" },
-  { alt: "View of the historic center from the balcony" },
-  { alt: "Detail of the furnishings" },
-  { alt: "Reading corner" },
+  {
+    src: "/images/gallery/sulmona-dimora-soggiorno-cucina.webp",
+    alt: "The Dimora's living room and kitchenette, with a view through to the bedroom",
+    description: "The living room and kitchenette, open onto the bedroom.",
+    width: 1600,
+    height: 1200,
+  },
+  {
+    src: "/images/gallery/sulmona-centro-storico-piazza.webp",
+    alt: "A square in Sulmona's historic center, just steps from the Dimora",
+    description: "The lanes of the historic center, just steps from home.",
+    width: 1600,
+    height: 1200,
+  },
 ];
 
 // Rendered by the Footer on every page when set.

@@ -47,11 +47,12 @@ routing reale (non single-page ad anchor):
   "Indicazioni stradali", e la mappa Google Maps
   vera basata sull'indirizzo. È la seconda delle quattro sezioni inizialmente
   vuote a uscire da quello stato.
-- **`/galleria`** — per ora **solo la Hero, senza contenuto sotto**: il
-  blocco già costruito (`Gallery`) contiene ancora dati esemplificativi della
-  prima bozza, quindi resta **smontato** e il cliente non lo vede. Il
-  componente resta in repo, pronto da riagganciare quando arrivano i
-  contenuti reali.
+- **`/galleria`** — Hero + **`Gallery`**, con le prime due foto reali (31
+  luglio 2026, su quattro previste): il soggiorno con angolo cottura della
+  Dimora e uno scorcio del centro storico. Layout a cascata (masonry, non
+  griglia uniforme), foto cliccabili per una versione ingrandita con
+  didascalia. Non è più tra le sezioni smontate — vedi `CLAUDE.md` §
+  "Galleria".
 - **`/partner`** — Hero + **`Partners`**, con i primi due partner reali (31
   luglio 2026): **Cafè Piazza Tresca** (tabaccheria & ricevitoria con bar
   colazioni, Sulmona, fascia 20%, scheda verso il suo profilo Facebook) e
@@ -76,13 +77,12 @@ diverso dall'etichetta di menu, tutti in `pageHeroes` (`content.ts`):
 | `/posizione` | Dove ci Troviamo | La Posizione & Il Territorio |
 | `/partner` | I Nostri Partner | Vantaggi Esclusivi |
 
-**Nota sullo `StickyHeader` su `/galleria`** (l'unica sezione rimasta senza
-contenuto sotto la Hero): la barra crema non compare, perché la pagina è alta
-solo Hero + footer e non si arriva mai alla soglia dell'85% del viewport. È
-il comportamento giusto e non serve toccarlo: appena avrà contenuto sotto la
-Hero, la soglia diventerà raggiungibile e la barra comparirà da sé — come già
-successo per `/servizi-comfort`, `/posizione` e, dal 31 luglio 2026,
-`/partner`.
+**Nota storica sullo `StickyHeader`** (risolta il 31 luglio 2026, quando
+`/galleria` ha ricevuto contenuto sotto la Hero, ultima route a farlo): finché
+una pagina restava alta solo Hero + footer, la soglia dell'85% del viewport
+non si raggiungeva mai scrollando e la barra crema non compariva — non un
+bug, solo la conseguenza naturale di non avere contenuto sotto. Oggi tutte le
+route la superano.
 
 Le FAQ **non hanno più una pagina dedicata**: sono il pannello di chiusura
 della home (accordion su fondo scuro/crema) e la voce è stata tolta dal menu.
@@ -276,21 +276,20 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    (`instagram.com/cuoredellacittadimora`, ricevuto il 30 luglio 2026).
    Resta placeholder solo l'**email** in `siteConfigShared`
    (`content.shared.ts`) — ancora da ricevere.
-3. **Contenuti delle sezioni ancora vuote** — **parzialmente fatto**. Partner
-   ha ricevuto i primi due partner reali il 31 luglio 2026: **Cafè Piazza
-   Tresca** (tabaccheria & ricevitoria con bar colazioni, fascia 20%,
-   descrizione ancora una bozza da confermare con la proprietaria, marcata
-   `TODO` in `content.it.ts`/`content.en.ts`) e **inLumine Studio** (lo
-   studio che ha realizzato il sito, fascia 10%, copy definitivo). La
-   sezione è stata anche ristrutturata a **fasce di sconto** (10%/15%/20%/
-   omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta della cliente
-   — pronta a ricevere altri partner nelle fasce ancora vuote (15%) non
-   appena firmati. **Galleria resta smontata**: il componente esiste già ma
-   i dati sono ancora
-   esemplificativi (`galleryImages`, quattro voci che puntano tutte alla
-   stessa foto). Azione: riscrivere i contenuti col cliente e rimontare
-   `Gallery` in `galleria/page.tsx` — può ripartire dalle foto in arrivo
-   venerdì (punto 1). **Comfort e Posizione erano già fatte**
+3. **Contenuti delle sezioni ancora vuote** — **fatto per tutte, in corso
+   per galleria**. Partner ha ricevuto i primi due partner reali il 31
+   luglio 2026: **Cafè Piazza Tresca** (tabaccheria & ricevitoria con bar
+   colazioni, fascia 20%, descrizione ancora una bozza da confermare con la
+   proprietaria, marcata `TODO` in `content.it.ts`/`content.en.ts`) e
+   **inLumine Studio** (lo studio che ha realizzato il sito, fascia 10%,
+   copy definitivo). La sezione è stata anche ristrutturata a **fasce di
+   sconto** (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su
+   richiesta della cliente — pronta a ricevere altri partner nelle fasce
+   ancora vuote (15%) non appena firmati. **Galleria è stata rimontata** lo
+   stesso giorno con le prime due foto reali su quattro previste (layout a
+   cascata, vedi `CLAUDE.md` § "Galleria") — mancano ancora due foto per
+   completare il set, `galleryImages` ha un `TODO` in entrambi i file di
+   lingua. **Comfort e Posizione erano già fatte**
    (`amenitiesPage`/`locationPage` in `content.ts`, contenuti reali).
 4. ~~**Mappa**~~ — fatto: `Location` ha sia la mappa illustrativa
    dell'Abruzzo (`AbruzzoMap`) sia l'embed Google Maps vero, entrambi basati
@@ -318,11 +317,10 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    tradotto in inglese su `/en/...` (route groups, senza dipendenze — vedi
    `CLAUDE.md` § Multilingua), con switch a bandierina accanto all'hamburger
    in Hero e `StickyHeader`. Nomi propri (Sulmona, monumenti, la citazione di
-   Ovidio, l'indirizzo) non tradotti; la galleria, ancora smontata, resta
-   vuota in entrambe le lingue finché non arrivano i contenuti reali (punto
-   3) — Partner invece ha già i suoi primi due partner tradotti in entrambe
-   le lingue (nome non tradotto, categoria e descrizione sì, come da
-   convenzione di `content.it.ts`/`content.en.ts`).
+   Ovidio, l'indirizzo) non tradotti; sia Galleria (due foto, didascalie
+   tradotte) sia Partner (due partner, categoria e descrizione tradotte, nomi
+   propri no) hanno già i loro primi contenuti reali in entrambe le lingue,
+   come da convenzione di `content.it.ts`/`content.en.ts`.
 8. **Dominio definitivo** — confermato dalla proprietaria il 30 luglio 2026:
    sarà **`dimoracuoredellacitta.it`** (non più `cuoredellacitta.it`, il
    placeholder usato finora). `siteUrl` in `content.shared.ts` è già stato
@@ -362,23 +360,25 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 ## Prossimo passo consigliato
 
-Homepage, "/la-dimora", "/servizi-comfort", "/posizione" e "/partner" sono le
-cinque sezioni complete (quest'ultima con due partner per ora, ma
-strutturalmente pronta a crescere). Resta solo **galleria**, che esiste con
-la sua Hero ma **aspetta i contenuti**: stesso lavoro già fatto per le altre
-(copy scritto insieme, foto dedicate, blocco rimontato).
+Tutte e sei le sezioni sono ora complete: Homepage, "/la-dimora",
+"/servizi-comfort", "/posizione", "/partner" (due partner per ora, pronta a
+crescere) e, dal 31 luglio 2026, "/galleria" (due foto su quattro, stesso
+discorso). Non resta più nessuna sezione vuota da riempire da zero — solo
+contenuto parziale da completare via via che arriva.
 
-**Foto in arrivo venerdì 31 luglio 2026** (punto 1): coprono la "La Nostra
-Storia" ancora in placeholder, le Hero di galleria e comfort e — insieme al
-copy — permettono di rimontare `Gallery`. Il dominio arriva entro la
+**Foto ricevute dalla proprietaria il 31 luglio 2026**: le prime due della
+galleria. Mancano ancora **due foto** per completare quel set, la foto de
+"La Nostra Storia" in home (ancora `ImagePlaceholder`) e le foto dedicate
+alle Hero di galleria e comfort (punto 1). Il dominio arriva entro la
 settimana del 27 luglio-2 agosto (punto 8): appena acquistato va aggiornato
 `siteUrl`. Resta da chiarire con la proprietaria la **licenza web di
 Flaviotte e General Sans** (punto 6) prima della messa online — rischio non
 ancora risolto, non solo un dettaglio tecnico.
 
-Da chiedere alla proprietaria, in ordine di impatto: **conferma della
-descrizione di Cafè Piazza Tresca** (oggi una bozza, punto 3) e degli altri
-partner via via che le convenzioni si firmano, l'**apertura del profilo
-Google Business** (per passare `Location` dall'indirizzo al Place ID, vedi
+Da chiedere alla proprietaria, in ordine di impatto: le **due foto mancanti
+della galleria** e la **conferma della descrizione di Cafè Piazza Tresca**
+(oggi una bozza, punto 3) insieme agli altri partner via via che le
+convenzioni si firmano, l'**apertura del profilo Google Business** (per
+passare `Location` dall'indirizzo al Place ID, vedi
 `CLAUDE.md` § "Dove ci Troviamo") e l'**email mancante** (punto 2, unico
 recapito ancora placeholder).

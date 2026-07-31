@@ -30,7 +30,7 @@ reali. Questo perché lavoreremo con routing man mano che il progetto cresce
 |---|---|
 | `/` | `Hero` + `HorizontalScroller` (`HomeIntro`, `LocationTeaser`, `Faq`) — vedi sotto |
 | `/la-dimora` | `About` (a sua volta `Hero` + racconto editoriale + CTA) |
-| `/galleria` | `Hero` — `Gallery` smontato |
+| `/galleria` | `Hero` + `Gallery` |
 | `/servizi-comfort` | `Hero` + `Amenities` |
 | `/posizione` | `Hero` + `Location` |
 | `/partner` | `Hero` + `Partners` |
@@ -41,18 +41,13 @@ tenerle sullo stesso URL avrebbe significato due voci di menu con la stessa
 destinazione, quindi sono state separate. `Gallery` non aveva dipendenze da
 `About`, la separazione è stata un taglio netto.
 
-**Una sola sezione resta volutamente vuota**: galleria mostra **solo la
-Hero**, perché i suoi contenuti attuali sono ancora quelli esemplificativi
-della prima bozza (`galleryImages`, quattro voci che puntano tutte alla
-stessa foto) e il cliente non deve vederli. Il componente (`Gallery`)
-**resta in repo smontato**, non cancellato: verrà riagganciato quando i
-contenuti reali saranno pronti — è l'unica eccezione consapevole rimasta
-alla regola "niente codice morto". `Amenities` (comfort), `Location`
-(posizione) e `Partners` (partner) sono uscite da questo gruppo: hanno
-ricevuto contenuti reali (o, per `Partners`, uno stato vuoto onesto in
-attesa delle prime adesioni — non più dati di fantasia) e le rispettive
-route le montano — vedi § "Comfort & Informazioni", § "Dove ci Troviamo" e
-§ "I Nostri Partner" più sotto.
+**Nessuna sezione resta più vuota di proposito**: `Gallery` era rimasta
+smontata più a lungo delle altre tre (`Amenities`, `Location`, `Partners`)
+perché i suoi contenuti erano ancora quelli esemplificativi della prima
+bozza (`galleryImages`, quattro voci che puntavano tutte alla stessa foto) e
+il cliente non doveva vederli. Il 31 luglio 2026 ha ricevuto le prime due
+foto reali (di quattro previste) ed è stata rimontata — vedi § "Galleria"
+più sotto.
 
 La Hero di ogni sezione si configura da **`pageHeroes`** (`content.ts`): un
 record con `claim` (la riga sotto il wordmark) e, opzionalmente, `imageSrc` +
@@ -640,6 +635,50 @@ una CTA a piena larghezza su `bg-gradient-to-br from-terracotta to-terracotta-da
   colori, massimo contrasto), il secondario è **outline crema** — stesso
   trattamento outline-su-scuro già usato nella CTA della FAQ.
 
+### Galleria (`components/sections/Gallery.tsx`)
+
+Ultima delle quattro sezioni inizialmente vuote a uscire da quello stato: il
+31 luglio 2026 ha ricevuto le prime due foto reali fornite dalla
+proprietaria (su quattro previste, le altre due arriveranno in seguito — non
+è stato riempito con placeholder per arrivare a quattro, stessa filosofia
+di `partners: []` prima del primo partner).
+
+- **Layout a cascata (masonry), non griglia**: `columns-2 sm:columns-3
+  lg:columns-4` (CSS multi-column, non CSS grid) con ogni card
+  `break-inside-avoid`. A differenza di una grid a righe, le colonne
+  ridistribuiscono da sole ogni card nella colonna più corta — necessario
+  perché le foto non condividono tutte lo stesso rapporto d'aspetto (a
+  differenza della vecchia griglia `aspect-square`, che forzava ogni cella
+  allo stesso formato tagliando le foto). Scelta CSS pura, senza libreria
+  (stessa filosofia di `HorizontalScroller`/`AbruzzoMap`): un vero layout
+  Pinterest via JS (che rioordina gli elementi per bilanciare l'altezza delle
+  colonne) sarebbe stato overkill per un numero di foto a una cifra.
+- **`GalleryImage` (`content.shared.ts`) ha `width`/`height` obbligatori**:
+  servono a `next/image` (usato qui **senza** `fill`, a differenza delle
+  altre immagini del sito) per riservare lo spazio corretto di ogni card
+  prima che la foto finisca di caricare, evitando un salto di layout (CLS) —
+  in un layout a cascata l'altezza di ogni card dipende dal suo stesso
+  rapporto d'aspetto, non da un contenitore a dimensione fissa come nelle
+  griglie `aspect-square`/`fill` usate altrove.
+- **`description` obbligatoria** (non opzionale come `logoAlt` dei partner):
+  ogni foto ha una breve didascalia, mostrata in due punti — su un overlay
+  sfumato (`bg-gradient-to-t from-ink/70`) che appare al passaggio del mouse
+  sopra la card nella griglia, insieme a un'icona `ZoomIn` che segnala che è
+  cliccabile; e sotto la foto ingrandita nel lightbox, sempre visibile lì
+  (non serve hover quando la foto occupa già tutto lo schermo).
+- **Lightbox** (riusato dalla versione precedente, mai smontato con il resto
+  del componente): overlay scuro a piena pagina, frecce prev/next che
+  ciclano con il modulo (`% galleryImages.length`), chiusura in tre modi
+  (bottone X, click sullo sfondo, non sulla foto o sulla didascalia grazie a
+  `stopPropagation`). "Zoomabile" qui significa apertura di una versione
+  ingrandita a schermo intero, non pan/pinch-zoom interattivo — coerente con
+  l'uso di un hotel che vuole mostrare gli ambienti, non un editor immagini.
+- **`ImagePlaceholder` ha guadagnato un prop `style`** (era `label`/
+  `className` soli) per poter passare `aspectRatio` inline quando una foto
+  non è ancora disponibile ma le sue dimensioni finali sono già note — non
+  sfruttato oggi (le due foto attuali sono entrambe reali) ma pronto per le
+  prossime due, se arriveranno prima delle dimensioni definitive.
+
 ### "Comfort & Informazioni" (`components/sections/Amenities.tsx`)
 
 Prima sezione tra le quattro inizialmente vuote a ricevere i contenuti reali
@@ -907,9 +946,10 @@ mostrano `ImagePlaceholder` invece di un `next/image` rotto:
 
 | Campo | Usato da | Stato |
 |---|---|---|
-| `heroImageSrc` | `Hero`, `About`, `Gallery` | `/images/hero.jpg` (provvisoria) |
+| `heroImageSrc` | `Hero`, `About` | `/images/hero.jpg` (provvisoria) |
 | `positionImageSrc` | `LocationTeaser` | `/images/sulmona-piazza-garibaldi-tramonto.webp` (scatto al tramonto, dal cliente) |
 | `faqImageSrc` | `Faq` | `/images/statua-di-ovidio.jpg` (fondo della colonna editoriale) |
+| `galleryImages[].src` | `Gallery` | 2 foto reali su 4 previste (`public/images/gallery/`) |
 | — | `HomeIntro` | placeholder: manca la foto de "La Nostra Storia" |
 
 Quando arrivano le foto definitive:
