@@ -194,10 +194,16 @@ lingua" è normale, non un bug.
   telefono, email, indirizzo), `addressParts`, `propertyCoordinates`,
   `propertyFacts`, `siteUrl`, `showFullNav`, `navRoutes` (id + href, senza
   etichetta), i percorsi immagine (`heroImageSrc`, ecc.), le chiavi icona,
-  `partners` (resta condiviso finché è vuoto — non c'è nulla da tradurre).
+  `partnerTierIds` (id delle fasce di sconto, senza etichetta — stesso
+  criterio di `navRoutes`). `partners` invece **non** è più qui: dal 31
+  luglio 2026, con il primo partner reale, si è spostato per lingua (vedi
+  sotto) perché categoria e descrizione sono prosa da tradurre — il nome
+  proprio dell'attività resta comunque identico in entrambi i file, come gli
+  altri nomi propri.
 - **`src/lib/content.it.ts`** / **`src/lib/content.en.ts`** — stessa forma
   esportata, solo prosa tradotta: `heroClaim`, `aboutPage`, `amenitiesPage`,
-  `faqs`, `locationPage`, `homeIntro`, `navLabels`, e un namespace **`ui`**
+  `faqs`, `locationPage`, `homeIntro`, `navLabels`, `partners`,
+  `partnerTierLabels`, e un namespace **`ui`**
   che raccoglie le ~25 stringhe che prima del 30 luglio 2026 erano hardcoded
   nel JSX dei componenti (aria-label, segnaposto come "Risposta in arrivo.",
   copy delle sezioni ancora smontate) — un solo posto dove chi traduce deve
@@ -784,39 +790,67 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
 
 ### "I Nostri Partner" (`components/sections/Partners.tsx`)
 
-Terza sezione tra le quattro inizialmente vuote a uscire da quello stato, ma
-con una differenza rispetto ad `Amenities`/`Location`: non ci sono ancora
-convenzioni reali da mostrare, quindi montarla non significa avere contenuti
-veri, bensì **uno stato vuoto onesto** al posto dei tre partner di fantasia
-che c'erano prima (`Trattoria del Borgo` e simili, TODO storico). `partners`
-in `content.ts` è oggi un array vuoto: quando la proprietaria firma la prima
-convenzione, basta aggiungere un oggetto e la sezione passa da sola dallo
-stato vuoto alla griglia, senza toccare `Partners.tsx`.
+Terza sezione tra le quattro inizialmente vuote a uscire da quello stato: il
+30 luglio 2026 era ancora uno **stato vuoto onesto** al posto dei tre partner
+di fantasia che c'erano prima (`Trattoria del Borgo` e simili); il 31 luglio
+2026 ha ricevuto il primo partner reale (Cafè Piazza Tresca) e in
+quell'occasione è stata ristrutturata da griglia piatta a **fasce di sconto**
+su richiesta del cliente.
 
 - **Stato vuoto**: icona `Handshake` + "Le prime convenzioni sono in arrivo",
-  al posto della griglia, quando `partners.length === 0`. Stessa filosofia
-  di `Location` prima di avere l'indirizzo definitivo (segnaposto testuale
+  quando non c'è nessuna fascia con almeno un partner. Stessa filosofia di
+  `Location` prima di avere l'indirizzo definitivo (segnaposto testuale
   onesto, non un contenuto inventato).
-- **`Partner` (`content.ts`) ha `logoSrc`/`logoAlt` opzionali**: se assente,
-  la cella mostra un riquadro tratteggiato con la scritta "Logo in arrivo",
-  **non** `ImagePlaceholder` — quel componente ha un glifo "CC" pensato per
-  foto a piena cella (Hero, gallery), a scala di logo (una cella di ~80px di
-  altezza) risulterebbe sproporzionato e leggibile male. Un logo è anche
-  l'identità visiva di un'altra attività: simularne uno finto sarebbe più
-  fuorviante che utile, a differenza di una foto della Dimora in arrivo.
+- **Fasce di sconto fisse** (`partnerTierIds` in `content.shared.ts`): `10`,
+  `15`, `20`, `gift` (omaggi gratuiti, senza percentuale) — quest'ordine è
+  anche l'ordine in cui compaiono in pagina. Ogni `Partner` ha un campo
+  `tier` che lo assegna a una fascia; **non ha più un campo `benefit` a testo
+  libero** (es. "15% di sconto sul menu") — lo sconto lo dice la fascia in
+  cui il partner si trova, non si ripete su ogni singola card. Le etichette
+  delle fasce (`partnerTierLabels`, per lingua) e l'icona (`Percent` per le
+  percentuali, `Gift` per gli omaggi) sono le uniche cose che indicano la
+  fascia; il raggruppamento vero e proprio (partner filtrati per `tier`,
+  fasce vuote escluse) è calcolato una volta sola in `getContent()`
+  (`content.ts`, campo `partnerTiers`), non in `Partners.tsx` — stesso motivo
+  per cui `navLinks` è ricomposto lì e non nei componenti.
+- **`Partner` (`content.shared.ts`) ha `logoSrc`/`logoAlt` opzionali**: se
+  assente, la cella mostra un riquadro tratteggiato con la scritta "Logo in
+  arrivo", **non** `ImagePlaceholder` — quel componente ha un glifo "CC"
+  pensato per foto a piena cella (Hero, gallery), a scala di logo
+  risulterebbe sproporzionato e leggibile male. Un logo è anche l'identità
+  visiva di un'altra attività: simularne uno finto sarebbe più fuorviante che
+  utile, a differenza di una foto della Dimora in arrivo. Il riquadro logo è
+  `h-32` (non `h-20` come nella prima versione): a `h-20`, con il padding sia
+  sul contenitore sia sull'`<Image fill>`, lo spazio effettivo per il logo
+  crollava a ~32px — troppo poco per un logotipo a più righe come quello di
+  Cafè Piazza Tresca, segnalato illeggibile dal cliente. Rimosso il padding
+  duplicato (restava solo quello del contenitore, l'`<Image fill>` si
+  posiziona già rispetto al suo *padding box*, non serve un secondo giro).
+- **Loghi con sfondo bianco**: se il file arriva come JPEG a sfondo bianco
+  pieno (tipico export da programmi di grafica o foto di un logo stampato),
+  va reso trasparente prima di salvarlo in `public/images/partners/` —
+  altrimenti il rettangolo bianco stona sulla cella scura (`bg-ink`) attorno
+  al riquadro crema del logo. Fatto per Cafè Piazza Tresca con `sharp`: letti
+  i pixel raw, mappata una soglia di "bianchezza" (media RGB) a un canale
+  alpha con una piccola zona di sfumatura (248→222) per non lasciare bordi
+  dentellati sulle aste sottili del carattere serif, poi ricomposto come PNG.
+  Script usa-e-getta, non conservato nel repo (stesso approccio delle
+  conversioni font, vedi § Font).
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
-  l'elemento, non lo stile).
+  l'elemento, non lo stile). Cafè Piazza Tresca punta al suo profilo Facebook
+  (non ha un sito proprio).
 - **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
   il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
   non applicata a `Location`, che la usa (`eyebrow="Posizione"`), inconsistenza
   nota ma non ancora risolta lì.
 - **Griglia a celle divise da hairline** (`gap-px` su `bg-cream/10`, sfondo
-  scuro `bg-ink`): pensata per restare equilibrata con poche voci (3-6), non
-  per decine di partner — da rivedere se la rete crescesse molto oltre quella
-  scala.
+  scuro `bg-ink`) **dentro ogni fascia**, non più su tutti i partner insieme:
+  pensata per restare equilibrata con poche voci per fascia (3-6), non per
+  decine di partner — da rivedere se una singola fascia crescesse molto oltre
+  quella scala.
 
 ### FAQ (`components/sections/Faq.tsx`)
 

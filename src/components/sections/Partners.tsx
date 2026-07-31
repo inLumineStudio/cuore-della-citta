@@ -1,17 +1,56 @@
 import Image from "next/image";
-import { Handshake } from "lucide-react";
+import { Gift, Handshake, Percent } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { getContent } from "@/lib/content";
-import { partners } from "@/lib/content.shared";
+import { getContent, type Partner } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
 
 type PartnersProps = {
   locale: Locale;
 };
 
+function PartnerCard({ partner, logoAltPrefix, logoComingSoon }: { partner: Partner; logoAltPrefix: string; logoComingSoon: string }) {
+  const content = (
+    <div className="flex flex-col gap-5">
+      {partner.logoSrc ? (
+        <div className="relative h-32 w-full overflow-hidden rounded-sm bg-cream p-4">
+          <Image
+            src={partner.logoSrc}
+            alt={partner.logoAlt ?? `${logoAltPrefix} ${partner.name}`}
+            fill
+            className="object-contain"
+          />
+        </div>
+      ) : (
+        <div className="flex h-32 w-full items-center justify-center rounded-sm border border-dashed border-cream/20">
+          <span className="text-[0.7rem] tracking-[0.2em] text-cream/40 uppercase">{logoComingSoon}</span>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-3">
+        <span className="text-xs font-semibold tracking-[0.2em] text-amber-soft uppercase">{partner.category}</span>
+        <h3 className="font-display text-xl">{partner.name}</h3>
+        <p className="text-sm text-cream/70 leading-relaxed">{partner.description}</p>
+      </div>
+    </div>
+  );
+
+  return partner.websiteUrl ? (
+    <a
+      href={partner.websiteUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-ink p-8 transition-colors hover:bg-ink-soft"
+    >
+      {content}
+    </a>
+  ) : (
+    <div className="bg-ink p-8">{content}</div>
+  );
+}
+
 export function Partners({ locale }: PartnersProps) {
-  const { ui } = getContent(locale);
+  const { ui, partnerTiers } = getContent(locale);
 
   return (
     <section className="py-24 sm:py-32 bg-ink text-cream">
@@ -22,7 +61,7 @@ export function Partners({ locale }: PartnersProps) {
           tone="light"
         />
 
-        {partners.length === 0 ? (
+        {partnerTiers.length === 0 ? (
           <div className="flex flex-col items-center gap-4 rounded-sm border border-dashed border-cream/20 py-20 text-center">
             <Handshake className="h-8 w-8 text-amber" strokeWidth={1.5} />
             <p className="text-xs tracking-[0.2em] text-cream/60 uppercase">
@@ -30,53 +69,30 @@ export function Partners({ locale }: PartnersProps) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm bg-cream/10 sm:grid-cols-3">
-            {partners.map((partner) => {
-              const content = (
-                <div className="flex flex-col gap-5">
-                  {partner.logoSrc ? (
-                    <div className="relative h-20 w-full overflow-hidden rounded-sm bg-cream p-4">
-                      <Image
-                        src={partner.logoSrc}
-                        alt={partner.logoAlt ?? `${ui.partnerLogoAltPrefix} ${partner.name}`}
-                        fill
-                        className="object-contain p-2"
-                      />
-                    </div>
+          <div className="flex flex-col gap-12">
+            {partnerTiers.map((tier) => (
+              <div key={tier.id} className="flex flex-col gap-6">
+                <div className="flex items-center gap-2.5 text-amber-soft">
+                  {tier.id === "gift" ? (
+                    <Gift className="h-4 w-4" strokeWidth={1.75} />
                   ) : (
-                    <div className="flex h-20 w-full items-center justify-center rounded-sm border border-dashed border-cream/20">
-                      <span className="text-[0.7rem] tracking-[0.2em] text-cream/40 uppercase">
-                        {ui.partnersLogoComingSoon}
-                      </span>
-                    </div>
+                    <Percent className="h-4 w-4" strokeWidth={1.75} />
                   )}
-
-                  <div className="flex flex-col gap-3">
-                    <span className="text-xs font-semibold tracking-[0.2em] text-amber-soft uppercase">
-                      {partner.category}
-                    </span>
-                    <h3 className="font-display text-xl">{partner.name}</h3>
-                    <p className="text-sm text-cream/70 leading-relaxed">{partner.perk}</p>
-                  </div>
+                  <span className="text-sm font-semibold tracking-[0.25em] uppercase">{tier.title}</span>
                 </div>
-              );
 
-              return partner.websiteUrl ? (
-                <a
-                  key={partner.name}
-                  href={partner.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-ink p-8 transition-colors hover:bg-ink-soft"
-                >
-                  {content}
-                </a>
-              ) : (
-                <div key={partner.name} className="bg-ink p-8">
-                  {content}
+                <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm bg-cream/10 sm:grid-cols-3">
+                  {tier.partners.map((partner) => (
+                    <PartnerCard
+                      key={partner.name}
+                      partner={partner}
+                      logoAltPrefix={ui.partnerLogoAltPrefix}
+                      logoComingSoon={ui.partnersLogoComingSoon}
+                    />
+                  ))}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
       </Container>

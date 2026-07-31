@@ -2,7 +2,16 @@
 // contenuto qui deve specularmente controllare l'altro file. Nomi propri e
 // dati condivisi (indirizzo, telefono, percorsi immagine) vivono in
 // `content.shared.ts`, non qui.
-import type { AmenityGroup, Faq, GalleryImage, NavRouteId, PageHero, PointOfInterest } from "./content.shared";
+import type {
+  AmenityGroup,
+  Faq,
+  GalleryImage,
+  NavRouteId,
+  PageHero,
+  Partner,
+  PartnerTierId,
+  PointOfInterest,
+} from "./content.shared";
 
 export const siteConfig = {
   shortTagline: "Un rifugio autentico nel cuore del centro storico",
@@ -263,6 +272,31 @@ export const faqs: Faq[] = [
   { question: "Lenzuola e asciugamani sono inclusi?", answer: "Sì, lenzuola e asciugamani sono inclusi." },
   { question: "La cucina è completamente attrezzata?", answer: "Sì, la cucina è completa e attrezzata, con microonde e macchina del caffè a capsule." },
   { question: "Come posso contattarvi durante il soggiorno?", answer: "Siamo raggiungibili per telefono o su WhatsApp, allo stesso numero della prenotazione." },
+];
+
+// Etichette delle fasce di sconto (`partnerTierIds` in content.shared.ts).
+export const partnerTierLabels: Record<PartnerTierId, string> = {
+  "10": "10% di sconto",
+  "15": "15% di sconto",
+  "20": "20% di sconto",
+  gift: "Omaggi gratuiti",
+};
+
+// Rete di convenzioni con attività del territorio: sconti riservati a chi
+// soggiorna alla Dimora.
+// TODO: descrizione di Cafè Piazza Tresca ancora una bozza - da confermare
+// con la proprietaria insieme al resto del testo.
+export const partners: Partner[] = [
+  {
+    name: "Cafè Piazza Tresca",
+    category: "Tabaccheria & Ricevitoria",
+    tier: "20",
+    description:
+      "Il bar convenzionato per la colazione degli ospiti della Dimora: caffetteria completa a pochi passi dalla struttura, nel cuore del centro storico.",
+    logoSrc: "/images/partners/piazza-tresca-cafe.png",
+    logoAlt: "Logo di Cafè Piazza Tresca",
+    websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
 ];
 
 // Stringhe di interfaccia finora hardcoded nel JSX dei componenti (mai state

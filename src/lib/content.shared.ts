@@ -117,27 +117,40 @@ export type AmenityGroup = {
   items: AmenityItem[];
 };
 
+// Fasce di sconto fisse: tre percentuali più un gruppo "omaggi" (prodotti
+// offerti gratuitamente, senza percentuale). L'ordine di questo array è
+// l'ordine in cui le fasce compaiono nella sezione Partner - aggiungerne una
+// nuova significa aggiungere un id qui e la relativa etichetta in
+// `partnerTierLabels` (`content.it.ts`/`content.en.ts`).
+export const partnerTierIds = ["10", "15", "20", "gift"] as const;
+export type PartnerTierId = (typeof partnerTierIds)[number];
+
 export type Partner = {
-  category: string;
+  // Nome proprio dell'attività: non si traduce, stessa logica di `name`/
+  // `fullName` qui sopra.
   name: string;
-  perk: string;
+  // Categoria e descrizione sono prosa (si leggono, non sono un dato
+  // strutturale) e vivono per lingua in `content.it.ts`/`content.en.ts`
+  // insieme al resto dell'array `partners` - questo tipo resta qui solo
+  // perché condiviso dai due moduli.
+  category: string;
+  // Quale fascia di sconto mostra questo partner: la sezione raggruppa le
+  // card per fascia, l'etichetta ("20% di sconto") non si ripete più su
+  // ogni singola card.
+  tier: PartnerTierId;
+  // Cosa offre l'attività e a cosa si applica lo sconto/omaggio.
+  description: string;
   // Se assente, la cella mostra un segnaposto testuale ("Logo in arrivo"),
   // non un'immagine finta: un logo è un'identità visiva altrui, diversamente
   // da una foto della struttura non ha senso simularlo con un placeholder
   // grafico. Stessa filosofia di `faqs[].answer` ("Risposta in arrivo.").
+  // Path condiviso (non per lingua): un'immagine non si traduce.
   logoSrc?: string;
   logoAlt?: string;
   // Se presente, l'intera scheda diventa un link verso il sito/social del
-  // partner; se assente resta statica.
+  // partner; se assente resta statica. Condiviso: stesso URL in ogni lingua.
   websiteUrl?: string;
 };
-
-// Ancora vuoto: nessuna attività del territorio ha aderito alla rete di
-// convenzioni. Resta condiviso tra le lingue (non per-locale) perché finché
-// è vuoto non c'è nulla da tradurre; quando arriverà il primo partner reale
-// si valuterà se nome/categoria/perk vadano duplicati per lingua (i nomi di
-// attività terze di norma non si traducono comunque).
-export const partners: Partner[] = [];
 
 export type GalleryImage = {
   src?: string;

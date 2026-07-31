@@ -16,6 +16,7 @@ export type {
   NavRouteId,
   PageHero,
   Partner,
+  PartnerTierId,
   PointOfInterest,
 } from "./content.shared";
 
@@ -49,5 +50,15 @@ export function getContent(locale: Locale) {
       href: route.href,
       label: l.navLabels[route.id],
     })),
+    // Partner raggruppati per fascia di sconto (`partnerTierIds`), nell'ordine
+    // in cui vanno mostrati; le fasce senza partner non compaiono qui, così
+    // il componente non deve occuparsene.
+    partnerTiers: shared.partnerTierIds
+      .map((id) => ({
+        id,
+        title: l.partnerTierLabels[id],
+        partners: l.partners.filter((partner) => partner.tier === id),
+      }))
+      .filter((tier) => tier.partners.length > 0),
   };
 }

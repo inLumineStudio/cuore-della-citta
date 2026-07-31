@@ -12,7 +12,16 @@
 // throughout as a signature word for the property itself (same word used in
 // `siteConfigShared.fullName`), the way many Italian properties keep one
 // Italian word for character in their English copy.
-import type { AmenityGroup, Faq, GalleryImage, NavRouteId, PageHero, PointOfInterest } from "./content.shared";
+import type {
+  AmenityGroup,
+  Faq,
+  GalleryImage,
+  NavRouteId,
+  PageHero,
+  Partner,
+  PartnerTierId,
+  PointOfInterest,
+} from "./content.shared";
 
 export const siteConfig = {
   shortTagline: "An authentic retreat in the heart of the historic center",
@@ -270,6 +279,31 @@ export const faqs: Faq[] = [
   { question: "Are bed linen and towels included?", answer: "Yes, bed linen and towels are included." },
   { question: "Is the kitchen fully equipped?", answer: "Yes, the kitchen is complete and fully equipped, with a microwave and a capsule coffee machine." },
   { question: "How can I contact you during my stay?", answer: "You can reach us by phone or on WhatsApp, at the same number used for booking." },
+];
+
+// Discount tier labels (`partnerTierIds` in content.shared.ts).
+export const partnerTierLabels: Record<PartnerTierId, string> = {
+  "10": "10% off",
+  "15": "15% off",
+  "20": "20% off",
+  gift: "Free perks",
+};
+
+// Network of partnerships with local businesses: discounts reserved for
+// guests staying at the Dimora.
+// TODO: Cafè Piazza Tresca's description is still a draft - to confirm with
+// the owner along with the rest of the copy.
+export const partners: Partner[] = [
+  {
+    name: "Cafè Piazza Tresca",
+    category: "Tobacconist & Lottery Point",
+    tier: "20",
+    description:
+      "Our partner café for breakfast: a full coffee bar just steps from the property, in the heart of the historic center.",
+    logoSrc: "/images/partners/piazza-tresca-cafe.png",
+    logoAlt: "Cafè Piazza Tresca logo",
+    websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
 ];
 
 // Interface strings so far hardcoded in component JSX (never lived in
