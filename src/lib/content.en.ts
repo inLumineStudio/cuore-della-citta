@@ -292,7 +292,8 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 // Network of partnerships with local businesses: discounts reserved for
 // guests staying at the Dimora.
 // TODO: Cafè Piazza Tresca's description is still a draft - to confirm with
-// the owner along with the rest of the copy.
+// the owner along with the rest of the copy. Not the case for inLumine
+// Studio: the studio that built this site, copy is final.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
@@ -303,6 +304,16 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Cafè Piazza Tresca logo",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
+  {
+    name: "inLumine Studio",
+    category: "Web Consulting & Design",
+    tier: "10",
+    description:
+      "Web consulting, website and online store development, digital identity and design: dedicated rates for guests staying at the Dimora.",
+    logoSrc: "/images/partners/inlumine-studio.svg",
+    logoAlt: "inLumine Studio logo",
+    websiteUrl: "https://www.inlumine.it",
   },
 ];
 

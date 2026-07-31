@@ -52,12 +52,14 @@ routing reale (non single-page ad anchor):
   prima bozza, quindi resta **smontato** e il cliente non lo vede. Il
   componente resta in repo, pronto da riagganciare quando arrivano i
   contenuti reali.
-- **`/partner`** — Hero + **`Partners`**, con il primo partner reale (31
+- **`/partner`** — Hero + **`Partners`**, con i primi due partner reali (31
   luglio 2026): **Cafè Piazza Tresca** (tabaccheria & ricevitoria con bar
-  colazioni, Sulmona), fascia di sconto 20%, scheda cliccabile verso il suo
-  profilo Facebook. La sezione è organizzata per **fasce di sconto** (10%,
-  15%, 20%, omaggi gratuiti) invece che come griglia piatta — vedi
-  `CLAUDE.md` § "I Nostri Partner". Non è più tra le sezioni smontate.
+  colazioni, Sulmona, fascia 20%, scheda verso il suo profilo Facebook) e
+  **inLumine Studio** (lo studio che ha realizzato il sito — consulenza web,
+  siti, eCommerce, identità digitale, design, fascia 10%, scheda verso
+  inlumine.it). La sezione è organizzata per **fasce di sconto** (10%, 15%,
+  20%, omaggi gratuiti) invece che come griglia piatta — vedi `CLAUDE.md` §
+  "I Nostri Partner". Non è più tra le sezioni smontate.
 
 La nav (`navLinks` in `content.ts`) ha oggi sei voci: **Homepage** (punta a `/`),
 La Dimora, Galleria, Comfort & Informazioni (rinominata da "Servizi & Comfort",
@@ -242,12 +244,10 @@ visivo della Hero del sito, non un design a parte.
   convenzioni come già attive quando ancora non lo erano** — richiesta
   esplicita della cliente dopo che glielo avevo segnalato, per motivare la
   prenotazione da subito nonostante le trattative fossero ancora in corso.
-  **Parzialmente riallineato il 31 luglio 2026**: il primo partner reale
-  (Cafè Piazza Tresca, vedi TODO 3) è stato aggiunto alla sezione Partner del
-  sito, quindi chi scansiona il QR oggi trova almeno una convenzione attiva —
-  non più zero, ma ancora una sola contro il tono generico "presso le
-  migliori attività" della locandina. Resta da aggiornare quando arriveranno
-  le prossime.
+  **Riallineato il 31 luglio 2026**: la sezione Partner del sito ha ora due
+  convenzioni reali (Cafè Piazza Tresca e inLumine Studio, vedi TODO 3),
+  quindi chi scansiona il QR oggi trova contenuto vero dietro il tono
+  generico "presso le migliori attività" della locandina, non più zero.
 
 ## Cosa manca / TODO prima della messa online
 
@@ -277,14 +277,16 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    Resta placeholder solo l'**email** in `siteConfigShared`
    (`content.shared.ts`) — ancora da ricevere.
 3. **Contenuti delle sezioni ancora vuote** — **parzialmente fatto**. Partner
-   ha ricevuto il primo partner reale il 31 luglio 2026: **Cafè Piazza
-   Tresca** (tabaccheria & ricevitoria con bar colazioni), fascia di sconto
-   20%, descrizione ancora una bozza da confermare con la proprietaria
-   (marcata `TODO` in `content.it.ts`/`content.en.ts`). La sezione è stata
-   anche ristrutturata a **fasce di sconto** (10%/15%/20%/omaggi, vedi
-   `CLAUDE.md` § "I Nostri Partner") su richiesta della cliente — pronta a
-   ricevere altri partner nelle altre fasce non appena firmati. **Galleria
-   resta smontata**: il componente esiste già ma i dati sono ancora
+   ha ricevuto i primi due partner reali il 31 luglio 2026: **Cafè Piazza
+   Tresca** (tabaccheria & ricevitoria con bar colazioni, fascia 20%,
+   descrizione ancora una bozza da confermare con la proprietaria, marcata
+   `TODO` in `content.it.ts`/`content.en.ts`) e **inLumine Studio** (lo
+   studio che ha realizzato il sito, fascia 10%, copy definitivo). La
+   sezione è stata anche ristrutturata a **fasce di sconto** (10%/15%/20%/
+   omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta della cliente
+   — pronta a ricevere altri partner nelle fasce ancora vuote (15%) non
+   appena firmati. **Galleria resta smontata**: il componente esiste già ma
+   i dati sono ancora
    esemplificativi (`galleryImages`, quattro voci che puntano tutte alla
    stessa foto). Azione: riscrivere i contenuti col cliente e rimontare
    `Gallery` in `galleria/page.tsx` — può ripartire dalle foto in arrivo
@@ -318,9 +320,9 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    in Hero e `StickyHeader`. Nomi propri (Sulmona, monumenti, la citazione di
    Ovidio, l'indirizzo) non tradotti; la galleria, ancora smontata, resta
    vuota in entrambe le lingue finché non arrivano i contenuti reali (punto
-   3) — Partner invece ha già il suo primo partner tradotto in entrambe le
-   lingue (nome non tradotto, categoria e descrizione sì, come da convenzione
-   di `content.it.ts`/`content.en.ts`).
+   3) — Partner invece ha già i suoi primi due partner tradotti in entrambe
+   le lingue (nome non tradotto, categoria e descrizione sì, come da
+   convenzione di `content.it.ts`/`content.en.ts`).
 8. **Dominio definitivo** — confermato dalla proprietaria il 30 luglio 2026:
    sarà **`dimoracuoredellacitta.it`** (non più `cuoredellacitta.it`, il
    placeholder usato finora). `siteUrl` in `content.shared.ts` è già stato
@@ -361,7 +363,7 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 ## Prossimo passo consigliato
 
 Homepage, "/la-dimora", "/servizi-comfort", "/posizione" e "/partner" sono le
-cinque sezioni complete (quest'ultima con un solo partner per ora, ma
+cinque sezioni complete (quest'ultima con due partner per ora, ma
 strutturalmente pronta a crescere). Resta solo **galleria**, che esiste con
 la sua Hero ma **aspetta i contenuti**: stesso lavoro già fatto per le altre
 (copy scritto insieme, foto dedicate, blocco rimontato).

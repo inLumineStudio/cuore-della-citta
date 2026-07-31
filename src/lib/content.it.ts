@@ -285,7 +285,8 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 // Rete di convenzioni con attività del territorio: sconti riservati a chi
 // soggiorna alla Dimora.
 // TODO: descrizione di Cafè Piazza Tresca ancora una bozza - da confermare
-// con la proprietaria insieme al resto del testo.
+// con la proprietaria insieme al resto del testo. inLumine Studio non ha
+// questo TODO: è lo studio che ha realizzato il sito, il testo è definitivo.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
@@ -296,6 +297,16 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Logo di Cafè Piazza Tresca",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
+  {
+    name: "inLumine Studio",
+    category: "Consulenza Web & Design",
+    tier: "10",
+    description:
+      "Consulenza web, creazione di siti e negozi online, identità digitale e design: condizioni dedicate a chi soggiorna alla Dimora.",
+    logoSrc: "/images/partners/inlumine-studio.svg",
+    logoAlt: "Logo di inLumine Studio",
+    websiteUrl: "https://www.inlumine.it",
   },
 ];
 

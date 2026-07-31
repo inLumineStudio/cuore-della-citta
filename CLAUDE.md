@@ -793,9 +793,12 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
 Terza sezione tra le quattro inizialmente vuote a uscire da quello stato: il
 30 luglio 2026 era ancora uno **stato vuoto onesto** al posto dei tre partner
 di fantasia che c'erano prima (`Trattoria del Borgo` e simili); il 31 luglio
-2026 ha ricevuto il primo partner reale (Cafè Piazza Tresca) e in
-quell'occasione è stata ristrutturata da griglia piatta a **fasce di sconto**
-su richiesta del cliente.
+2026 ha ricevuto i primi due partner reali — **Cafè Piazza Tresca** (fascia
+20%) e **inLumine Studio** (fascia 10%, lo studio che ha realizzato il sito:
+consulenza web, siti, eCommerce, identità digitale, design, condizioni
+dedicate agli ospiti della Dimora) — e in quell'occasione è stata
+ristrutturata da griglia piatta a **fasce di sconto** su richiesta del
+cliente.
 
 - **Stato vuoto**: icona `Handshake` + "Le prime convenzioni sono in arrivo",
   quando non c'è nessuna fascia con almeno un partner. Stessa filosofia di
@@ -836,11 +839,21 @@ su richiesta del cliente.
   dentellati sulle aste sottili del carattere serif, poi ricomposto come PNG.
   Script usa-e-getta, non conservato nel repo (stesso approccio delle
   conversioni font, vedi § Font).
+- **Logo di inLumine Studio** (`public/images/partners/inlumine-studio.svg`):
+  copiato da `inlumine-logo-on-white.svg` nel repo di brand dell'agenzia
+  (`inlumine/brand/`), **non** dalla variante `-on-black` inizialmente
+  indicata — quella ha un badge nero pieno che avrebbe stonato allo stesso
+  modo (rettangolo scuro dentro il riquadro crema del logo, opposto al
+  problema del punto sopra ma stesso effetto). La variante `-on-white` è già
+  un badge quadrato bianco con testo vettorializzato (nessun font richiesto),
+  pensata apposta per stare su sfondi chiari — si integra nel riquadro crema
+  senza bisogno di lavorazione.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
   l'elemento, non lo stile). Cafè Piazza Tresca punta al suo profilo Facebook
-  (non ha un sito proprio).
+  (non ha un sito proprio), inLumine Studio al proprio sito
+  (`inlumine.it`).
 - **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
   il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
