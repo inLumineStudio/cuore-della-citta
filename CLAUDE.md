@@ -638,10 +638,10 @@ una CTA a piena larghezza su `bg-gradient-to-br from-terracotta to-terracotta-da
 ### Galleria (`components/sections/Gallery.tsx`)
 
 Ultima delle quattro sezioni inizialmente vuote a uscire da quello stato: il
-31 luglio 2026 ha ricevuto le prime due foto reali fornite dalla
-proprietaria (su quattro previste, le altre due arriveranno in seguito — non
-è stato riempito con placeholder per arrivare a quattro, stessa filosofia
-di `partners: []` prima del primo partner).
+31 luglio 2026 ha ricevuto il set completo delle quattro foto reali fornite
+dalla proprietaria (due scattate il 22 luglio, due il 31 — trovate tutte sul
+Desktop del cliente, non nella sottocartella con un lotto diverso di scatti
+con nome simile).
 
 - **Layout a cascata (masonry), non griglia**: `columns-2 sm:columns-3
   lg:columns-4` (CSS multi-column, non CSS grid) con ogni card
@@ -660,24 +660,22 @@ di `partners: []` prima del primo partner).
   in un layout a cascata l'altezza di ogni card dipende dal suo stesso
   rapporto d'aspetto, non da un contenitore a dimensione fissa come nelle
   griglie `aspect-square`/`fill` usate altrove.
-- **`description` obbligatoria** (non opzionale come `logoAlt` dei partner):
-  ogni foto ha una breve didascalia, mostrata in due punti — su un overlay
-  sfumato (`bg-gradient-to-t from-ink/70`) che appare al passaggio del mouse
-  sopra la card nella griglia, insieme a un'icona `ZoomIn` che segnala che è
-  cliccabile; e sotto la foto ingrandita nel lightbox, sempre visibile lì
-  (non serve hover quando la foto occupa già tutto lo schermo).
+- **Nessuna didascalia**: un primo giro aveva `description` come campo
+  obbligatorio su `GalleryImage`, mostrata in overlay al passaggio del mouse
+  e sotto la foto nel lightbox — tolta su richiesta esplicita del cliente
+  ("non serve"). Solo `alt` resta, per accessibilità, mai mostrato a schermo.
 - **Lightbox** (riusato dalla versione precedente, mai smontato con il resto
   del componente): overlay scuro a piena pagina, frecce prev/next che
-  ciclano con il modulo (`% galleryImages.length`), chiusura in tre modi
-  (bottone X, click sullo sfondo, non sulla foto o sulla didascalia grazie a
+  ciclano con il modulo (`% galleryImages.length`), chiusura in due modi
+  (bottone X o click sullo sfondo, non sulla foto grazie a
   `stopPropagation`). "Zoomabile" qui significa apertura di una versione
   ingrandita a schermo intero, non pan/pinch-zoom interattivo — coerente con
   l'uso di un hotel che vuole mostrare gli ambienti, non un editor immagini.
 - **`ImagePlaceholder` ha guadagnato un prop `style`** (era `label`/
   `className` soli) per poter passare `aspectRatio` inline quando una foto
   non è ancora disponibile ma le sue dimensioni finali sono già note — non
-  sfruttato oggi (le due foto attuali sono entrambe reali) ma pronto per le
-  prossime due, se arriveranno prima delle dimensioni definitive.
+  sfruttato oggi (tutte e quattro le foto sono reali) ma pronto per il
+  prossimo giro di scatti.
 
 ### "Comfort & Informazioni" (`components/sections/Amenities.tsx`)
 
@@ -949,7 +947,7 @@ mostrano `ImagePlaceholder` invece di un `next/image` rotto:
 | `heroImageSrc` | `Hero`, `About` | `/images/hero.jpg` (provvisoria) |
 | `positionImageSrc` | `LocationTeaser` | `/images/sulmona-piazza-garibaldi-tramonto.webp` (scatto al tramonto, dal cliente) |
 | `faqImageSrc` | `Faq` | `/images/statua-di-ovidio.jpg` (fondo della colonna editoriale) |
-| `galleryImages[].src` | `Gallery` | 2 foto reali su 4 previste (`public/images/gallery/`) |
+| `galleryImages[].src` | `Gallery` | 4 foto reali, set completo (`public/images/gallery/`) |
 | — | `HomeIntro` | placeholder: manca la foto de "La Nostra Storia" |
 
 Quando arrivano le foto definitive:

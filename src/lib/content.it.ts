@@ -190,20 +190,30 @@ export const amenitiesPage = {
   ctaSecondaryLabel: "Contattaci su WhatsApp",
 };
 
-// Prime due foto reali fornite dalla proprietaria il 31 luglio 2026.
-// TODO: mancano ancora le altre due per arrivare a un set di quattro.
+// Set completo di quattro foto reali fornite dalla proprietaria (due il 22
+// luglio, due il 31 luglio 2026).
 export const galleryImages: GalleryImage[] = [
+  {
+    src: "/images/gallery/sulmona-dimora-camera-matrimoniale.webp",
+    alt: "La camera matrimoniale della Dimora, con soffitto a volta in mattoni e vista sul centro storico",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-seconda-camera.webp",
+    alt: "La seconda camera della Dimora, con angolo scrittoio",
+    width: 2048,
+    height: 1536,
+  },
   {
     src: "/images/gallery/sulmona-dimora-soggiorno-cucina.webp",
     alt: "Il soggiorno con angolo cottura della Dimora, con vista sulla camera da letto",
-    description: "Il soggiorno con angolo cottura, aperto sulla camera da letto.",
     width: 1600,
     height: 1200,
   },
   {
     src: "/images/gallery/sulmona-centro-storico-piazza.webp",
     alt: "Una piazza del centro storico di Sulmona, a pochi passi dalla Dimora",
-    description: "Le vie del centro storico, a pochi passi dalla porta di casa.",
     width: 1600,
     height: 1200,
   },

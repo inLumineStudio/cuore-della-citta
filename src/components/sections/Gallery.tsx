@@ -65,9 +65,8 @@ export function Gallery({ locale }: GalleryProps) {
                   style={{ aspectRatio: `${image.width} / ${image.height}` }}
                 />
               )}
-              <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-ink/70 via-transparent to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                <ZoomIn className="ml-auto h-5 w-5 text-cream" strokeWidth={1.5} />
-                <p className="text-left text-sm leading-snug text-cream">{image.description}</p>
+              <div className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-200 group-hover:bg-ink/30 group-hover:opacity-100">
+                <ZoomIn className="h-6 w-6 text-cream" strokeWidth={1.5} />
               </div>
             </button>
           ))}
@@ -76,7 +75,7 @@ export function Gallery({ locale }: GalleryProps) {
 
       {activeIndex !== null && (
         <div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-ink/95 px-4 py-10"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95 px-4"
           onClick={() => setActiveIndex(null)}
         >
           <button
@@ -101,7 +100,7 @@ export function Gallery({ locale }: GalleryProps) {
           </button>
 
           <div
-            className="relative max-h-[75dvh] w-full max-w-3xl"
+            className="relative max-h-[85dvh] w-full max-w-3xl"
             onClick={(event) => event.stopPropagation()}
           >
             {galleryImages[activeIndex].src ? (
@@ -110,19 +109,12 @@ export function Gallery({ locale }: GalleryProps) {
                 alt={galleryImages[activeIndex].alt}
                 width={galleryImages[activeIndex].width}
                 height={galleryImages[activeIndex].height}
-                className="h-auto max-h-[75dvh] w-full object-contain"
+                className="h-auto max-h-[85dvh] w-full object-contain"
               />
             ) : (
               <ImagePlaceholder className="aspect-[4/3] w-full" />
             )}
           </div>
-
-          <p
-            className="max-w-xl text-center text-sm text-cream/80"
-            onClick={(event) => event.stopPropagation()}
-          >
-            {galleryImages[activeIndex].description}
-          </p>
 
           <button
             type="button"

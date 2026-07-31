@@ -196,20 +196,30 @@ export const amenitiesPage = {
   ctaSecondaryLabel: "Contact us on WhatsApp",
 };
 
-// First two real photos provided by the owner on 31 July 2026.
-// TODO: two more still needed to complete a set of four.
+// Full set of four real photos provided by the owner (two on 22 July, two
+// on 31 July 2026).
 export const galleryImages: GalleryImage[] = [
+  {
+    src: "/images/gallery/sulmona-dimora-camera-matrimoniale.webp",
+    alt: "The Dimora's double bedroom, with a vaulted brick ceiling and a view of the historic center",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-seconda-camera.webp",
+    alt: "The Dimora's second bedroom, with a small writing nook",
+    width: 2048,
+    height: 1536,
+  },
   {
     src: "/images/gallery/sulmona-dimora-soggiorno-cucina.webp",
     alt: "The Dimora's living room and kitchenette, with a view through to the bedroom",
-    description: "The living room and kitchenette, open onto the bedroom.",
     width: 1600,
     height: 1200,
   },
   {
     src: "/images/gallery/sulmona-centro-storico-piazza.webp",
     alt: "A square in Sulmona's historic center, just steps from the Dimora",
-    description: "The lanes of the historic center, just steps from home.",
     width: 1600,
     height: 1200,
   },

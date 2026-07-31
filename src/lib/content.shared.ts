@@ -155,10 +155,6 @@ export type Partner = {
 export type GalleryImage = {
   src?: string;
   alt: string;
-  // Breve didascalia mostrata sulla card al passaggio del mouse e nel
-  // lightbox. Prosa, quindi vive per lingua insieme al resto dell'array
-  // `galleryImages` (`content.it.ts`/`content.en.ts`), non qui.
-  description: string;
   // Dimensioni reali del file: servono al layout a cascata (CSS columns)
   // per riservare l'altezza corretta di ogni card prima che l'immagine
   // finisca di caricare, evitando che il testo sotto salti in su (CLS).
