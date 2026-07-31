@@ -199,6 +199,49 @@ sfruttata: `images.unoptimized: true`) — su una macchina dove quell'installazi
 opzionale fallisse silenziosamente, le conversioni WebP si sarebbero rotte
 senza preavviso. Ora è una devDependency esplicita.
 
+## Locandina pubblicitaria con QR (31 luglio 2026)
+
+Su richiesta della cliente: un PDF A4 pronto per la stampa, consegnato a
+parte (non è un asset del sito, non vive in questo repo). Riusa la foto
+reale della Hero (`public/images/hero.jpg`), i font del brand (Megdira per
+wordmark e claim, General Sans per copy e contatti) e la stessa palette
+(`--color-cream`/`--color-ink`/overlay scuro sulla foto) — stesso trattamento
+visivo della Hero del sito, non un design a parte.
+
+- **QR statico**, non un servizio a pagamento con redirect dinamico: il link
+  è codificato direttamente nell'immagine, generato in locale (libreria
+  `qrcode`, nessuna chiamata a servizi esterni), verificato per-decodifica
+  (libreria `jsqr`) sia isolato sia ritagliato dal PDF reso, in entrambi i
+  casi risolve esattamente in `https://www.dimoracuoredellacitta.it`.
+  **Attenzione**: essendo statico, se il dominio finale cambiasse andrebbe
+  ristampata — oggi non c'è motivo di aspettarselo (dominio confermato dalla
+  proprietaria, vedi TODO 8), ma vale la pena saperlo.
+  Il QR punta al dominio **non ancora acquistato/pubblicato**: funziona solo
+  da quando il sito sarà online.
+- Generato con **Puppeteer** (rendering HTML→PDF headless, font e foto
+  incorporati come data URI per garantire fedeltà cromatica in stampa) e
+  **qrcode**/**jsqr**, installati temporaneamente con `--no-save` solo per
+  questa consegna — non sono dipendenze del progetto, stesso approccio già
+  usato per la conversione dei font in `.woff2` (vedi `CLAUDE.md` § Font).
+  Lo script di generazione non è stato conservato nel repo: è stato uno
+  script usa-e-getta, ricreabile in pochi minuti se serve una nuova versione
+  (altro formato, altro testo, altra foto).
+- **Blocco "Vantaggi Esclusivi"** (checklist con due righe, aggiunto su
+  richiesta della cliente il 31 luglio 2026): la prima ("miglior tariffa
+  garantita" prenotando dal sito) riusa copy già reale del sito
+  (`amenitiesPage.ctaDescription`), nessun problema. La seconda ("Sconti
+  dedicati presso le migliori attività del territorio") **promuove le
+  convenzioni come già attive**, non come "in arrivo" — richiesta esplicita
+  della cliente dopo che glielo avevo segnalato: le trattative con le
+  attività del territorio sono in corso ma non ancora firmate, e la sezione
+  Partner del sito resta deliberatamente vuota (`partners: []`, vedi §
+  "I Nostri Partner" in `CLAUDE.md`) finché non lo saranno. **Disallineamento
+  consapevole tra locandina e sito**, voluto dalla cliente per motivare la
+  prenotazione da subito: chi scansiona il QR oggi non troverebbe ancora
+  nessun partner elencato. Da riallineare (rimontando `Partners` con
+  contenuti reali) non appena le prime convenzioni saranno firmate — vedi
+  TODO 3.
+
 ## Cosa manca / TODO prima della messa online
 
 Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
@@ -221,8 +264,10 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    `content.ts` (vedi `CLAUDE.md` § Placeholder immagini).
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
    (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato dalla
-   proprietaria il 30 luglio 2026**. Restano placeholder **email e URL
-   Instagram** in `siteConfig` (`content.ts`) — ancora da ricevere.
+   proprietaria il 30 luglio 2026**. **Instagram** è ora quello reale
+   (`instagram.com/cuoredellacittadimora`, ricevuto il 30 luglio 2026).
+   Resta placeholder solo l'**email** in `siteConfigShared`
+   (`content.shared.ts`) — ancora da ricevere.
 3. **Contenuti delle sezioni ancora vuote** — galleria e partner mostrano solo
    la Hero. I componenti esistono già ma sono smontati perché i dati sono
    esemplificativi: `partners` (convenzioni inventate) e `galleryImages`
@@ -261,13 +306,16 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    Ovidio, l'indirizzo) non tradotti; contenuti ancora vuoti (galleria,
    partner) restano vuoti in entrambe le lingue finché non arrivano i
    contenuti reali (punto 3).
-8. **Dominio definitivo** — `siteUrl` in `content.ts` è ancora un
-   **placeholder** (`https://www.cuoredellacitta.it`). **Il cliente lo
-   acquisterà entro la settimana del 27 luglio-2 agosto 2026.** Alimenta
-   `metadataBase`, la sitemap e robots.txt: finché resta il placeholder,
-   canonical e `og:url` puntano a un dominio che potrebbe non essere il suo.
-   Appena acquistato, va aggiornato qui — è l'unico punto da cambiare. Il
-   resto del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
+8. **Dominio definitivo** — confermato dalla proprietaria il 30 luglio 2026:
+   sarà **`dimoracuoredellacitta.it`** (non più `cuoredellacitta.it`, il
+   placeholder usato finora). `siteUrl` in `content.shared.ts` è già stato
+   aggiornato a `https://www.dimoracuoredellacitta.it`, ma **il dominio non è
+   ancora acquistato né pubblicato** (previsto entro la settimana del 27
+   luglio-2 agosto 2026) — fino ad allora `metadataBase`, canonical, `og:url`
+   e il QR della locandina pubblicitaria (fuori dal codice, vedi § sotto)
+   puntano a un indirizzo che non risponde ancora. Nessun'altra azione di
+   codice richiesta una volta acquistato: è già ovunque nel sito. Il resto
+   del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
    metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
    canonical, sitemap, robots e dati strutturati JSON-LD
    (`LodgingBusiness`/`FAQPage`/`BreadcrumbList`). Le coordinate in
@@ -314,5 +362,5 @@ ancora risolto, non solo un dettaglio tecnico.
 Da chiedere alla proprietaria, in ordine di impatto: i **contenuti reali** di
 partner (punto 3, legato alle prime convenzioni firmate, senza una data),
 l'**apertura del profilo Google Business** (per passare `Location`
-dall'indirizzo al Place ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e i
-**recapiti mancanti** — email e Instagram (punto 2).
+dall'indirizzo al Place ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e
+l'**email mancante** (punto 2, unico recapito ancora placeholder).

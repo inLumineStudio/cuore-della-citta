@@ -80,12 +80,12 @@ export function StickyHeader({ locale }: StickyHeaderProps) {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="flex items-center justify-between gap-4 px-6 py-4 sm:px-10 lg:px-14">
+      <div className="flex items-center justify-between gap-1 px-4 py-4 sm:gap-4 sm:px-10 lg:px-14">
         {/* Sotto md hamburger e switch lingua stanno a sinistra, come nella
             Hero: stesso lato da cui entra il drawer condiviso (`MobileMenu`).
             Da md in su sono nascosti e il logo torna a essere il primo
             elemento della riga. */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
           <button
             type="button"
             aria-label={content.ui.openMenu}
@@ -97,7 +97,16 @@ export function StickyHeader({ locale }: StickyHeaderProps) {
           <LanguageSwitcher locale={locale} />
         </div>
 
-        <Link href={localizeHref("/", locale)} className="font-brand text-lg tracking-[0.1em] text-ink uppercase">
+        {/* `whitespace-nowrap` impedisce all'a-capo di spezzare il wordmark
+            su due righe quando lo spazio si stringe (successo sui telefoni
+            più stretti, es. iPhone 17 Pro a 402px, con lo switch lingua ad
+            aggiungersi all'hamburger nel gruppo a sinistra): meglio un corpo
+            più piccolo che una riga in più, che romperebbe l'allineamento
+            verticale con hamburger e CTA. */}
+        <Link
+          href={localizeHref("/", locale)}
+          className="whitespace-nowrap font-brand text-base tracking-[0.08em] text-ink uppercase sm:text-lg sm:tracking-[0.1em]"
+        >
           {content.name}
         </Link>
 
@@ -123,7 +132,7 @@ export function StickyHeader({ locale }: StickyHeaderProps) {
             href={whatsappHref(content.whatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block whitespace-nowrap border border-terracotta bg-terracotta px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-cream transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark sm:px-4 sm:py-2 sm:text-xs"
+            className="inline-block whitespace-nowrap border border-terracotta bg-terracotta px-2 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.06em] text-cream transition-colors duration-300 hover:border-terracotta-dark hover:bg-terracotta-dark sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.08em]"
           >
             {content.bookCtaLabel}
           </a>

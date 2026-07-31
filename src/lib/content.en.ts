@@ -46,7 +46,7 @@ export const heroLocation: string = "Sulmona, Abruzzo";
 // Line right under `heroLocation`: the claim is purely evocative and stays
 // hidden on mobile, so without this line it wasn't clear at a glance what
 // kind of place this was. Always visible, unlike the claim.
-export const heroDescriptor: string = "A charming holiday home in the heart of the historic center.";
+export const heroDescriptor: string = "A charming, authentic and refined holiday home.";
 
 // Label shared by every booking CTA (Hero, header).
 export const bookCtaLabel: string = "Book now";

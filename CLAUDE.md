@@ -102,6 +102,20 @@ transitorio dovuto all'animazione della toolbar (che altrimenti
 ripresenterebbe lo stesso problema) viene ignorato finché il layout non si
 stabilizza.
 
+**Bug corretto (segnalato dal cliente con uno screenshot da iPhone 17 Pro, 30
+luglio 2026)**: sotto `md` il wordmark "Cuore della Città" andava a capo su
+due righe nella riga dell'header. Causa: l'aggiunta del `LanguageSwitcher`
+accanto all'hamburger (vedi § Multilingua) ha stretto lo spazio disponibile
+per il logo, che non aveva `whitespace-nowrap` — il browser lo spezzava per
+non sforare invece di andare in overflow. Fix su più fronti, tutti confinati
+a `md:hidden`/sotto `sm:` (il layout da `sm:` in su è identico a prima):
+`whitespace-nowrap` sul logo con un corpo più piccolo (`text-base` invece di
+`text-lg`, tracking ridotto a `0.08em`), gap e padding orizzontale del
+container ridotti (`gap-1 px-4` invece di `gap-4 px-6`), CTA "Prenota ora"
+con meno padding orizzontale sotto `sm:`. Verificato senza overflow né
+a-capo da 360px a 430px (Android compatti, tutta la gamma iPhone attuale,
+IT ed EN) misurando `scrollWidth` vs `clientWidth` della riga header.
+
 Lo `StickyHeader` include la CTA **"Prenota ora"** (link WhatsApp, terracotta
 pieno) a destra della nav: essendo montata nel chrome globale, è
 l'unico punto in cui la CTA è raggiungibile da **ogni pagina**. La gemella
@@ -902,9 +916,12 @@ URL Open Graph resterebbero relativi e i social non li risolvono), `title` con
 `twitter: { card: "summary_large_image" }` — la card di X pesca da `og:image`,
 quindi non serve un `twitter-image` separato.
 
-Il dominio vive in **`siteUrl`** (`content.ts`) ed è l'unico punto da cambiare:
-lo leggono `metadataBase`, la sitemap e robots. Oggi è un **placeholder**
-(`https://www.cuoredellacitta.it`), da confermare col cliente.
+Il dominio vive in **`siteUrl`** (`content.shared.ts`) ed è l'unico punto da
+cambiare: lo leggono `metadataBase`, la sitemap e robots. Oggi è
+`https://www.dimoracuoredellacitta.it` — **confermato dalla proprietaria il
+30 luglio 2026** (era prima un placeholder, `cuoredellacitta.it` senza
+"dimora"), ma il dominio **non è ancora acquistato né pubblicato** — vedi
+TODO 8 in `HANDOFF.md`.
 
 La **favicon** è un marchio disegnato a mano (`icon.svg`): fondo terracotta,
 casa in tratto avorio e la sagoma di una statua dentro l'arcata — casa +
@@ -982,19 +999,22 @@ reception).
   __html: JSON.stringify(...) }} />`: JSON-LD non deve stare per forza in
   `<head>` (Google lo legge ovunque nell'HTML), quindi vive dove ha senso nel
   componente — dentro `<body>` in `layout.tsx`, in cima al JSX in `page.tsx`.
-- **`siteConfig.email` e `siteConfig.instagramUrl` sono ancora placeholder**
-  (TODO 2 in `HANDOFF.md`) e finiscono comunque nei dati strutturati: non è
-  una svista, sono già mostrati pubblicamente nel `Footer` con lo stesso
-  contenuto placeholder, quindi il rischio è lo stesso — quando arriveranno i
-  valori reali si aggiornano una volta sola in `siteConfig` e si propagano
-  ovunque, JSON-LD incluso.
+- **`siteConfigShared.email` è ancora placeholder** (TODO 2 in `HANDOFF.md`)
+  e finisce comunque nei dati strutturati: non è una svista, è già mostrato
+  pubblicamente nel `Footer` con lo stesso contenuto placeholder, quindi il
+  rischio è lo stesso — quando arriverà il valore reale si aggiorna una volta
+  sola in `siteConfigShared` (`content.shared.ts`) e si propaga ovunque,
+  JSON-LD incluso. `instagramUrl` è invece quello reale della struttura
+  (`instagram.com/cuoredellacittadimora`), ricevuto dalla proprietaria il 30
+  luglio 2026.
 
 ## Contatti rapidi
 
 `src/lib/contact.ts` genera i link `tel:` e `https://wa.me/...` a partire dai
-valori in `siteConfig` (`content.ts`). Telefono/WhatsApp e indirizzo sono quelli
-reali; email e Instagram sono ancora placeholder — vedi `HANDOFF.md`. Il ramo
-Telegram è stato rimosso con `ContactCta`, che era l'unico a usarlo.
+valori in `siteConfigShared` (`content.shared.ts`). Telefono/WhatsApp,
+indirizzo e Instagram sono quelli reali; resta placeholder solo l'email —
+vedi `HANDOFF.md`. Il ramo Telegram è stato rimosso con `ContactCta`, che era
+l'unico a usarlo.
 
 Lo stesso file espone anche `mapsEmbedSrc()` e `mapsDirectionsHref()`, usati
 da `Location` (§ "Dove ci Troviamo"): entrambi costruiscono l'URL Google Maps

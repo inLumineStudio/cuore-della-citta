@@ -13,8 +13,7 @@ export const siteConfigShared = {
   whatsappHref: "393514964713",
   // TODO: email reale del cliente
   email: "info@cuoredellacitta.it",
-  // TODO: URL profilo Instagram reale del cliente
-  instagramUrl: "https://instagram.com/cuoredellacitta",
+  instagramUrl: "https://www.instagram.com/cuoredellacittadimora",
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
 
@@ -50,9 +49,11 @@ export const propertyFacts = {
 } as const;
 
 // Dominio di produzione: serve a `metadataBase`, alla sitemap e agli URL
-// assoluti di Open Graph, che non accettano percorsi relativi.
-// TODO: confermare il dominio definitivo con il cliente prima della messa online
-export const siteUrl = "https://www.cuoredellacitta.it";
+// assoluti di Open Graph, che non accettano percorsi relativi. Confermato
+// dalla proprietaria il 30 luglio 2026 (non ancora acquistato/pubblicato al
+// momento della conferma, vedi TODO 8 in HANDOFF.md) - diverso dal
+// placeholder usato finora (era "cuoredellacitta.it", senza "dimora").
+export const siteUrl = "https://www.dimoracuoredellacitta.it";
 
 // Interruttore temporaneo per la bozza mostrata al cliente: quando false,
 // la nav espone solo la Homepage (in entrambe le lingue) e le altre route

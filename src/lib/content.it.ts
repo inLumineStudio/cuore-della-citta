@@ -37,7 +37,7 @@ export const heroLocation: string = "Sulmona, Abruzzo";
 // Riga subito sotto `heroLocation`: il claim è puramente evocativo e su
 // mobile resta nascosto, quindi senza questa riga non era chiaro a colpo
 // d'occhio che tipo di attività fosse. Sempre visibile, a differenza del claim.
-export const heroDescriptor: string = "Una casa vacanze di charme nel cuore del centro storico.";
+export const heroDescriptor: string = "Una casa vacanze di charme, autentica e raffinata.";
 
 // Etichetta condivisa da tutte le CTA di prenotazione (Hero, header).
 export const bookCtaLabel: string = "Prenota ora";
