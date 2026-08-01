@@ -1,6 +1,6 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 31 luglio 2026. Riferimento: preventivo inLumine Studio del 22 luglio
+Stato al 1 agosto 2026. Riferimento: preventivo inLumine Studio del 22 luglio
 2026. Il sito è **uscito dalla bozza** (`showFullNav = true`): tutte le route
 sono raggiungibili e cliccabili, non solo la homepage — si passa dalla Fase 1
 (UI/UX) alla Fase 2 (contenuti reali) del workflow concordato nel preventivo.
@@ -53,14 +53,15 @@ routing reale (non single-page ad anchor):
   cascata (masonry, non griglia uniforme), foto cliccabili per una versione
   ingrandita — senza didascalia, tolta su richiesta della cliente. Non è più
   tra le sezioni smontate — vedi `CLAUDE.md` § "Galleria".
-- **`/partner`** — Hero + **`Partners`**, con i primi due partner reali (31
-  luglio 2026): **Cafè Piazza Tresca** (tabaccheria & ricevitoria con bar
-  colazioni, Sulmona, fascia 20%, scheda verso il suo profilo Facebook) e
-  **inLumine Studio** (lo studio che ha realizzato il sito — consulenza web,
-  siti, eCommerce, identità digitale, design, fascia 10%, scheda verso
-  inlumine.it). La sezione è organizzata per **fasce di sconto** (10%, 15%,
-  20%, omaggi gratuiti) invece che come griglia piatta — vedi `CLAUDE.md` §
-  "I Nostri Partner". Non è più tra le sezioni smontate.
+- **`/partner`** — Hero + **`Partners`**, con tre partner reali: **Cafè
+  Piazza Tresca** (tabaccheria & ricevitoria con bar colazioni, Sulmona,
+  fascia 20%, scheda verso il suo profilo Facebook), **inLumine Studio** (lo
+  studio che ha realizzato il sito — consulenza web, siti, eCommerce,
+  identità digitale, design, fascia 10%, scheda verso inlumine.it) e, dal 1
+  agosto 2026, **White N'More** (camiceria uomo, Sulmona, fascia 20%, scheda
+  verso il suo profilo Instagram). La sezione è organizzata per **fasce di
+  sconto** (10%, 15%, 20%, omaggi gratuiti) invece che come griglia piatta —
+  vedi `CLAUDE.md` § "I Nostri Partner". Non è più tra le sezioni smontate.
 
 La nav (`navLinks` in `content.ts`) ha oggi sei voci: **Homepage** (punta a `/`),
 La Dimora, Galleria, Comfort & Informazioni (rinominata da "Servizi & Comfort",
@@ -244,10 +245,11 @@ visivo della Hero del sito, non un design a parte.
   convenzioni come già attive quando ancora non lo erano** — richiesta
   esplicita della cliente dopo che glielo avevo segnalato, per motivare la
   prenotazione da subito nonostante le trattative fossero ancora in corso.
-  **Riallineato il 31 luglio 2026**: la sezione Partner del sito ha ora due
-  convenzioni reali (Cafè Piazza Tresca e inLumine Studio, vedi TODO 3),
-  quindi chi scansiona il QR oggi trova contenuto vero dietro il tono
-  generico "presso le migliori attività" della locandina, non più zero.
+  **Riallineato il 31 luglio 2026**: la sezione Partner del sito ha ora tre
+  convenzioni reali (Cafè Piazza Tresca, inLumine Studio, White N'More —
+  vedi TODO 3), quindi chi scansiona il QR oggi trova contenuto vero dietro
+  il tono generico "presso le migliori attività" della locandina, non più
+  zero.
 
 ## Cosa manca / TODO prima della messa online
 
@@ -277,15 +279,19 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    Resta placeholder solo l'**email** in `siteConfigShared`
    (`content.shared.ts`) — ancora da ricevere.
 3. ~~**Contenuti delle sezioni ancora vuote**~~ — fatto per tutte. Partner
-   ha ricevuto i primi due partner reali il 31 luglio 2026: **Cafè Piazza
-   Tresca** (tabaccheria & ricevitoria con bar colazioni, fascia 20%,
-   descrizione ancora una bozza da confermare con la proprietaria, marcata
-   `TODO` in `content.it.ts`/`content.en.ts`) e **inLumine Studio** (lo
-   studio che ha realizzato il sito, fascia 10%, copy definitivo). La
-   sezione è stata anche ristrutturata a **fasce di sconto** (10%/15%/20%/
-   omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta della cliente
-   — pronta a ricevere altri partner nelle fasce ancora vuote (15%) non
-   appena firmati. **Galleria è stata rimontata** lo stesso giorno con il
+   ha ricevuto tre partner reali: **Cafè Piazza Tresca** (tabaccheria &
+   ricevitoria con bar colazioni, fascia 20%, descrizione ancora una bozza
+   da confermare con la proprietaria, 31 luglio 2026), **inLumine Studio**
+   (lo studio che ha realizzato il sito, fascia 10%, copy definitivo, 31
+   luglio 2026) e **White N'More** (camiceria uomo, fascia 20%, descrizione
+   ancora una bozza, 1 agosto 2026, unico logo di partenza non professionale
+   — un ritaglio di volantino anziché un file vettoriale, vedi `CLAUDE.md` §
+   "I Nostri Partner"); entrambe le descrizioni bozza sono marcate `TODO` in
+   `content.it.ts`/`content.en.ts`. La sezione è stata anche ristrutturata a
+   **fasce di sconto** (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri
+   Partner") su richiesta della cliente — pronta a ricevere altri partner
+   nella fascia ancora vuota (15%) non appena firmati. **Galleria è stata
+   rimontata** il 31 luglio con il
    **set completo delle quattro foto reali** (camera matrimoniale, seconda
    camera, soggiorno con angolo cottura, centro storico — layout a cascata,
    vedi `CLAUDE.md` § "Galleria"); niente più `TODO` su `galleryImages`.
@@ -318,7 +324,7 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    `CLAUDE.md` § Multilingua), con switch a bandierina accanto all'hamburger
    in Hero e `StickyHeader`. Nomi propri (Sulmona, monumenti, la citazione di
    Ovidio, l'indirizzo) non tradotti; sia Galleria (quattro foto, `alt`
-   tradotto per ciascuna) sia Partner (due partner, categoria e descrizione
+   tradotto per ciascuna) sia Partner (tre partner, categoria e descrizione
    tradotte, nomi propri no) hanno già i loro contenuti reali in entrambe le
    lingue, come da convenzione di `content.it.ts`/`content.en.ts`.
 8. **Dominio definitivo** — confermato dalla proprietaria il 30 luglio 2026:
@@ -362,7 +368,7 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 Tutte e sei le sezioni sono ora complete: Homepage, "/la-dimora",
 "/servizi-comfort", "/posizione", "/galleria" (set completo delle quattro
-foto, dal 31 luglio 2026) e "/partner" (due partner per ora, ma
+foto, dal 31 luglio 2026) e "/partner" (tre partner al 1 agosto 2026, ma
 strutturalmente pronta a crescere). Non resta più nessuna sezione vuota da
 riempire da zero.
 
@@ -375,9 +381,11 @@ da chiarire con la proprietaria la **licenza web di Flaviotte e General
 Sans** (punto 6) prima della messa online — rischio non ancora risolto, non
 solo un dettaglio tecnico.
 
-Da chiedere alla proprietaria, in ordine di impatto: la **conferma della
-descrizione di Cafè Piazza Tresca** (oggi una bozza, punto 3) insieme agli
-altri partner via via che le convenzioni si firmano, l'**apertura del
+Da chiedere alla proprietaria, in ordine di impatto: la **conferma delle
+descrizioni di Cafè Piazza Tresca e White N'More** (oggi entrambe una bozza,
+punto 3) — e, se possibile, **un logo vero per White N'More** invece del
+ritaglio dal volantino — insieme agli altri partner via via che le
+convenzioni si firmano, l'**apertura del
 profilo Google Business** (per passare `Location` dall'indirizzo al Place
 ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e l'**email mancante** (punto 2,
 unico recapito ancora placeholder).

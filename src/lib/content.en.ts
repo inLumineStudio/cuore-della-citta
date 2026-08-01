@@ -312,9 +312,9 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 
 // Network of partnerships with local businesses: discounts reserved for
 // guests staying at the Dimora.
-// TODO: Cafè Piazza Tresca's description is still a draft - to confirm with
-// the owner along with the rest of the copy. Not the case for inLumine
-// Studio: the studio that built this site, copy is final.
+// TODO: Cafè Piazza Tresca's and White N'More's descriptions are still a
+// draft - to confirm with the owner along with the rest of the copy. Not the
+// case for inLumine Studio: the studio that built this site, copy is final.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
@@ -325,6 +325,16 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Cafè Piazza Tresca logo",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
+  {
+    name: "White N'More",
+    category: "Men's Shirt Shop",
+    tier: "20",
+    description:
+      "Men's shirts and clothing in the center of Sulmona, well-made pieces for every occasion.",
+    logoSrc: "/images/partners/white-n-more.png",
+    logoAlt: "White N'More logo",
+    websiteUrl: "https://www.instagram.com/whitenmore.sulmona",
   },
   {
     name: "inLumine Studio",

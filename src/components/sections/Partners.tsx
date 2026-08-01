@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Gift, Handshake, Percent } from "lucide-react";
+import { Gift, Handshake, Tag } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getContent, type Partner } from "@/lib/content";
@@ -76,9 +76,9 @@ export function Partners({ locale }: PartnersProps) {
                   {tier.id === "gift" ? (
                     <Gift className="h-4 w-4" strokeWidth={1.75} />
                   ) : (
-                    <Percent className="h-4 w-4" strokeWidth={1.75} />
+                    <Tag className="h-4 w-4" strokeWidth={1.75} />
                   )}
-                  <span className="text-sm font-semibold tracking-[0.25em] uppercase">{tier.title}</span>
+                  <span className="font-display text-base tracking-[0.15em] uppercase">{tier.title}</span>
                 </div>
 
                 <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm bg-cream/10 sm:grid-cols-3">

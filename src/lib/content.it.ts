@@ -305,9 +305,10 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 
 // Rete di convenzioni con attività del territorio: sconti riservati a chi
 // soggiorna alla Dimora.
-// TODO: descrizione di Cafè Piazza Tresca ancora una bozza - da confermare
-// con la proprietaria insieme al resto del testo. inLumine Studio non ha
-// questo TODO: è lo studio che ha realizzato il sito, il testo è definitivo.
+// TODO: descrizioni di Cafè Piazza Tresca e White N'More ancora una bozza -
+// da confermare con la proprietaria insieme al resto del testo. inLumine
+// Studio non ha questo TODO: è lo studio che ha realizzato il sito, il testo
+// è definitivo.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
@@ -318,6 +319,16 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Logo di Cafè Piazza Tresca",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
+  {
+    name: "White N'More",
+    category: "Camiceria Uomo",
+    tier: "20",
+    description:
+      "Camiceria e abbigliamento uomo nel centro di Sulmona, capi curati per ogni occasione.",
+    logoSrc: "/images/partners/white-n-more.png",
+    logoAlt: "Logo di White N'More",
+    websiteUrl: "https://www.instagram.com/whitenmore.sulmona",
   },
   {
     name: "inLumine Studio",

@@ -835,7 +835,10 @@ di fantasia che c'erano prima (`Trattoria del Borgo` e simili); il 31 luglio
 consulenza web, siti, eCommerce, identità digitale, design, condizioni
 dedicate agli ospiti della Dimora) — e in quell'occasione è stata
 ristrutturata da griglia piatta a **fasce di sconto** su richiesta del
-cliente.
+cliente. Il 1 agosto 2026 si è aggiunto un terzo partner, **White N'More**
+(camiceria uomo, fascia 20% anch'essa), con un logo di partenza più
+scadente degli altri due (un ritaglio di volantino, non un file vettoriale)
+— vedi il punto sui loghi qui sotto.
 
 - **Stato vuoto**: icona `Handshake` + "Le prime convenzioni sono in arrivo",
   quando non c'è nessuna fascia con almeno un partner. Stessa filosofia di
@@ -847,12 +850,18 @@ cliente.
   `tier` che lo assegna a una fascia; **non ha più un campo `benefit` a testo
   libero** (es. "15% di sconto sul menu") — lo sconto lo dice la fascia in
   cui il partner si trova, non si ripete su ogni singola card. Le etichette
-  delle fasce (`partnerTierLabels`, per lingua) e l'icona (`Percent` per le
-  percentuali, `Gift` per gli omaggi) sono le uniche cose che indicano la
-  fascia; il raggruppamento vero e proprio (partner filtrati per `tier`,
-  fasce vuote escluse) è calcolato una volta sola in `getContent()`
-  (`content.ts`, campo `partnerTiers`), non in `Partners.tsx` — stesso motivo
-  per cui `navLinks` è ricomposto lì e non nei componenti.
+  delle fasce (`partnerTierLabels`, per lingua) e l'icona (`Tag` per le
+  percentuali, `Gift` per gli omaggi — inizialmente `Percent`, cambiata
+  perché ripeteva il simbolo "%" già presente nel testo dell'etichetta,
+  segnalato dal cliente) sono le uniche cose che indicano la fascia; il
+  raggruppamento vero e proprio (partner filtrati per `tier`, fasce vuote
+  escluse) è calcolato una volta sola in `getContent()` (`content.ts`, campo
+  `partnerTiers`), non in `Partners.tsx` — stesso motivo per cui `navLinks`
+  è ricomposto lì e non nei componenti. Il titolo della fascia è in
+  `font-display` (Flaviotte, **senza** `font-semibold`: quel font ha un solo
+  peso, vedi § Font) per distinguersi dalla categoria del singolo partner
+  subito sotto, che resta in `font-body` — altra richiesta del cliente, le
+  due etichette si assomigliavano troppo.
 - **`Partner` (`content.shared.ts`) ha `logoSrc`/`logoAlt` opzionali**: se
   assente, la cella mostra un riquadro tratteggiato con la scritta "Logo in
   arrivo", **non** `ImagePlaceholder` — quel componente ha un glifo "CC"
@@ -885,12 +894,23 @@ cliente.
   un badge quadrato bianco con testo vettorializzato (nessun font richiesto),
   pensata apposta per stare su sfondi chiari — si integra nel riquadro crema
   senza bisogno di lavorazione.
+- **Logo di White N'More** (`public/images/partners/white-n-more.png`): il
+  cliente non aveva un file logo, solo un volantino promozionale (foto del
+  negozio + testo + contatti). Ritagliata solo la fascia con la scritta
+  "WHITE N'MORE di Malvestuto Melita", stesso trattamento di trasparenza del
+  punto sopra, poi **aggiunto padding verticale trasparente** prima del
+  salvataggio: il ritaglio grezzo era un'unica riga di testo con un rapporto
+  larghezza/altezza di circa 22:1, che dentro il riquadro `h-32` a `object-
+  contain` si sarebbe rimpicciolito a pochi pixel di altezza per stare nella
+  larghezza della card. Portato a ~4.75:1 aggiungendo margine trasparente
+  sopra e sotto (non ai lati, la larghezza non è il vincolo), verificato a
+  scala di card reale prima di salvare.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
-  l'elemento, non lo stile). Cafè Piazza Tresca punta al suo profilo Facebook
-  (non ha un sito proprio), inLumine Studio al proprio sito
-  (`inlumine.it`).
+  l'elemento, non lo stile). Cafè Piazza Tresca punta al proprio profilo
+  Facebook e White N'More al proprio profilo Instagram (nessuno dei due ha
+  un sito), inLumine Studio al proprio sito (`inlumine.it`).
 - **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
   il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
