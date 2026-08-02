@@ -332,7 +332,7 @@ export const partners: Partner[] = [
     category: "Irish Pub",
     tier: "10",
     description:
-      "Irish pub 7 km from Sulmona: burgers, pinsa, and fried specialties in a lively setting. The 10% discount applies to dinner only.",
+      "Irish pub in Introdacqua, 7 km from Sulmona: burgers, pinsa, and fried specialties in a lively setting. The 10% discount applies to dinner only.",
     logoSrc: "/images/partners/nerocaffe.png",
     logoAlt: "Nerocaffè logo",
     websiteUrl: "https://www.pubnerocaffe.it/",

@@ -335,7 +335,7 @@ export const partners: Partner[] = [
     category: "Pub Irlandese",
     tier: "10",
     description:
-      "Pub irlandese a 7 km da Sulmona: hamburger, pinse e fritti in un ambiente conviviale. Il 10% di sconto è riservato alla cena.",
+      "Pub irlandese a Introdacqua, a 7 km da Sulmona: hamburger, pinse e fritti in un ambiente conviviale. Il 10% di sconto è riservato alla cena.",
     logoSrc: "/images/partners/nerocaffe.png",
     logoAlt: "Logo di Nerocaffè",
     websiteUrl: "https://www.pubnerocaffe.it/",
