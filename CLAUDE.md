@@ -923,6 +923,22 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   il verde del peperoncino). L'inversione ha convertito il bianco quasi puro
   in un nero quasi puro mantenendo la texture graffiata del font, con lo
   stesso effetto di un logotipo disegnato apposta in nero.
+  **Corretto il 2 agosto 2026** ("il logo tocca i bordi", segnalato due volte
+  dal cliente con screenshot): il primo giro di `sharp` chiudeva con `.trim()`,
+  che rimuove **tutto** il margine trasparente fino al bounding box esatto del
+  contenuto (verificato via scansione pixel: il bordo del logotipo toccava
+  l'estremo di tutti e quattro i lati del canvas, 0px di margine proprio). Con
+  un'immagine così, il margine visivo a schermo dipende **solo** dal rapporto
+  larghezza/altezza del riquadro `h-32` rispetto a quello del logo: a
+  determinate larghezze di card il riquadro diventa vincolato dall'altezza
+  invece che dalla larghezza, e il logo arriva a riempire i 128px di altezza
+  bordo a bordo (il `p-4` del contenitore resta l'unico margine, appena 16px).
+  Stesso identico problema — e stessa causa — già risolto per White N'More
+  (vedi punto sopra) ma non applicato qui al primo giro. Fix: aggiunto margine
+  trasparente incorporato nel file con `sharp().extend()` (40px sopra/sotto,
+  30px ai lati, alla risoluzione nativa), portando il rapporto larghezza/
+  altezza del logo da 3.99:1 a 3.22:1 — verificato in browser da 375px a
+  1920px di viewport, margine visibile su tutti i lati a ogni larghezza.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
