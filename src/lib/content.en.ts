@@ -312,19 +312,30 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 
 // Network of partnerships with local businesses: discounts reserved for
 // guests staying at the Dimora.
-// TODO: Cafè Piazza Tresca's and White N'More's descriptions are still a
-// draft - to confirm with the owner along with the rest of the copy. Not the
-// case for inLumine Studio: the studio that built this site, copy is final.
+// TODO: Cafè Piazza Tresca's, White N'More's, and Nerocaffè's descriptions
+// are still a draft - to confirm with the owner along with the rest of the
+// copy. Not the case for inLumine Studio: the studio that built this site,
+// copy is final.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
     category: "Tobacconist & Lottery Point",
     tier: "20",
     description:
-      "Our partner café for breakfast: a full coffee bar just steps from the property, in the heart of the historic center.",
+      "Our partner café for guests of the Dimora, with 20% off breakfast: a full coffee bar just steps from the property, in the heart of the historic center.",
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Cafè Piazza Tresca logo",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
+  },
+  {
+    name: "Nerocaffè",
+    category: "Irish Pub",
+    tier: "10",
+    description:
+      "Irish pub 7 km from Sulmona: burgers, pinsa, and fried specialties in a lively setting. The 10% discount applies to dinner only.",
+    logoSrc: "/images/partners/nerocaffe.png",
+    logoAlt: "Nerocaffè logo",
+    websiteUrl: "https://www.pubnerocaffe.it/",
   },
   {
     name: "White N'More",

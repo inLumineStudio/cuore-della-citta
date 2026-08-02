@@ -835,10 +835,15 @@ di fantasia che c'erano prima (`Trattoria del Borgo` e simili); il 31 luglio
 consulenza web, siti, eCommerce, identità digitale, design, condizioni
 dedicate agli ospiti della Dimora) — e in quell'occasione è stata
 ristrutturata da griglia piatta a **fasce di sconto** su richiesta del
-cliente. Il 1 agosto 2026 si è aggiunto un terzo partner, **White N'More**
-(camiceria uomo, fascia 20% anch'essa), con un logo di partenza più
-scadente degli altri due (un ritaglio di volantino, non un file vettoriale)
-— vedi il punto sui loghi qui sotto.
+cliente. Il 1 agosto 2026 si sono aggiunti un terzo e un quarto partner:
+**White N'More** (camiceria uomo, fascia 20%), con un logo di partenza più
+scadente degli altri due (un ritaglio di volantino, non un file vettoriale
+— vedi il punto sui loghi qui sotto), e **Nerocaffè** (pub irlandese a 7 km
+da Sulmona, fascia 10%, sconto riservato esplicitamente alla cena — sito
+web realizzato in passato dallo stesso studio). In questa occasione anche
+Cafè Piazza Tresca ha guadagnato la stessa precisione: la descrizione ora
+dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
+— la fascia da sola indicava la percentuale ma non a cosa si applicasse.
 
 - **Stato vuoto**: icona `Handshake` + "Le prime convenzioni sono in arrivo",
   quando non c'è nessuna fascia con almeno un partner. Stessa filosofia di
@@ -905,12 +910,26 @@ scadente degli altri due (un ritaglio di volantino, non un file vettoriale)
   larghezza della card. Portato a ~4.75:1 aggiungendo margine trasparente
   sopra e sotto (non ai lati, la larghezza non è il vincolo), verificato a
   scala di card reale prima di salvare.
+- **Logo di Nerocaffè** (`public/images/partners/nerocaffe.png`): problema
+  opposto ai due punti sopra — il file arrivava già con sfondo trasparente,
+  ma il logotipo (testo con texture "graffiata") è bianco/grigio chiaro,
+  pensato per stare su sfondi scuri: sul riquadro crema del logo sarebbe
+  stato quasi invisibile, esattamente come lo era su una preview a sfondo
+  bianco. Non essendoci una variante scura fornita dal cliente ("è questo il
+  logo, purtroppo"), risolto via `sharp` **senza** toccare il peperoncino a
+  colori accanto al testo: letti i pixel raw, invertiti solo quelli a bassa
+  saturazione (differenza max-min tra i canali RGB sotto una soglia — il
+  testo, grigio/bianco neutro) lasciando intatti quelli saturi (il rosso e
+  il verde del peperoncino). L'inversione ha convertito il bianco quasi puro
+  in un nero quasi puro mantenendo la texture graffiata del font, con lo
+  stesso effetto di un logotipo disegnato apposta in nero.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie
   l'elemento, non lo stile). Cafè Piazza Tresca punta al proprio profilo
-  Facebook e White N'More al proprio profilo Instagram (nessuno dei due ha
-  un sito), inLumine Studio al proprio sito (`inlumine.it`).
+  Facebook, White N'More al proprio profilo Instagram (nessuno dei due ha un
+  sito), Nerocaffè al proprio sito (realizzato in passato dallo stesso
+  studio), inLumine Studio al proprio sito (`inlumine.it`).
 - **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
   il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione

@@ -305,17 +305,17 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 
 // Rete di convenzioni con attività del territorio: sconti riservati a chi
 // soggiorna alla Dimora.
-// TODO: descrizioni di Cafè Piazza Tresca e White N'More ancora una bozza -
-// da confermare con la proprietaria insieme al resto del testo. inLumine
-// Studio non ha questo TODO: è lo studio che ha realizzato il sito, il testo
-// è definitivo.
+// TODO: descrizioni di Cafè Piazza Tresca, White N'More e Nerocaffè ancora
+// una bozza - da confermare con la proprietaria insieme al resto del testo.
+// inLumine Studio non ha questo TODO: è lo studio che ha realizzato il sito,
+// il testo è definitivo.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",
     category: "Tabaccheria & Ricevitoria",
     tier: "20",
     description:
-      "Il bar convenzionato per la colazione degli ospiti della Dimora: caffetteria completa a pochi passi dalla struttura, nel cuore del centro storico.",
+      "Il bar convenzionato degli ospiti della Dimora, con il 20% di sconto sulla colazione: caffetteria completa a pochi passi dalla struttura, nel cuore del centro storico.",
     logoSrc: "/images/partners/piazza-tresca-cafe.png",
     logoAlt: "Logo di Cafè Piazza Tresca",
     websiteUrl: "https://www.facebook.com/piazzatrescacafe",
@@ -329,6 +329,16 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/white-n-more.png",
     logoAlt: "Logo di White N'More",
     websiteUrl: "https://www.instagram.com/whitenmore.sulmona",
+  },
+  {
+    name: "Nerocaffè",
+    category: "Pub Irlandese",
+    tier: "10",
+    description:
+      "Pub irlandese a 7 km da Sulmona: hamburger, pinse e fritti in un ambiente conviviale. Il 10% di sconto è riservato alla cena.",
+    logoSrc: "/images/partners/nerocaffe.png",
+    logoAlt: "Logo di Nerocaffè",
+    websiteUrl: "https://www.pubnerocaffe.it/",
   },
   {
     name: "inLumine Studio",
