@@ -1144,9 +1144,13 @@ reception).
   pubblicamente nel `Footer` con lo stesso contenuto placeholder, quindi il
   rischio è lo stesso — quando arriverà il valore reale si aggiorna una volta
   sola in `siteConfigShared` (`content.shared.ts`) e si propaga ovunque,
-  JSON-LD incluso. `instagramUrl` è invece quello reale della struttura
-  (`instagram.com/cuoredellacittadimora`), ricevuto dalla proprietaria il 30
-  luglio 2026.
+  JSON-LD incluso. Dal 2 agosto 2026 è allineato al dominio probabile
+  (`info@dimoracuoredellacitta.it`, coerente con `siteUrl`), non più al vecchio
+  placeholder senza "dimora" — resta comunque non confermato dalla
+  proprietaria. `instagramUrl` è invece quello reale della struttura,
+  aggiornato lo stesso giorno da `instagram.com/cuoredellacittadimora` a
+  `instagram.com/dimoracuoredellacitta` (la proprietaria ha comunicato il
+  profilo corretto).
 
 ## Contatti rapidi
 

@@ -278,10 +278,13 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    Placeholder immagini).
 2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
    (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato dalla
-   proprietaria il 30 luglio 2026**. **Instagram** è ora quello reale
-   (`instagram.com/cuoredellacittadimora`, ricevuto il 30 luglio 2026).
+   proprietaria il 30 luglio 2026**. **Instagram** è quello reale,
+   **corretto il 2 agosto 2026** a `instagram.com/dimoracuoredellacitta`
+   (il link ricevuto il 30 luglio, `cuoredellacittadimora`, era sbagliato).
    Resta placeholder solo l'**email** in `siteConfigShared`
-   (`content.shared.ts`) — ancora da ricevere.
+   (`content.shared.ts`) — allineata lo stesso giorno al dominio probabile
+   (`info@dimoracuoredellacitta.it`), ma ancora da confermare con la
+   proprietaria.
 3. ~~**Contenuti delle sezioni ancora vuote**~~ — fatto per tutte. Partner
    ha ricevuto quattro partner reali: **Cafè Piazza Tresca** (tabaccheria &
    ricevitoria con bar colazioni, fascia 20% sulla colazione, descrizione

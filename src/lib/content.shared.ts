@@ -11,9 +11,10 @@ export const siteConfigShared = {
   phoneDisplay: "+39 351 496 4713",
   phoneHref: "+393514964713",
   whatsappHref: "393514964713",
-  // TODO: email reale del cliente
-  email: "info@cuoredellacitta.it",
-  instagramUrl: "https://www.instagram.com/cuoredellacittadimora",
+  // TODO: email reale del cliente - allineata al dominio probabile
+  // (dimoracuoredellacitta.it), ma non ancora confermata dalla proprietaria
+  email: "info@dimoracuoredellacitta.it",
+  instagramUrl: "https://www.instagram.com/dimoracuoredellacitta",
   addressLine: "Via Panfilo Scudieri, 1, 67039 Sulmona AQ",
 } as const;
 
