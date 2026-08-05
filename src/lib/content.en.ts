@@ -312,11 +312,8 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 };
 
 // Network of partnerships with local businesses: discounts reserved for
-// guests staying at the Dimora.
-// TODO: Cafè Piazza Tresca's, White N'More's, and Nerocaffè's descriptions
-// are still a draft - to confirm with the owner along with the rest of the
-// copy. Not the case for inLumine Studio: the studio that built this site,
-// copy is final.
+// guests staying at the Dimora. All descriptions are final copy, confirmed
+// by the owner on August 5, 2026.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",

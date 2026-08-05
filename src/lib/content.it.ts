@@ -305,11 +305,8 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
 };
 
 // Rete di convenzioni con attività del territorio: sconti riservati a chi
-// soggiorna alla Dimora.
-// TODO: descrizioni di Cafè Piazza Tresca, White N'More e Nerocaffè ancora
-// una bozza - da confermare con la proprietaria insieme al resto del testo.
-// inLumine Studio non ha questo TODO: è lo studio che ha realizzato il sito,
-// il testo è definitivo.
+// soggiorna alla Dimora. Tutte le descrizioni sono testo definitivo,
+// confermato dalla proprietaria il 5 agosto 2026.
 export const partners: Partner[] = [
   {
     name: "Cafè Piazza Tresca",

@@ -1203,25 +1203,21 @@ reception).
   __html: JSON.stringify(...) }} />`: JSON-LD non deve stare per forza in
   `<head>` (Google lo legge ovunque nell'HTML), quindi vive dove ha senso nel
   componente — dentro `<body>` in `layout.tsx`, in cima al JSX in `page.tsx`.
-- **`siteConfigShared.email` è ancora placeholder** (TODO 2 in `HANDOFF.md`)
-  e finisce comunque nei dati strutturati: non è una svista, è già mostrato
-  pubblicamente nel `Footer` con lo stesso contenuto placeholder, quindi il
-  rischio è lo stesso — quando arriverà il valore reale si aggiorna una volta
-  sola in `siteConfigShared` (`content.shared.ts`) e si propaga ovunque,
-  JSON-LD incluso. Dal 2 agosto 2026 è allineato al dominio probabile
-  (`info@dimoracuoredellacitta.it`, coerente con `siteUrl`), non più al vecchio
-  placeholder senza "dimora" — resta comunque non confermato dalla
-  proprietaria. `instagramUrl` è invece quello reale della struttura,
-  aggiornato lo stesso giorno da `instagram.com/cuoredellacittadimora` a
-  `instagram.com/dimoracuoredellacitta` (la proprietaria ha comunicato il
-  profilo corretto).
+- **`siteConfigShared.email`** (`info@dimoracuoredellacitta.it`) è reale,
+  **confermata dalla proprietaria il 5 agosto 2026** (era allineata al
+  dominio come ipotesi dal 2 agosto, non più un placeholder da quel
+  momento) e finisce anche nei dati strutturati. `instagramUrl` è
+  anch'esso quello reale della struttura, corretto il 2 agosto 2026 da
+  `instagram.com/cuoredellacittadimora` a
+  `instagram.com/dimoracuoredellacitta` (la proprietaria aveva comunicato
+  il link sbagliato la prima volta).
 
 ## Contatti rapidi
 
 `src/lib/contact.ts` genera i link `tel:` e `https://wa.me/...` a partire dai
 valori in `siteConfigShared` (`content.shared.ts`). Telefono/WhatsApp,
-indirizzo e Instagram sono quelli reali; resta placeholder solo l'email —
-vedi `HANDOFF.md`. Il ramo Telegram è stato rimosso con `ContactCta`, che era
+indirizzo, Instagram ed email sono tutti recapiti reali, confermati dalla
+proprietaria. Il ramo Telegram è stato rimosso con `ContactCta`, che era
 l'unico a usarlo.
 
 Lo stesso file espone anche `mapsEmbedSrc()` e `mapsDirectionsHref()`, usati

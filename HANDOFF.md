@@ -282,32 +282,29 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    venerdì 31 luglio 2026.** Azione: salvare le foto in `public/images/` e
    valorizzare il campo corrispondente in `content.ts` (vedi `CLAUDE.md` §
    Placeholder immagini).
-2. **Recapiti reali** — telefono/WhatsApp (`+39 351 496 4713`) e indirizzo
-   (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato dalla
-   proprietaria il 30 luglio 2026**. **Instagram** è quello reale,
+2. ~~**Recapiti reali**~~ — fatto. Telefono/WhatsApp (`+39 351 496 4713`) e
+   indirizzo (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato
+   dalla proprietaria il 30 luglio 2026**. **Instagram** è quello reale,
    **corretto il 2 agosto 2026** a `instagram.com/dimoracuoredellacitta`
    (il link ricevuto il 30 luglio, `cuoredellacittadimora`, era sbagliato).
-   Resta placeholder solo l'**email** in `siteConfigShared`
-   (`content.shared.ts`) — allineata lo stesso giorno al dominio probabile
-   (`info@dimoracuoredellacitta.it`), ma ancora da confermare con la
-   proprietaria.
+   **Email confermata reale il 5 agosto 2026** (`info@dimoracuoredellacitta.it`):
+   nessun recapito è più placeholder.
 3. ~~**Contenuti delle sezioni ancora vuote**~~ — fatto per tutte. Partner
    ha ricevuto quattro partner reali: **Cafè Piazza Tresca** (tabaccheria &
-   ricevitoria con bar colazioni, fascia 20% sulla colazione, descrizione
-   ancora una bozza da confermare con la proprietaria, 31 luglio 2026),
-   **inLumine Studio** (lo studio che ha realizzato il sito, fascia 10%,
-   copy definitivo, 31 luglio 2026), **White N'More** (camiceria uomo,
-   fascia 20%, descrizione ancora una bozza, 1 agosto 2026, unico logo di
-   partenza non professionale — un ritaglio di volantino anziché un file
-   vettoriale, vedi `CLAUDE.md` § "I Nostri Partner") e **Nerocaffè** (pub
-   irlandese a 7 km da Sulmona, fascia 10% sulla cena, descrizione ancora
-   una bozza, 1 agosto 2026, sito web realizzato in passato dallo stesso
+   ricevitoria con bar colazioni, fascia 20% sulla colazione, 31 luglio
+   2026), **inLumine Studio** (lo studio che ha realizzato il sito, fascia
+   10%, 31 luglio 2026), **White N'More** (camiceria uomo, fascia 20%, 1
+   agosto 2026, unico logo di partenza non professionale — un ritaglio di
+   volantino anziché un file vettoriale, vedi `CLAUDE.md` § "I Nostri
+   Partner") e **Nerocaffè** (pub irlandese a 7 km da Sulmona, fascia 10%
+   sulla cena, 1 agosto 2026, sito web realizzato in passato dallo stesso
    studio, logo con testo bianco ricolorato via script per leggibilità sulla
-   card chiara — vedi `CLAUDE.md`); tutte le descrizioni bozza sono marcate
-   `TODO` in `content.it.ts`/`content.en.ts`. La sezione è stata anche
-   ristrutturata a **fasce di sconto** (10%/15%/20%/omaggi, vedi `CLAUDE.md`
-   § "I Nostri Partner") su richiesta della cliente — pronta a ricevere
-   altri partner nella fascia ancora vuota (15%) non appena firmati.
+   card chiara — vedi `CLAUDE.md`). **Tutte le descrizioni sono testo
+   definitivo, confermato dalla proprietaria il 5 agosto 2026** (non più
+   bozza). La sezione è stata anche ristrutturata a **fasce di sconto**
+   (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta
+   della cliente — pronta a ricevere altri partner nella fascia ancora vuota
+   (15%) non appena firmati.
    **Galleria è stata rimontata** il 31 luglio con il
    **set completo delle quattro foto reali** (camera matrimoniale, seconda
    camera, soggiorno con angolo cottura, centro storico — layout a cascata,
@@ -393,27 +390,32 @@ foto, dal 31 luglio 2026) e "/partner" (quattro partner al 1 agosto 2026, ma
 strutturalmente pronta a crescere). Non resta più nessuna sezione vuota da
 riempire da zero.
 
+**Messa online prevista per il 6 agosto 2026.** Recapiti (telefono, indirizzo,
+Instagram, email) e le quattro descrizioni partner sono tutti dati reali e
+confermati dalla proprietaria — non resta nessun contenuto testuale in
+sospeso che blocchi la pubblicazione.
+
 **Foto ricevute dalla proprietaria il 31 luglio 2026**: le quattro della
 galleria (due del 22 luglio, due del 31). Manca ancora la foto de "La Nostra
 Storia" in home (tuttora `ImagePlaceholder`) e le foto dedicate alle Hero di
-galleria e comfort (punto 1). Il dominio arriva entro la settimana del 27
-luglio-2 agosto (punto 8): appena acquistato va aggiornato `siteUrl`. Resta
-da chiarire con la proprietaria la **licenza web di Flaviotte e General
-Sans** (punto 6) prima della messa online — rischio non ancora risolto, non
-solo un dettaglio tecnico.
+galleria e comfort (punto 1) — non bloccanti, quelle sezioni mostrano comunque
+una foto reale (quella della camera) finché non arrivano gli scatti dedicati.
 
-Da chiedere alla proprietaria, in ordine di impatto: la **conferma delle
-descrizioni di Cafè Piazza Tresca, White N'More e Nerocaffè** (oggi tutte e
-tre una bozza, punto 3) — e, se possibile, **un logo vero per White N'More**
-invece del ritaglio dal volantino — insieme agli altri partner via via che
-le convenzioni si firmano, l'**apertura del
-profilo Google Business** (per passare `Location` dall'indirizzo al Place
-ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e l'**email mancante** (punto 2,
-unico recapito ancora placeholder).
+Restano due punti aperti prima o subito dopo il lancio:
+
+- **Dominio** (punto 8) — `siteUrl` è già impostato su
+  `https://www.dimoracuoredellacitta.it`: verificare che il dominio sia
+  effettivamente acquistato e puntato prima di comunicare l'indirizzo,
+  altrimenti SEO/condivisioni social puntano a un URL che non risponde.
+- **Licenza web di Flaviotte e General Sans** (punto 6) — rischio legale non
+  ancora risolto, non solo un dettaglio tecnico: la proprietaria ha
+  confermato di non avere una licenza che copra l'uso pubblico su web. Da
+  chiarire con il fornitore del kit font indipendentemente dal lancio.
+
+Nice-to-have per dopo il lancio, in ordine di impatto: **un logo vero per
+White N'More** (oggi un ritaglio da volantino) e l'**apertura del profilo
+Google Business** (per passare `Location` dall'indirizzo stimato al Place ID
+esatto, vedi `CLAUDE.md` § "Dove ci Troviamo").
 
 Lato codice il sito **è pronto per andare online**: nessun blocco tecnico
-residuo dopo il giro di pulizia del 5 agosto 2026. I blocchi che restano
-sono tutti lato cliente/business, non codice: acquisto del dominio (punto
-8), licenza web dei font (punto 6), conferma email (punto 2) e le tre
-descrizioni partner ancora bozza (punto 3) — nessuno di questi impedisce di
-pubblicare, ma andrebbero chiusi in tempi brevi dopo il lancio.
+residuo dopo il giro di pulizia e l'audit SEO del 5 agosto 2026.
