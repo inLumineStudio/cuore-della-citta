@@ -25,8 +25,9 @@ import type {
 
 export const siteConfig = {
   shortTagline: "An authentic retreat in the heart of the historic center",
+  // Kept under ~155 characters: beyond that, Google truncates the SERP snippet.
   metaDescription:
-    "Holiday home in the historic center of Sulmona, Abruzzo: carefully finished interiors, direct booking with no middlemen, and the wonders of the city just steps from your door.",
+    "Holiday home in the historic center of Sulmona, Abruzzo: carefully finished interiors, direct booking with no middlemen, steps from the wonders of the city.",
   metaTitleSuffix: "Holiday Home in Sulmona",
 };
 

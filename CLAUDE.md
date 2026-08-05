@@ -291,7 +291,6 @@ src/
       servizi-comfort/page.tsx
       posizione/page.tsx
       partner/page.tsx
-      la-dimora/opengraph-image.jpg / posizione/opengraph-image.jpg  # OG per pagina
     en/                  # route group inglese — segmento reale, prefisso "/en"
       layout.tsx        # root layout <html lang="en">, stesso chrome, canonical "/en"
       page.tsx / la-dimora/ / galleria/ / servizi-comfort/ / posizione/ / partner/
@@ -310,8 +309,10 @@ src/
     i18n.ts              # Locale, localizeHref(), alternateLocalePath()
     contact.ts           # Helper per i link rapidi (tel:, wa.me)
     structuredData.ts     # Dati strutturati JSON-LD (LodgingBusiness, FAQPage, BreadcrumbList), presi con getContent(locale)
+    seo.ts                # buildOpenGraph() — vedi § SEO e metadati
 public/
   images/                # Asset immagine statici
+    opengraph/            # Foto OG dedicate (la-dimora.jpg, posizione.jpg) — asset statici, non convenzione-file di Next, vedi § SEO e metadati
 ```
 
 **Regola guida**: i componenti in `sections/` non contengono testo hardcoded
@@ -1038,23 +1039,93 @@ foto da attribuire diventano più d'una, conviene passare a un array.
 
 ## SEO e metadati
 
-Tutto passa dalle **convenzioni file dell'App Router**, non da `<head>` scritti
-a mano: Next genera i `<link>` e i `<meta>` dai file in `src/app/`.
+Favicon e icone passano dalle **convenzioni file dell'App Router**
+(`icon.svg`/`icon.png`/`apple-icon.png` in `src/app/`); tutto il resto
+(title, description, Open Graph, canonical, hreflang) passa da `metadata`
+export scritti a mano, **completi su ogni singolo segmento** — vedi il bug
+sotto sul perché non ci si affida al merge automatico fra layout e pagina.
 
 | File | Cosa produce |
 |---|---|
 | `icon.svg` + `icon.png` (32px) | favicon; l'SVG copre i browser moderni, il PNG quelli che non lo supportano |
 | `apple-icon.png` (180px) | icona per la schermata home iOS |
-| `opengraph-image.jpg` (1200×630) + `.alt.txt` | preview per social, con `og:image:*` e dimensioni compilate da Next |
-| `<route>/opengraph-image.jpg` + `.alt.txt` | stessa convenzione, per route: sovrascrive quella di `app/` solo per quella pagina |
-| `sitemap.ts` | `/sitemap.xml` |
+| `app/opengraph-image.jpg` (1200×630) + `.alt.txt` | preview social generica (la camera da letto), per le pagine senza foto dedicata |
+| `public/images/opengraph/la-dimora.jpg` / `posizione.jpg` | preview dedicate per quelle due pagine — asset statici, non convenzione-file (vedi bug sotto) |
+| `sitemap.ts` | `/sitemap.xml`, 24 URL (12 route × 2 lingue) con `alternates.languages` (incluso `x-default`) per coppia |
 | `robots.ts` | `/robots.txt`, che punta alla sitemap |
 
-`metadata` in `layout.tsx` definisce `metadataBase` (obbligatorio: senza, gli
-URL Open Graph resterebbero relativi e i social non li risolvono), `title` con
-`template` per le sottopagine, `alternates.canonical`, il blocco `openGraph` e
-`twitter: { card: "summary_large_image" }` — la card di X pesca da `og:image`,
-quindi non serve un `twitter-image` separato.
+`metadata` in ogni `layout.tsx` definisce `metadataBase` (obbligatorio:
+senza, gli URL Open Graph resterebbero relativi e i social non li
+risolvono), `title` con `template` per le sottopagine, `twitter: { card:
+"summary_large_image" }` (la card pesca da `og:image`, non serve un
+`twitter-image` separato) e un `openGraph` di default per l'home (nessun
+`page.tsx` dedicato lì). Ogni `page.tsx` sotto imposta il proprio `title`/
+`description` **e il proprio `openGraph`**, costruito con **`buildOpenGraph()`**
+(`src/lib/seo.ts`): prende locale, percorso neutro, titolo, descrizione e
+foto della pagina e restituisce un oggetto `openGraph` completo
+(`type`/`locale`/`url`/`siteName`/`title`/`description`/`images`).
+
+### Bug corretto (5 agosto 2026): anteprime social sbagliate su quasi tutte le pagine
+
+Verificato con `curl` sull'HTML servito da `next start` (non solo dedotto
+dai docs) durante un giro di pulizia pre-lancio. Due problemi distinti,
+scoperti in sequenza:
+
+1. **Titolo/descrizione/URL sbagliati su ogni pagina tranne l'home.** Solo i
+   due root layout dichiaravano un blocco `openGraph` (con titolo/descrizione/
+   URL dell'home scritti lì dentro); ogni `page.tsx` sotto impostava solo
+   `title`/`description` a livello radice (che aggiornano correttamente
+   `<title>` e `meta description`) ma **non** il proprio `openGraph`. Per
+   Next.js, un segmento che non dichiara `openGraph` eredita **quello
+   dell'antenato più vicino così com'è**, non solo per i campi mancanti
+   (confermato sulla sezione "Merging" di
+   `node_modules/next/dist/docs/.../generate-metadata.md`, poi verificato
+   empiricamente). Condividendo `/partner` o `/la-dimora` su WhatsApp o
+   Facebook, la card mostrava titolo, descrizione e URL **dell'home** — su un
+   sito che vive di condivisione diretta di link, un problema serio, non
+   cosmetico.
+2. **Nessuna immagine nella card della home**, in nessuna lingua (`curl`
+   sull'HTML: zero tag `og:image`). E le due pagine con foto dedicata
+   (`en/la-dimora`, `en/posizione`, le uniche che già dichiaravano un
+   `openGraph.images` manuale) puntavano a un percorso fisso scritto a mano
+   (`/la-dimora/opengraph-image.jpg`), assumendo che la convenzione-file di
+   Next servisse lì l'immagine. Per le route **annidate** Next genera invece
+   un percorso con hash casuale, ricalcolato a ogni build (es.
+   `/la-dimora/opengraph-image-1l2mkp.jpg?...`); il percorso "pulito" senza
+   hash **risponde 404** (verificato con `curl`). Le due pagine inglesi
+   condividevano quindi un'anteprima con immagine rotta. Il file alla radice
+   di `app/` (`/opengraph-image.jpg`, senza segmenti) è invece stabile —
+   200 verificato a ogni build — perché non passa dalla stessa route
+   dinamica.
+
+**Fix**: le due foto dedicate sono uscite dalla convenzione-file di Next e
+sono diventate asset statici normali in `public/images/opengraph/` (un
+percorso `public/` è per definizione stabile, niente hash; `.alt.txt` non
+serve più, l'alt si passa come parametro di codice a `buildOpenGraph()`).
+Ogni `metadata` export (12 pagine + 2 root layout per l'home) ora dichiara
+il proprio `openGraph` completo: foto dedicata per La Dimora e Posizione,
+`/opengraph-image.jpg` (file di convenzione, verificato stabile) per le
+pagine senza scatto proprio (home, Comfort & Informazioni, Galleria,
+Partner). Verificato per tutte le 12 route in entrambe le lingue con
+`npm run build && npm start` + `curl`, controllando `og:title`/
+`og:description`/`og:url`/`og:image` uno per uno e lo status HTTP di ogni
+immagine referenziata.
+
+### hreflang `x-default`
+
+Aggiunto lo stesso giorno a ogni `alternates.languages` (12 pagine) e alla
+sitemap, mancava del tutto prima: punta sempre alla versione italiana
+(lingua di default, senza prefisso), per chi arriva da un browser con una
+lingua diversa da IT/EN — convenzione raccomandata da Google per siti
+multilingua.
+
+Ogni pagina imposta solo `title` nel proprio `metadata` (es. `"La Dimora"`,
+mai `"La Dimora | Cuore della Città"`): il `template` in `layout.tsx` aggiunge
+già il suffisso. Scriverlo in entrambi i posti produceva un titolo doppio nel
+tab del browser. Lo stesso vale per `buildOpenGraph()`: lì il suffisso va
+aggiunto a mano nel `title` passato (`openGraph.title` non passa dal
+`template`, solo il tag `<title>` lo fa), altrimenti l'anteprima social
+mostra il titolo senza il nome del sito.
 
 Il dominio vive in **`siteUrl`** (`content.shared.ts`) ed è l'unico punto da
 cambiare: lo leggono `metadataBase`, la sitemap e robots. Oggi è
@@ -1076,20 +1147,11 @@ rimandano altrove. Con `showFullNav = true` entrano automaticamente — tranne
 la voce "Homepage" di `navLinks` (punta a `/`), esclusa esplicitamente per non
 duplicare l'entry `home` già presente.
 
-Ogni pagina imposta solo `title` nel proprio `metadata` (es. `"La Dimora"`,
-mai `"La Dimora | Cuore della Città"`): il `template` in `layout.tsx` aggiunge
-già il suffisso. Scriverlo in entrambi i posti produceva un titolo doppio nel
-tab del browser.
-
-**Preview per social pagina per pagina**: `/la-dimora` e `/posizione` hanno
-ciascuna il proprio `opengraph-image.jpg` (ritagliato 1200×630 dalla foto
-reale della rispettiva Hero, `sharp` con `fit: "cover"` e strategia
-`attention` per centrare il ritaglio sul soggetto) invece di ereditare quello
-generico della camera da letto in `app/`: chi condivide il link di una
-pagina specifica vede un'anteprima coerente col contenuto. `/servizi-comfort`
-**non** ne ha ancora una propria (nessuna foto dedicata disponibile per
-Amenities oggi) e continua a ereditare quella di `app/` — da rifare quando
-arriverà una foto reale per quella sezione.
+`siteConfig.metaDescription` (IT ed EN, `content.it.ts`/`content.en.ts`) è
+**tenuto sotto i ~155 caratteri**: oltre, Google tronca lo snippet in SERP.
+Accorciato il 5 agosto 2026 (era 167/175 caratteri) nello stesso giro di
+pulizia SEO — stesso criterio già in uso per `metaTitleSuffix` (~60
+caratteri).
 
 ### Dati strutturati (JSON-LD)
 
@@ -1101,9 +1163,10 @@ esiste altrove nel sito. Va toccato solo per aggiungere un tipo di dato che
 oggi il sito non ha ancora (es. recensioni, tariffe, orari di apertura di una
 reception).
 
-- **`lodgingBusinessJsonLd()`** — tipo `LodgingBusiness`, montato una sola
-  volta in `app/layout.tsx` (come `StickyHeader`/`Footer`): è l'entità del
-  sito, presente su ogni pagina non solo in home. Legge `siteConfig`
+- **`lodgingBusinessJsonLd(locale)`** — tipo `LodgingBusiness`, montato una
+  sola volta in ciascuno dei due root layout (`(it)/layout.tsx`,
+  `en/layout.tsx`, come `StickyHeader`/`Footer`): è l'entità del sito,
+  presente su ogni pagina non solo in home. Legge `siteConfig`
   (nome, telefono, email, `instagramUrl`), `addressParts` (indirizzo
   scomposto in `PostalAddress`), `propertyCoordinates` (`geo`,
   `GeoCoordinates`), `propertyFacts` (check-in/checkout, `petsAllowed`,
@@ -1118,8 +1181,9 @@ reception).
   (precisione di via, non di numero civico), non un dato fornito dal cliente
   — da sostituire con le coordinate esatte quando arriverà il profilo Google
   Business (vedi TODO in `HANDOFF.md`).
-- **`faqPageJsonLd()`** — tipo `FAQPage`, montato solo in `app/page.tsx`
-  (home): è l'unica pagina dove il pannello FAQ è davvero visibile, i dati
+- **`faqPageJsonLd(locale)`** — tipo `FAQPage`, montato solo nelle due home
+  (`(it)/page.tsx`, `en/page.tsx`): è l'unica pagina dove il pannello FAQ è
+  davvero visibile, i dati
   strutturati devono rispecchiare il contenuto reso e non esistere altrove nel
   sito senza contenuto corrispondente. Filtra `faqs` scartando le domande
   senza risposta reale (`answer` `undefined`, quelle ancora "Risposta in
@@ -1127,14 +1191,14 @@ reception).
   falso in pasto a Google, non solo un placeholder visivo. Se un giorno tutte
   le risposte restassero `undefined`, la funzione ritorna `null` e lo script
   non viene reso — gestito in `page.tsx` con un controllo prima del render.
-- **`breadcrumbListJsonLd(href)`** — tipo `BreadcrumbList` a due livelli
-  (Homepage > pagina corrente): il sito non ha gerarchie più profonde. `href`
-  deve combaciare con una voce di `navLinks`, da cui la funzione legge
-  l'etichetta — così titolo del breadcrumb e voce di menu non possono
-  disallinearsi. Montato solo nelle pagine con contenuto reale sotto la Hero
-  (`la-dimora`, `servizi-comfort`, `posizione`), non in home (è già la
-  radice) né nelle sezioni ancora smontate (galleria, partner) — da
-  aggiungere lì quando riceveranno i loro contenuti.
+- **`breadcrumbListJsonLd(locale, href)`** — tipo `BreadcrumbList` a due
+  livelli (Homepage > pagina corrente): il sito non ha gerarchie più
+  profonde. `href` è il percorso neutro (senza prefisso di lingua, come in
+  `navRoutes`) e deve combaciare con una voce di `navLinks`, da cui la
+  funzione legge l'etichetta — così titolo del breadcrumb e voce di menu non
+  possono disallinearsi. Montato in tutte le pagine con contenuto reale
+  sotto la Hero (`la-dimora`, `servizi-comfort`, `posizione`, `galleria`,
+  `partner`, entrambe le lingue), non in home (è già la radice).
 - Resi con `<script type="application/ld+json" dangerouslySetInnerHTML={{
   __html: JSON.stringify(...) }} />`: JSON-LD non deve stare per forza in
   `<head>` (Google lo legge ovunque nell'HTML), quindi vive dove ha senso nel

@@ -5,11 +5,25 @@ import { Partners } from "@/components/sections/Partners";
 import { getContent } from "@/lib/content";
 import { showFullNav } from "@/lib/content.shared";
 import { breadcrumbListJsonLd } from "@/lib/structuredData";
+import { buildOpenGraph } from "@/lib/seo";
+
+const title = "I Nostri Partner";
+const description = "La rete di partner e le convenzioni riservate agli ospiti di Dimora Cuore della Città.";
 
 export const metadata: Metadata = {
-  title: "I Nostri Partner",
-  description: "La rete di partner e le convenzioni riservate agli ospiti di Dimora Cuore della Città.",
-  alternates: { canonical: "/partner", languages: { "it-IT": "/partner", "en-US": "/en/partner" } },
+  title,
+  description,
+  alternates: { canonical: "/partner", languages: { "it-IT": "/partner", "en-US": "/en/partner", "x-default": "/partner" } },
+  openGraph: buildOpenGraph({
+    locale: "it",
+    path: "/partner",
+    title: `${title} | Cuore della Città`,
+    description,
+    image: {
+      src: "/opengraph-image.jpg",
+      alt: "La camera della Dimora Cuore della Città, con la porta-finestra aperta sul centro storico di Sulmona",
+    },
+  }),
 };
 
 export default function PartnerPage() {

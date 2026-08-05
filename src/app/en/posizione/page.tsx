@@ -5,23 +5,27 @@ import { Location } from "@/components/sections/Location";
 import { getContent } from "@/lib/content";
 import { showFullNav } from "@/lib/content.shared";
 import { breadcrumbListJsonLd } from "@/lib/structuredData";
+import { buildOpenGraph } from "@/lib/seo";
+
+const title = "Location & Map";
+const description = "How to reach Dimora Cuore della Città and the main points of interest in the historic center nearby.";
 
 export const metadata: Metadata = {
-  title: "Location & Map",
-  description: "How to reach Dimora Cuore della Città and the main points of interest in the historic center nearby.",
-  alternates: { canonical: "/en/posizione", languages: { "it-IT": "/posizione", "en-US": "/en/posizione" } },
-  // Stessa foto della versione italiana ("(it)/posizione/opengraph-image.jpg",
-  // servita a "/posizione/opengraph-image.jpg"), solo l'alt cambia lingua.
-  openGraph: {
-    images: [
-      {
-        url: "/posizione/opengraph-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "The arches of Sulmona's medieval aqueduct, in Piazza Garibaldi",
-      },
-    ],
-  },
+  title,
+  description,
+  alternates: { canonical: "/en/posizione", languages: { "it-IT": "/posizione", "en-US": "/en/posizione", "x-default": "/posizione" } },
+  // Stessa foto della versione italiana (`public/images/opengraph/posizione.jpg`),
+  // solo l'alt cambia lingua.
+  openGraph: buildOpenGraph({
+    locale: "en",
+    path: "/posizione",
+    title: `${title} | Cuore della Città`,
+    description,
+    image: {
+      src: "/images/opengraph/posizione.jpg",
+      alt: "The arches of Sulmona's medieval aqueduct, in Piazza Garibaldi",
+    },
+  }),
 };
 
 export default function EnglishPosizionePage() {

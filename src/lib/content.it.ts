@@ -15,8 +15,9 @@ import type {
 
 export const siteConfig = {
   shortTagline: "Un rifugio autentico nel cuore del centro storico",
+  // Tenuta sotto i ~155 caratteri: oltre, Google tronca lo snippet in SERP.
   metaDescription:
-    "Casa vacanze nel centro storico di Sulmona, in Abruzzo: ambienti curati, prenotazione diretta senza intermediari e le meraviglie della città a pochi passi dalla porta.",
+    "Casa vacanze nel centro storico di Sulmona, Abruzzo: ambienti curati, prenotazione diretta senza intermediari, a pochi passi dalle meraviglie della città.",
   // Tenuto sotto i ~60 caratteri: oltre, Google tronca il titolo in SERP.
   metaTitleSuffix: "Casa vacanze a Sulmona",
 };

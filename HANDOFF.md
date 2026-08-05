@@ -1,10 +1,16 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 1 agosto 2026. Riferimento: preventivo inLumine Studio del 22 luglio
+Stato al 5 agosto 2026. Riferimento: preventivo inLumine Studio del 22 luglio
 2026. Il sito è **uscito dalla bozza** (`showFullNav = true`): tutte le route
 sono raggiungibili e cliccabili, non solo la homepage — si passa dalla Fase 1
 (UI/UX) alla Fase 2 (contenuti reali) del workflow concordato nel preventivo.
 Il sito è ora anche **bilingue** (italiano + inglese, `/en/...`), vedi § sotto.
+Il 5 agosto 2026 è stato fatto un **giro di pulizia pre-lancio**: scansione
+dell'intera codebase per codice morto/file in disuso (poco da rimuovere, il
+repo era già pulito - solo un tipo TypeScript mai importato) e un audit SEO
+approfondito che ha trovato e corretto un bug reale nelle anteprime social
+(titolo/descrizione/immagine sbagliati su quasi tutte le pagine) — vedi
+`CLAUDE.md` § SEO e metadati per il dettaglio tecnico completo.
 
 ## Cosa esiste oggi
 
@@ -348,9 +354,12 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    e il QR della locandina pubblicitaria (fuori dal codice, vedi § sotto)
    puntano a un indirizzo che non risponde ancora. Nessun'altra azione di
    codice richiesta una volta acquistato: è già ovunque nel sito. Il resto
-   del SEO on-page è fatto — vedi `CLAUDE.md` § SEO e
-   metadati: favicon casa+statua, immagine di preview per i social, Open Graph,
-   canonical, sitemap, robots e dati strutturati JSON-LD
+   del SEO on-page è fatto e **verificato riga per riga il 5 agosto 2026**
+   (`npm run build && npm start` + `curl` su tutte le 12 route, entrambe le
+   lingue) — vedi `CLAUDE.md` § SEO e metadati: favicon casa+statua, preview
+   per i social corrette pagina per pagina (bug di anteprime sbagliate
+   trovato e risolto lo stesso giorno), Open Graph, canonical, hreflang
+   (incluso `x-default`), sitemap, robots e dati strutturati JSON-LD
    (`LodgingBusiness`/`FAQPage`/`BreadcrumbList`). Le coordinate in
    `propertyCoordinates` (`content.ts`) sono una stima da geocoding
    dell'indirizzo: da sostituire con quelle esatte quando arriva il profilo
@@ -401,3 +410,10 @@ le convenzioni si firmano, l'**apertura del
 profilo Google Business** (per passare `Location` dall'indirizzo al Place
 ID, vedi `CLAUDE.md` § "Dove ci Troviamo") e l'**email mancante** (punto 2,
 unico recapito ancora placeholder).
+
+Lato codice il sito **è pronto per andare online**: nessun blocco tecnico
+residuo dopo il giro di pulizia del 5 agosto 2026. I blocchi che restano
+sono tutti lato cliente/business, non codice: acquisto del dominio (punto
+8), licenza web dei font (punto 6), conferma email (punto 2) e le tre
+descrizioni partner ancora bozza (punto 3) — nessuno di questi impedisce di
+pubblicare, ma andrebbero chiusi in tempi brevi dopo il lancio.

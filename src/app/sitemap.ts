@@ -11,12 +11,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = showFullNav ? navRoutes : navRoutes.filter((route) => route.id === "home");
 
   return routes.flatMap((route) => {
-    const languages = Object.fromEntries(
-      locales.map((locale) => [
-        locale === "it" ? "it-IT" : "en-US",
-        new URL(localizeHref(route.href, locale), siteUrl).toString(),
-      ])
-    );
+    // "x-default" segnala ai motori di ricerca quale versione servire a chi
+    // non corrisponde a nessuna lingua elencata: punta all'italiano, la
+    // lingua di default del sito (nessun prefisso nell'URL).
+    const languages = {
+      ...Object.fromEntries(
+        locales.map((locale) => [
+          locale === "it" ? "it-IT" : "en-US",
+          new URL(localizeHref(route.href, locale), siteUrl).toString(),
+        ])
+      ),
+      "x-default": new URL(localizeHref(route.href, "it"), siteUrl).toString(),
+    };
 
     return locales.map((locale) => ({
       url: new URL(localizeHref(route.href, locale), siteUrl).toString(),

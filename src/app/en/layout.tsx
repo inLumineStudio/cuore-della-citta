@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { getContent } from "@/lib/content";
 import { lodgingBusinessJsonLd } from "@/lib/structuredData";
+import { buildOpenGraph } from "@/lib/seo";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -19,15 +20,20 @@ export const metadata: Metadata = {
   },
   description: content.metaDescription,
   applicationName: content.name,
-  alternates: { canonical: "/en", languages: { "it-IT": "/", "en-US": "/en" } },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "/en",
-    siteName: content.fullName,
+  alternates: { canonical: "/en", languages: { "it-IT": "/", "en-US": "/en", "x-default": "/" } },
+  // Ogni pagina figlia dichiara il proprio `openGraph` completo (vedi
+  // `buildOpenGraph`): questo è solo il fallback per l'home, che non ha un
+  // proprio page.tsx con metadata dedicati.
+  openGraph: buildOpenGraph({
+    locale: "en",
+    path: "/",
     title: homeTitle,
     description: content.metaDescription,
-  },
+    image: {
+      src: "/opengraph-image.jpg",
+      alt: "The room at Dimora Cuore della Città, with the French window open onto Sulmona's historic center",
+    },
+  }),
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };

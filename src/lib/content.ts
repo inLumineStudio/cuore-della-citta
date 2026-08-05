@@ -20,11 +20,6 @@ export type {
   PointOfInterest,
 } from "./content.shared";
 
-export type NavLink = {
-  label: string;
-  href: string;
-};
-
 const byLocale = { it, en };
 
 // Verifica statica: se `content.en.ts` perde o rinomina un campo rispetto a
