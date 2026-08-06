@@ -15,8 +15,8 @@ approfondito che ha trovato e corretto un bug reale nelle anteprime social
 `CLAUDE.md` § SEO e metadati per il dettaglio tecnico completo. Il 6 agosto
 2026 la Galleria si è ampliata da 4 a 17 foto reali e sono state riempite
 le ultime foto placeholder del sito (Hero della home, "La Nostra Storia",
-Hero di "/servizi-comfort") — nessun `ImagePlaceholder` resta più nel
-percorso principale. Alcune foto sorgente, a bassa risoluzione (export
+Hero di "/servizi-comfort" e di "/galleria") — nessun `ImagePlaceholder`
+resta più nel percorso principale. Alcune foto sorgente, a bassa risoluzione (export
 WhatsApp), sono state ingrandite con AI (Real-ESRGAN) prima dell'uso — vedi
 `CLAUDE.md` § AI upscaling.
 
@@ -289,10 +289,9 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    **La foto de "La Nostra Storia"** è stata aggiunta il 6 agosto 2026
    (riusa il portone d'ingresso già in Galleria, non più `ImagePlaceholder`).
    Anche le **foto dedicate alle Hero** di galleria e comfort sono state
-   completate lo stesso giorno: "/servizi-comfort" ha ora una foto propria
-   (riusa quella del balcone con vista sul campanile), "/galleria" resta
-   senza — la sua stessa Hero mostra la galleria subito sotto, una foto
-   dedicata sarebbe ridondante.
+   completate lo stesso giorno: "/servizi-comfort" riusa quella del balcone
+   con vista sul campanile, "/galleria" riusa quella della camera
+   matrimoniale con il balcone aperto sul centro storico.
 2. ~~**Recapiti reali**~~ — fatto. Telefono/WhatsApp (`+39 351 496 4713`) e
    indirizzo (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato
    dalla proprietaria il 30 luglio 2026**. **Instagram** è quello reale,
@@ -409,8 +408,8 @@ sospeso che blocchi la pubblicazione.
 due del 31), le 13 aggiunte il 6 agosto (facciata, ingresso, cucina, camere,
 balconi, bagno — vedi `CLAUDE.md` § Galleria), la foto Hero della home
 (sostituita il 6 agosto, non più provvisoria), quella de "La Nostra Storia"
-e quella dedicata alla Hero di "/servizi-comfort" (punto 1). Nessun
-`ImagePlaceholder` resta nel percorso principale del sito.
+e quelle dedicate alle Hero di "/servizi-comfort" e "/galleria" (punto 1).
+Nessun `ImagePlaceholder` resta nel percorso principale del sito.
 
 Restano due punti aperti prima o subito dopo il lancio:
 

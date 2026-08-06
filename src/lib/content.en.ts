@@ -87,7 +87,11 @@ export const pageHeroes = {
     imageSrc: "/images/sulmona-piazza-garibaldi-giorno.webp",
     imageAlt: "Piazza Garibaldi in Sulmona, with the medieval aqueduct and the eighteenth-century fountain",
   },
-  galleria: { claim: "The Dimora, Unfiltered" },
+  galleria: {
+    claim: "The Dimora, Unfiltered",
+    imageSrc: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
+    imageAlt: "The double bedroom with the balcony open onto Sulmona's historic center",
+  },
   comfort: {
     claim: "The Dimora Experience",
     imageSrc: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
@@ -273,8 +277,8 @@ export const galleryImages: GalleryImage[] = [
   {
     src: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
     alt: "The double bedroom with the balcony open onto Sulmona's historic center",
-    width: 1600,
-    height: 1064,
+    width: 2400,
+    height: 1596,
   },
   {
     src: "/images/gallery/sulmona-dimora-camera-angolo-toeletta.webp",

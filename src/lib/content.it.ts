@@ -79,7 +79,11 @@ export const pageHeroes = {
     imageSrc: "/images/sulmona-piazza-garibaldi-giorno.webp",
     imageAlt: "Piazza Garibaldi a Sulmona, con l'acquedotto medievale e la fontana settecentesca",
   },
-  galleria: { claim: "La Dimora, Senza Filtri" },
+  galleria: {
+    claim: "La Dimora, Senza Filtri",
+    imageSrc: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
+    imageAlt: "La camera matrimoniale con il balcone aperto sul centro storico di Sulmona",
+  },
   comfort: {
     claim: "L'Esperienza in Dimora",
     imageSrc: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
@@ -267,8 +271,8 @@ export const galleryImages: GalleryImage[] = [
   {
     src: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
     alt: "La camera matrimoniale con il balcone aperto sul centro storico di Sulmona",
-    width: 1600,
-    height: 1064,
+    width: 2400,
+    height: 1596,
   },
   {
     src: "/images/gallery/sulmona-dimora-camera-angolo-toeletta.webp",

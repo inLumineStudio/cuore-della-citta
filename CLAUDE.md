@@ -1021,6 +1021,7 @@ mostrano `ImagePlaceholder` invece di un `next/image` rotto:
 | `faqImageSrc` | `Faq` | `/images/statua-di-ovidio.jpg` (fondo della colonna editoriale) |
 | `homeIntroImageSrc` | `HomeIntro` | foto reale (6 agosto 2026), riusa il portone d'ingresso già in Galleria |
 | `pageHeroes.comfort.imageSrc` | `Hero` (su `/servizi-comfort`) | foto reale (6 agosto 2026), riusa una foto già in Galleria |
+| `pageHeroes.galleria.imageSrc` | `Hero` (su `/galleria`) | foto reale (6 agosto 2026), riusa una foto già in Galleria |
 | `galleryImages[].src` | `Gallery` | 17 foto reali (`public/images/gallery/`) |
 
 Tutti i campi immagine della home sono ora valorizzati: nessun `ImagePlaceholder`
@@ -1075,6 +1076,11 @@ finale fa da anti-aliasing) e convertito in WebP q92.
   upscale ×4 (6400×4256) → downscale a 2400px di larghezza → sostituisce il
   file esistente in Galleria (stesso asset, qualità migliorata per
   entrambi gli usi, non duplicato).
+- **`pageHeroes.galleria.imageSrc`** (riusa la stessa foto di
+  `galleryImages`, "la camera matrimoniale con il balcone aperto"): stesso
+  processo e stessa risoluzione finale (sorgente 1600×1064 → upscale ×4 →
+  downscale a 2400px di larghezza), stesso principio di riuso dell'asset
+  condiviso invece di duplicarlo.
 
 Il binario e i modelli non sono conservati nel repo (scaricati in una
 cartella temporanea ed eliminati dopo l'uso, stesso approccio delle
