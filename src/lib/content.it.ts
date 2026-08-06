@@ -56,8 +56,8 @@ export const bookCtaLabel: string = "Prenota ora";
 export const heroSubtitle: string =
   "Svegliati nel cuore di Sulmona, tra le vie del centro storico. Una dimora accogliente ed esclusiva, punto di partenza per la Valle Peligna e le bellezze abruzzesi.";
 
-// Teaser Intro in home - la storia della Dimora. La foto definitiva arriverà
-// dopo: per ora ImagePlaceholder.
+// Teaser Intro in home - la storia della Dimora. Foto in `homeIntroImageSrc`
+// (content.shared.ts).
 export const homeIntro = {
   eyebrow: "La nostra storia",
   title: "Il cuore, prima di tutto.",
@@ -80,7 +80,11 @@ export const pageHeroes = {
     imageAlt: "Piazza Garibaldi a Sulmona, con l'acquedotto medievale e la fontana settecentesca",
   },
   galleria: { claim: "La Dimora, Senza Filtri" },
-  comfort: { claim: "L'Esperienza in Dimora" },
+  comfort: {
+    claim: "L'Esperienza in Dimora",
+    imageSrc: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
+    imageAlt: "Il balcone della Dimora, con vista sul campanile del centro storico di Sulmona",
+  },
   posizione: {
     claim: "La Posizione & Il Territorio",
     imageSrc: "/images/sulmona-acquedotto-medievale.webp",
@@ -217,6 +221,84 @@ export const galleryImages: GalleryImage[] = [
     alt: "Una piazza del centro storico di Sulmona, a pochi passi dalla Dimora",
     width: 1600,
     height: 1200,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-facciata-esterna.webp",
+    alt: "La facciata della Dimora nel centro storico di Sulmona",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-portone-ingresso.webp",
+    alt: "Il portone d'ingresso della Dimora, nel cuore del centro storico di Sulmona",
+    width: 1199,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-ingresso-luce-giorno.webp",
+    alt: "L'ingresso della Dimora in piena luce del giorno, con la cucina sullo sfondo",
+    width: 1064,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-luce-naturale.webp",
+    alt: "La cucina della Dimora in piena luce del giorno, con il balcone aperto sul centro storico",
+    width: 989,
+    height: 1319,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-tavolo-apparecchiato.webp",
+    alt: "La cucina della Dimora con il tavolo apparecchiato, sotto il soffitto a volta in mattoni",
+    width: 1200,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-corridoio.webp",
+    alt: "La cucina della Dimora vista dal tavolo da pranzo, con il corridoio verso le camere",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-soffitto-a-volta.webp",
+    alt: "La camera matrimoniale al calar della sera, con il soffitto a volta in mattoni e il balcone affacciato sulla strada",
+    width: 1199,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
+    alt: "La camera matrimoniale con il balcone aperto sul centro storico di Sulmona",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-angolo-toeletta.webp",
+    alt: "La seconda camera, con l'angolo toeletta e le porte-finestre sul balcone",
+    width: 1600,
+    height: 1067,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-comodini-illuminati.webp",
+    alt: "La seconda camera con i comodini illuminati, la sera",
+    width: 1351,
+    height: 760,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
+    alt: "Il balcone di una delle camere, con vista sul campanile del centro storico",
+    width: 2400,
+    height: 1596,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-balcone-fiorito-piazza.webp",
+    alt: "Il balcone fiorito della Dimora, affacciato sulla piazza del centro storico",
+    width: 1600,
+    height: 1199,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-bagno-doccia.webp",
+    alt: "Il bagno della Dimora, con doccia e porta-finestra su un piccolo balcone",
+    width: 1061,
+    height: 1415,
   },
 ];
 
@@ -381,6 +463,7 @@ export const ui = {
   imagePlaceholder: "Foto in arrivo",
   heroDefaultImageAlt: "Interno della Dimora Cuore della Città",
   locationTeaserImageAlt: "Piazza Garibaldi a Sulmona al tramonto, con gli archi dell'acquedotto medievale",
+  homeIntroImageAlt: "Il portone d'ingresso della Dimora, nel centro storico di Sulmona",
   faqImageAlt: "La statua di Ovidio a Sulmona",
   faqAnswerPending: "Risposta in arrivo.",
   homepageBreadcrumb: "Homepage",

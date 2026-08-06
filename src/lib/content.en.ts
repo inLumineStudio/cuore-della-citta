@@ -65,7 +65,7 @@ export const bookCtaLabel: string = "Book now";
 export const heroSubtitle: string =
   "Wake up in the heart of Sulmona, among the streets of the historic center. A welcoming, exclusive residence, and the perfect base for exploring the Valle Peligna and the beauty of Abruzzo.";
 
-// Home "our story" teaser. The final photo is still pending: ImagePlaceholder for now.
+// Home "our story" teaser. Photo lives in `homeIntroImageSrc` (content.shared.ts).
 export const homeIntro = {
   eyebrow: "Our story",
   title: "Heart, above all.",
@@ -88,7 +88,11 @@ export const pageHeroes = {
     imageAlt: "Piazza Garibaldi in Sulmona, with the medieval aqueduct and the eighteenth-century fountain",
   },
   galleria: { claim: "The Dimora, Unfiltered" },
-  comfort: { claim: "The Dimora Experience" },
+  comfort: {
+    claim: "The Dimora Experience",
+    imageSrc: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
+    imageAlt: "The Dimora's balcony, with a view of Sulmona's historic center bell tower",
+  },
   posizione: {
     claim: "Location & Surroundings",
     imageSrc: "/images/sulmona-acquedotto-medievale.webp",
@@ -223,6 +227,84 @@ export const galleryImages: GalleryImage[] = [
     alt: "A square in Sulmona's historic center, just steps from the Dimora",
     width: 1600,
     height: 1200,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-facciata-esterna.webp",
+    alt: "The Dimora's facade in Sulmona's historic center",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-portone-ingresso.webp",
+    alt: "The Dimora's entrance door, in the heart of Sulmona's historic center",
+    width: 1199,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-ingresso-luce-giorno.webp",
+    alt: "The Dimora's entryway in full daylight, with the kitchen in the background",
+    width: 1064,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-luce-naturale.webp",
+    alt: "The Dimora's kitchen in full daylight, with the balcony open onto the historic center",
+    width: 989,
+    height: 1319,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-tavolo-apparecchiato.webp",
+    alt: "The Dimora's kitchen with the table set, beneath the vaulted brick ceiling",
+    width: 1200,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-cucina-corridoio.webp",
+    alt: "The Dimora's kitchen seen from the dining table, with the hallway toward the bedrooms",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-soffitto-a-volta.webp",
+    alt: "The double bedroom at dusk, with the vaulted brick ceiling and the balcony overlooking the street",
+    width: 1199,
+    height: 1600,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-balcone-centro-storico.webp",
+    alt: "The double bedroom with the balcony open onto Sulmona's historic center",
+    width: 1600,
+    height: 1064,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-angolo-toeletta.webp",
+    alt: "The second bedroom, with the vanity nook and the French doors onto the balcony",
+    width: 1600,
+    height: 1067,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-comodini-illuminati.webp",
+    alt: "The second bedroom with the lit nightstands, in the evening",
+    width: 1351,
+    height: 760,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-camera-vista-centro-storico.webp",
+    alt: "One of the bedrooms' balcony, with a view of the historic center's bell tower",
+    width: 2400,
+    height: 1596,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-balcone-fiorito-piazza.webp",
+    alt: "The Dimora's flower-lined balcony, overlooking the square in the historic center",
+    width: 1600,
+    height: 1199,
+  },
+  {
+    src: "/images/gallery/sulmona-dimora-bagno-doccia.webp",
+    alt: "The Dimora's bathroom, with a shower and French doors onto a small balcony",
+    width: 1061,
+    height: 1415,
   },
 ];
 
@@ -388,6 +470,7 @@ export const ui = {
   imagePlaceholder: "Photo coming soon",
   heroDefaultImageAlt: "Interior of Dimora Cuore della Città",
   locationTeaserImageAlt: "Piazza Garibaldi in Sulmona at sunset, with the arches of the medieval aqueduct",
+  homeIntroImageAlt: "The Dimora's entrance door, in Sulmona's historic center",
   faqImageAlt: "The statue of Ovid in Sulmona",
   faqAnswerPending: "Answer coming soon.",
   homepageBreadcrumb: "Home",

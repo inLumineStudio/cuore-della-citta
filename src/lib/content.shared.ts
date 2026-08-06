@@ -75,14 +75,22 @@ export const navRoutes = [
 
 export type NavRouteId = (typeof navRoutes)[number]["id"];
 
-// TODO: foto provvisoria fornita dal cliente - sostituire con lo scatto definitivo
-export const heroImageSrc: string | undefined = "/images/hero.jpg";
+// Foto reale della camera, fornita dalla proprietaria il 5 agosto 2026
+// (originale WhatsApp 1351×760, ingrandita ×4 con Real-ESRGAN AI upscaling —
+// vedi CLAUDE.md § Placeholder immagini per il dettaglio del processo).
+export const heroImageSrc: string | undefined = "/images/hero.webp";
 
 // Pannello "posizione" della home (secondo pannello dello scroll orizzontale
 // desktop). WebP q92: con `images.unoptimized` il browser riceve esattamente
 // questo file, quindi il formato lo scegliamo noi.
 export const positionImageSrc: string | undefined =
   "/images/sulmona-piazza-garibaldi-tramonto.webp";
+
+// Pannello "La Nostra Storia" della home (`HomeIntro`, primo pannello dello
+// scroll orizzontale). Riusa lo stesso file già presente nella Galleria
+// (il portone d'ingresso della Dimora) invece di duplicare l'asset.
+export const homeIntroImageSrc: string | undefined =
+  "/images/gallery/sulmona-dimora-portone-ingresso.webp";
 
 // Terzo pannello dello scroll orizzontale della home. L'immagine fa da fondo
 // alla colonna editoriale: se è undefined resta il pieno `bg-ink`.

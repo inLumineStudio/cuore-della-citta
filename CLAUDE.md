@@ -642,7 +642,19 @@ Ultima delle quattro sezioni inizialmente vuote a uscire da quello stato: il
 31 luglio 2026 ha ricevuto il set completo delle quattro foto reali fornite
 dalla proprietaria (due scattate il 22 luglio, due il 31 — trovate tutte sul
 Desktop del cliente, non nella sottocartella con un lotto diverso di scatti
-con nome simile).
+con nome simile). **Ampliata il 6 agosto 2026** con 14 nuove foto trovate
+nella cartella "galleria" sul Desktop (facciata esterna della Dimora — la
+prima foto reale dell'edificio, mai avuta prima —, portone d'ingresso,
+ingresso interno, cucina, entrambe le camere da letto, balconi, bagno):
+convertite in WebP q92 con `sharp` (stesso processo delle quattro foto di
+luglio), nomi file descrittivi (`sulmona-dimora-<soggetto>.webp`). Una delle
+14 è stata rimossa subito dopo (**"queste due foto sono uguali, rimuovi
+quella di sotto"**): due scatti dello stesso ingresso, uno a luce calda
+serale e uno a luce naturale diurna, quasi identici nell'inquadratura — il
+cliente ha scelto di tenere solo quello a luce diurna
+(`sulmona-dimora-ingresso-luce-giorno.webp`), rimuovendo
+`sulmona-dimora-ingresso-appendiabiti.webp` sia dall'array sia dal repo.
+Totale attuale: **17 foto**.
 
 - **Layout a cascata (masonry), non griglia**: `columns-2 sm:columns-3
   lg:columns-4` (CSS multi-column, non CSS grid) con ogni card
@@ -686,7 +698,11 @@ dalla proprietaria (vedi TODO 3 in `HANDOFF.md`). A differenza di `Gallery`,
 montati dalla stessa `page.tsx` — questo è ancora il caso qui:
 `servizi-comfort/page.tsx` monta `<Hero {...pageHeroes.comfort} ... />` e poi
 `<Amenities />`, la Hero non fa parte del componente (a differenza di `About`,
-che invece la incorpora).
+che invece la incorpora). **Foto Hero dedicata dal 6 agosto 2026**
+(`pageHeroes.comfort.imageSrc`, riusa lo stesso file di `galleryImages` con
+la vista dal balcone sul campanile del centro storico, ingrandito con AI —
+vedi § AI upscaling): prima ereditava il default della Hero (la foto della
+camera).
 
 - I dati vivono in **`amenitiesPage`** (`content.ts`): `eyebrow`/`title`/
   `subtitle` per l'intestazione, poi due blocchi — `comfortGroups` (Spazi &
@@ -1000,11 +1016,15 @@ mostrano `ImagePlaceholder` invece di un `next/image` rotto:
 
 | Campo | Usato da | Stato |
 |---|---|---|
-| `heroImageSrc` | `Hero`, `About` | `/images/hero.jpg` (provvisoria) |
+| `heroImageSrc` | `Hero`, `About` | `/images/hero.webp` (foto reale, 6 agosto 2026 — vedi § AI upscaling sotto) |
 | `positionImageSrc` | `LocationTeaser` | `/images/sulmona-piazza-garibaldi-tramonto.webp` (scatto al tramonto, dal cliente) |
 | `faqImageSrc` | `Faq` | `/images/statua-di-ovidio.jpg` (fondo della colonna editoriale) |
-| `galleryImages[].src` | `Gallery` | 4 foto reali, set completo (`public/images/gallery/`) |
-| — | `HomeIntro` | placeholder: manca la foto de "La Nostra Storia" |
+| `homeIntroImageSrc` | `HomeIntro` | foto reale (6 agosto 2026), riusa il portone d'ingresso già in Galleria |
+| `pageHeroes.comfort.imageSrc` | `Hero` (su `/servizi-comfort`) | foto reale (6 agosto 2026), riusa una foto già in Galleria |
+| `galleryImages[].src` | `Gallery` | 17 foto reali (`public/images/gallery/`) |
+
+Tutti i campi immagine della home sono ora valorizzati: nessun `ImagePlaceholder`
+resta più nel percorso principale del sito.
 
 Quando arrivano le foto definitive:
 
@@ -1021,6 +1041,44 @@ indistinguibile dall'originale a queste dimensioni e pesa circa metà del JPEG
 equivalente) prima di copiare in `public/images/`. `sharp` è già tra le
 dipendenze del progetto e basta per la conversione. Le altre foto in repo sono
 ancora JPEG: vanno convertite quando si sostituiranno con gli scatti definitivi.
+
+### AI upscaling per foto a bassa risoluzione (Real-ESRGAN)
+
+Le foto ricevute il 6 agosto 2026 (cartella "galleria" sul Desktop del
+cliente) sono export WhatsApp: compressione pesante, spesso sotto i 1600px
+sul lato lungo — inadatto a una Hero a piena pagina (`min-h-dvh`, `object-
+cover`), che su schermi grandi avrebbe ingrandito l'immagine oltre la sua
+risoluzione nativa con sfocatura visibile (il sito non ha ottimizzazione
+lato server, `images.unoptimized: true`, quindi nessuna rete di sicurezza).
+
+Nessun tool di AI upscaling era installato sulla macchina (né Python/pip,
+né un binario) nonostante fosse stato usato in un altro repo — probabilmente
+un ambiente diverso. Scaricare l'intera catena Python + PyTorch + pesi del
+modello sarebbe stato pesante (Python stesso non era installato, solo lo
+stub dello Store). Usato invece **`realesrgan-ncnn-vulkan`**
+([xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), rilascio
+`v0.2.5.0`, non l'ultimo tag del repo wrapper che manca dei modelli):
+binario standalone (~45 MB con i modelli inclusi), nessuna dipendenza
+Python, accelerato via Vulkan — sulla GPU disponibile (RTX 5090) un upscale
+×4 con il modello `realesrgan-x4plus` (generico, adatto a foto reali, non
+`-anime`) impiega pochi secondi. Processo: upscale ×4 con
+`realesrgan-ncnn-vulkan.exe -n realesrgan-x4plus -s 4`, poi ridimensionato
+via `sharp` alla risoluzione finale voluta (downscale dopo l'upscale AI
+produce un risultato più pulito del solo upscale diretto, lo downscale
+finale fa da anti-aliasing) e convertito in WebP q92.
+
+- **`heroImageSrc`**: sorgente 1351×760 → upscale ×4 (5404×3040) → salvato
+  così com'è (`hero.webp`, nessun downscale: risoluzione comunque utile per
+  una Hero a piena pagina).
+- **`pageHeroes.comfort.imageSrc`** (riusa la stessa foto di
+  `galleryImages`, "il balcone di una delle camere"): sorgente 1600×1064 →
+  upscale ×4 (6400×4256) → downscale a 2400px di larghezza → sostituisce il
+  file esistente in Galleria (stesso asset, qualità migliorata per
+  entrambi gli usi, non duplicato).
+
+Il binario e i modelli non sono conservati nel repo (scaricati in una
+cartella temporanea ed eliminati dopo l'uso, stesso approccio delle
+conversioni font e degli script `sharp` usa-e-getta per i loghi partner).
 
 ### Crediti fotografici
 

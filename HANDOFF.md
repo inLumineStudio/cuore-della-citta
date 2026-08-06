@@ -1,16 +1,24 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 5 agosto 2026. Riferimento: preventivo inLumine Studio del 22 luglio
-2026. Il sito è **uscito dalla bozza** (`showFullNav = true`): tutte le route
-sono raggiungibili e cliccabili, non solo la homepage — si passa dalla Fase 1
-(UI/UX) alla Fase 2 (contenuti reali) del workflow concordato nel preventivo.
-Il sito è ora anche **bilingue** (italiano + inglese, `/en/...`), vedi § sotto.
+Stato al 6 agosto 2026, **giorno previsto per la messa online**. Riferimento:
+preventivo inLumine Studio del 22 luglio 2026. Il sito è **uscito dalla
+bozza** (`showFullNav = true`): tutte le route sono raggiungibili e
+cliccabili, non solo la homepage — si passa dalla Fase 1 (UI/UX) alla Fase 2
+(contenuti reali) del workflow concordato nel preventivo. Il sito è ora
+anche **bilingue** (italiano + inglese, `/en/...`), vedi § sotto.
+
 Il 5 agosto 2026 è stato fatto un **giro di pulizia pre-lancio**: scansione
 dell'intera codebase per codice morto/file in disuso (poco da rimuovere, il
 repo era già pulito - solo un tipo TypeScript mai importato) e un audit SEO
 approfondito che ha trovato e corretto un bug reale nelle anteprime social
 (titolo/descrizione/immagine sbagliati su quasi tutte le pagine) — vedi
-`CLAUDE.md` § SEO e metadati per il dettaglio tecnico completo.
+`CLAUDE.md` § SEO e metadati per il dettaglio tecnico completo. Il 6 agosto
+2026 la Galleria si è ampliata da 4 a 17 foto reali e sono state riempite
+le ultime foto placeholder del sito (Hero della home, "La Nostra Storia",
+Hero di "/servizi-comfort") — nessun `ImagePlaceholder` resta più nel
+percorso principale. Alcune foto sorgente, a bassa risoluzione (export
+WhatsApp), sono state ingrandite con AI (Real-ESRGAN) prima dell'uso — vedi
+`CLAUDE.md` § AI upscaling.
 
 ## Cosa esiste oggi
 
@@ -53,10 +61,12 @@ routing reale (non single-page ad anchor):
   "Indicazioni stradali", e la mappa Google Maps
   vera basata sull'indirizzo. È la seconda delle quattro sezioni inizialmente
   vuote a uscire da quello stato.
-- **`/galleria`** — Hero + **`Gallery`**, con il set completo delle quattro
-  foto reali (31 luglio 2026): la camera matrimoniale, la seconda camera, il
-  soggiorno con angolo cottura e uno scorcio del centro storico. Layout a
-  cascata (masonry, non griglia uniforme), foto cliccabili per una versione
+- **`/galleria`** — Hero + **`Gallery`**, con **17 foto reali** in tutto: le
+  quattro del 31 luglio 2026 (camera matrimoniale, seconda camera, soggiorno
+  con angolo cottura, scorcio del centro storico) più 13 aggiunte il 6
+  agosto 2026 (facciata esterna della Dimora, portone d'ingresso, ingresso
+  interno, cucina, entrambe le camere, balconi, bagno). Layout a cascata
+  (masonry, non griglia uniforme), foto cliccabili per una versione
   ingrandita — senza didascalia, tolta su richiesta della cliente. Non è più
   tra le sezioni smontate — vedi `CLAUDE.md` § "Galleria".
 - **`/partner`** — Hero + **`Partners`**, con quattro partner reali: **Cafè
@@ -265,8 +275,10 @@ visivo della Hero del sito, non un design a parte.
 
 Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
 
-1. **Foto reali** — inserite: la foto della camera (provvisoria, `hero.jpg`),
-   Piazza Garibaldi al tramonto nel pannello "Dove ci Troviamo"
+1. ~~**Foto reali**~~ — fatto per tutte. La camera (`hero.webp`, sostituita
+   il 6 agosto 2026 con uno scatto reale ingrandito via AI, non più
+   provvisoria — vedi `CLAUDE.md` § AI upscaling), Piazza Garibaldi al
+   tramonto nel pannello "Dove ci Troviamo"
    (`sulmona-piazza-garibaldi-tramonto.webp`, fornita dal cliente il 25 luglio
    2026: PNG da 1,6 MB riconvertito in WebP q92 da 137 KB, vedi la nota sul
    formato in `CLAUDE.md` § Placeholder immagini), Piazza Garibaldi di giorno
@@ -274,14 +286,13 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    archi dell'acquedotto medievale nella Hero di "/posizione"
    (`sulmona-acquedotto-medievale.webp`) e la statua di Ovidio come fondo
    della colonna editoriale delle FAQ (`statua-di-ovidio.jpg`).
-   **Manca ancora la foto de "La Nostra Storia"**, che in
-   home mostra tuttora `ImagePlaceholder`. Mancano inoltre le **foto dedicate
-   alle Hero** di galleria e comfort: finché `imageSrc` non è valorizzato in
-   `pageHeroes`, quelle due sezioni usano la foto della camera (`/posizione`
-   e `/partner` hanno già una foto dedicata). **In arrivo dalla proprietaria
-   venerdì 31 luglio 2026.** Azione: salvare le foto in `public/images/` e
-   valorizzare il campo corrispondente in `content.ts` (vedi `CLAUDE.md` §
-   Placeholder immagini).
+   **La foto de "La Nostra Storia"** è stata aggiunta il 6 agosto 2026
+   (riusa il portone d'ingresso già in Galleria, non più `ImagePlaceholder`).
+   Anche le **foto dedicate alle Hero** di galleria e comfort sono state
+   completate lo stesso giorno: "/servizi-comfort" ha ora una foto propria
+   (riusa quella del balcone con vista sul campanile), "/galleria" resta
+   senza — la sua stessa Hero mostra la galleria subito sotto, una foto
+   dedicata sarebbe ridondante.
 2. ~~**Recapiti reali**~~ — fatto. Telefono/WhatsApp (`+39 351 496 4713`) e
    indirizzo (Via Panfilo Scudieri 1, Sulmona) sono quelli veri, **confermato
    dalla proprietaria il 30 luglio 2026**. **Instagram** è quello reale,
@@ -305,9 +316,8 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta
    della cliente — pronta a ricevere altri partner nella fascia ancora vuota
    (15%) non appena firmati.
-   **Galleria è stata rimontata** il 31 luglio con il
-   **set completo delle quattro foto reali** (camera matrimoniale, seconda
-   camera, soggiorno con angolo cottura, centro storico — layout a cascata,
+   **Galleria è stata rimontata** il 31 luglio con le prime quattro foto
+   reali, poi **ampliata a 17 foto** il 6 agosto 2026 (layout a cascata,
    vedi `CLAUDE.md` § "Galleria"); niente più `TODO` su `galleryImages`.
    **Comfort e Posizione erano già fatte** (`amenitiesPage`/`locationPage`
    in `content.ts`, contenuti reali).
@@ -385,8 +395,8 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 ## Prossimo passo consigliato
 
 Tutte e sei le sezioni sono ora complete: Homepage, "/la-dimora",
-"/servizi-comfort", "/posizione", "/galleria" (set completo delle quattro
-foto, dal 31 luglio 2026) e "/partner" (quattro partner al 1 agosto 2026, ma
+"/servizi-comfort", "/posizione", "/galleria" (17 foto, dal 6 agosto 2026)
+e "/partner" (quattro partner al 1 agosto 2026, ma
 strutturalmente pronta a crescere). Non resta più nessuna sezione vuota da
 riempire da zero.
 
@@ -395,11 +405,12 @@ Instagram, email) e le quattro descrizioni partner sono tutti dati reali e
 confermati dalla proprietaria — non resta nessun contenuto testuale in
 sospeso che blocchi la pubblicazione.
 
-**Foto ricevute dalla proprietaria il 31 luglio 2026**: le quattro della
-galleria (due del 22 luglio, due del 31). Manca ancora la foto de "La Nostra
-Storia" in home (tuttora `ImagePlaceholder`) e le foto dedicate alle Hero di
-galleria e comfort (punto 1) — non bloccanti, quelle sezioni mostrano comunque
-una foto reale (quella della camera) finché non arrivano gli scatti dedicati.
+**Foto**: complete. Le quattro della galleria del 31 luglio (due del 22,
+due del 31), le 13 aggiunte il 6 agosto (facciata, ingresso, cucina, camere,
+balconi, bagno — vedi `CLAUDE.md` § Galleria), la foto Hero della home
+(sostituita il 6 agosto, non più provvisoria), quella de "La Nostra Storia"
+e quella dedicata alla Hero di "/servizi-comfort" (punto 1). Nessun
+`ImagePlaceholder` resta nel percorso principale del sito.
 
 Restano due punti aperti prima o subito dopo il lancio:
 
