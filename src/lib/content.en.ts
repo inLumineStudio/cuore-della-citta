@@ -480,4 +480,7 @@ export const ui = {
   homepageBreadcrumb: "Home",
   allRightsReserved: "All rights reserved.",
   madeBy: "Made by",
+  notFoundTitle: "Page not found",
+  notFoundMessage: "The page you're looking for doesn't exist or has been moved. Head back to the homepage to keep exploring the Dimora.",
+  notFoundCta: "Back to homepage",
 };

@@ -283,9 +283,11 @@ deve restare raggiungibile a ogni larghezza).
 src/
   app/
     fonts.ts           # le 4 chiamate next/font, condivise da entrambi i root layout
+    global-not-found.tsx  # 404 per URL del tutto sconosciuti, bypassa i root layout — vedi § Pagina 404
     (it)/               # route group italiano — invisibile nell'URL, nessun prefisso
       layout.tsx        # root layout <html lang="it">, chrome globale (StickyHeader, Footer, ScrollToTop)
       page.tsx           # Homepage: <Hero /> + <HorizontalScroller />
+      not-found.tsx      # 404 con chrome completo, per `notFound()` lanciato dentro l'albero IT
       la-dimora/page.tsx
       galleria/page.tsx
       servizi-comfort/page.tsx
@@ -293,6 +295,7 @@ src/
       partner/page.tsx
     en/                  # route group inglese — segmento reale, prefisso "/en"
       layout.tsx        # root layout <html lang="en">, stesso chrome, canonical "/en"
+      not-found.tsx      # equivalente inglese
       page.tsx / la-dimora/ / galleria/ / servizi-comfort/ / posizione/ / partner/
     icon.svg / icon.png / apple-icon.png      # favicon (convenzioni file di Next)
     opengraph-image.jpg / .alt.txt            # preview per social, di default (IT)
@@ -300,7 +303,7 @@ src/
     globals.css        # design token (colori, font) via @theme
   components/
     layout/             # StickyHeader, Footer, MobileMenu — montati nei layout, ricevono `locale`
-    sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata, riceve `locale`
+    sections/           # Un componente per blocco di contenuto, riusato dalla route dedicata, riceve `locale` (incluso `NotFound`)
     ui/                 # Primitive riutilizzabili (Container, SectionHeading, ImagePlaceholder, HorizontalScroller, NavLink, Reveal, ScrollToTop, AbruzzoMap, LanguageSwitcher, icons)
   lib/
     content.shared.ts    # Dati strutturali e nomi propri, identici in ogni lingua (indirizzo, telefono, percorsi immagine, navRoutes)
@@ -1007,6 +1010,51 @@ l'accordion su `bg-cream-soft`.
   filosofia di `ImagePlaceholder` per le foto. Oggi tutte e nove le risposte
   sono quelle reali fornite dalla proprietaria, quindi il segnaposto non è
   visibile da nessuna parte.
+
+### Pagina 404
+
+Aggiunta il 6 agosto 2026, giorno della messa online (prima non esisteva: gli
+URL sbagliati mostravano la pagina 404 generica di Next, senza logo né
+lingua). Due livelli distinti, non uno solo, perché questo sito ha **due
+root layout separati** ((it) ed en, vedi § Multilingua) e non uno unico da
+cui comporre un 404 completo — verificato sia sulla documentazione ufficiale
+(`node_modules/next/dist/docs/.../not-found.md`, che cita esplicitamente
+"multiple root layouts... no single layout to compose a global 404 from"
+come caso limite) sia empiricamente: prima di aggiungere il secondo livello,
+un URL a caso digitato male (`/pagina-inesistente`) cadeva comunque sulla
+404 generica di Next nonostante `not-found.tsx` esistesse già nei due
+alberi — perché quel file cattura solo `notFound()` lanciato **dentro** una
+route già risolta in quell'albero, non un URL che non corrisponde a
+nessuna route da nessuna parte.
+
+- **`(it)/not-found.tsx` e `en/not-found.tsx`** — chrome completo
+  (StickyHeader/Footer, perché vivono dentro il rispettivo root layout),
+  rendono `<NotFound locale="..." />` (`components/sections/NotFound.tsx`).
+  Oggi non esiste alcun `notFound()` esplicito nel codice (le route con
+  `showFullNav = false` usano `redirect()`, non `notFound()`), quindi questi
+  due file non sono raggiungibili da un click reale al momento — restano
+  comunque corretti da avere, pronti per il giorno in cui una route
+  dinamica (es. un futuro `/partner/[slug]`) dovesse chiamare `notFound()`
+  per uno slug inesistente.
+- **`global-not-found.tsx`** (alla radice di `app/`, fuori da entrambi gli
+  alberi) — cattura invece **qualsiasi URL che non corrisponde a nessuna
+  route**, in nessuna delle due lingue: è il caso pratico più comune (link
+  rotto, URL digitato male). Richiede il flag sperimentale
+  `experimental.globalNotFound: true` in `next.config.ts` — sperimentale ma
+  è la soluzione che i docs stessi indicano per lo scenario "root layout
+  multipli", non un workaround improvvisato. **Bypassa entrambi i root
+  layout**: niente StickyHeader/Footer, deve importare da sé `globals.css`
+  (altrimenti le classi Tailwind come `bg-terracotta` non avrebbero nessuna
+  regola CSS caricata in pagina) e non carica i font custom via `next/font`
+  — scelta deliberata, non dimenticanza: i docs stessi suggeriscono "a
+  simpler font family" per una pagina che in pratica quasi nessuno vede
+  davvero, `font-sans` di Tailwind (system-ui) basta ed evita di appesantire
+  l'unica pagina del sito priva di chrome. **Bilingue in un'unica pagina**:
+  non può sapere quale lingua intendesse chi ha sbagliato URL (nessun
+  `middleware.ts` in questo progetto per leggere il pathname prima del
+  routing), quindi mostra l'italiano in evidenza (stessa convenzione di
+  `x-default` nella sitemap) con l'inglese come riga secondaria sotto un
+  separatore, invece di indovinare.
 
 ### Placeholder immagini
 

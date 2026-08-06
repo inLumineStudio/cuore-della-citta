@@ -473,4 +473,7 @@ export const ui = {
   homepageBreadcrumb: "Homepage",
   allRightsReserved: "Tutti i diritti riservati.",
   madeBy: "Realizzato da",
+  notFoundTitle: "Pagina non trovata",
+  notFoundMessage: "La pagina che cerchi non esiste o è stata spostata. Torna alla home per continuare a esplorare la Dimora.",
+  notFoundCta: "Torna alla home",
 };

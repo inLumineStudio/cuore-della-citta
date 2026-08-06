@@ -18,7 +18,9 @@ le ultime foto placeholder del sito (Hero della home, "La Nostra Storia",
 Hero di "/servizi-comfort" e di "/galleria") — nessun `ImagePlaceholder`
 resta più nel percorso principale. Alcune foto sorgente, a bassa risoluzione (export
 WhatsApp), sono state ingrandite con AI (Real-ESRGAN) prima dell'uso — vedi
-`CLAUDE.md` § AI upscaling.
+`CLAUDE.md` § AI upscaling. Aggiunta anche una **pagina 404 bilingue**
+coerente col brand (prima mancava del tutto, gli URL sbagliati mostravano
+quella generica di Next) — vedi `CLAUDE.md` § Pagina 404.
 
 ## Cosa esiste oggi
 
