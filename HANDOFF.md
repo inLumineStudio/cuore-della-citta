@@ -1,6 +1,11 @@
 # Handoff — Dimora "Cuore della Città"
 
-Stato al 6 agosto 2026, **giorno previsto per la messa online**. Riferimento:
+Stato al 6 agosto 2026 — **il sito è online** su
+`https://www.dimoracuoredellacitta.it`, dominio gestito su Aruba (DNS
+puntato a Vercel: record A `@` verso `216.198.79.1` e CNAME `www` verso
+Vercel, redirect 308 dal dominio senza www confermato, certificato SSL
+emesso). Email della struttura resta gestita separatamente su Aruba
+(record MX/mail/pop3/smtp invariati). Riferimento:
 preventivo inLumine Studio del 22 luglio 2026. Il sito è **uscito dalla
 bozza** (`showFullNav = true`): tutte le route sono raggiungibili e
 cliccabili, non solo la homepage — si passa dalla Fase 1 (UI/UX) alla Fase 2
@@ -353,15 +358,20 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    descrizione tradotte, nomi propri no) hanno già i loro contenuti reali in
    entrambe le
    lingue, come da convenzione di `content.it.ts`/`content.en.ts`.
-8. **Dominio definitivo** — confermato dalla proprietaria il 30 luglio 2026:
-   sarà **`dimoracuoredellacitta.it`** (non più `cuoredellacitta.it`, il
-   placeholder usato finora). `siteUrl` in `content.shared.ts` è già stato
-   aggiornato a `https://www.dimoracuoredellacitta.it`, ma **il dominio non è
-   ancora acquistato né pubblicato** (previsto entro la settimana del 27
-   luglio-2 agosto 2026) — fino ad allora `metadataBase`, canonical, `og:url`
-   e il QR della locandina pubblicitaria (fuori dal codice, vedi § sotto)
-   puntano a un indirizzo che non risponde ancora. Nessun'altra azione di
-   codice richiesta una volta acquistato: è già ovunque nel sito. Il resto
+8. ~~**Dominio definitivo**~~ — **online dal 6 agosto 2026**:
+   **`dimoracuoredellacitta.it`**, DNS gestito su Aruba (dominio già di
+   proprietà, email dello stesso dominio resta su Aruba) puntato a Vercel —
+   record `A @` verso `216.198.79.1` e `CNAME www` verso il target indicato
+   da Vercel, redirect 308 dal dominio senza `www` verso `www` (coerente con
+   `siteUrl` in `content.shared.ts`, già impostato su
+   `https://www.dimoracuoredellacitta.it`), certificato SSL emesso da
+   Vercel. **Attenzione al record A duplicato**: Aruba aveva già un record
+   `A @` di default (verso un IP suo) che è rimasto insieme al nuovo finché
+   non è stato eliminato manualmente — con due record A sullo stesso host il
+   traffico si smista a caso tra i due, e finché il conflitto è rimasto
+   Vercel non riusciva a validare la configurazione né a emettere il
+   certificato (challenge ACME http-01 fallito). Da controllare per lo
+   stesso motivo se in futuro si aggiungono altri domini via Aruba. Il resto
    del SEO on-page è fatto e **verificato riga per riga il 5 agosto 2026**
    (`npm run build && npm start` + `curl` su tutte le 12 route, entrambe le
    lingue) — vedi `CLAUDE.md` § SEO e metadati: favicon casa+statua, preview
@@ -413,21 +423,15 @@ balconi, bagno — vedi `CLAUDE.md` § Galleria), la foto Hero della home
 e quelle dedicate alle Hero di "/servizi-comfort" e "/galleria" (punto 1).
 Nessun `ImagePlaceholder` resta nel percorso principale del sito.
 
-Restano due punti aperti prima o subito dopo il lancio:
+**Il sito è online** (punto 8, vedi sopra). Resta un punto aperto:
 
-- **Dominio** (punto 8) — `siteUrl` è già impostato su
-  `https://www.dimoracuoredellacitta.it`: verificare che il dominio sia
-  effettivamente acquistato e puntato prima di comunicare l'indirizzo,
-  altrimenti SEO/condivisioni social puntano a un URL che non risponde.
 - **Licenza web di Flaviotte e General Sans** (punto 6) — rischio legale non
   ancora risolto, non solo un dettaglio tecnico: la proprietaria ha
   confermato di non avere una licenza che copra l'uso pubblico su web. Da
-  chiarire con il fornitore del kit font indipendentemente dal lancio.
+  chiarire con il fornitore del kit font, ora con più urgenza visto che il
+  sito è pubblico.
 
 Nice-to-have per dopo il lancio, in ordine di impatto: **un logo vero per
 White N'More** (oggi un ritaglio da volantino) e l'**apertura del profilo
 Google Business** (per passare `Location` dall'indirizzo stimato al Place ID
 esatto, vedi `CLAUDE.md` § "Dove ci Troviamo").
-
-Lato codice il sito **è pronto per andare online**: nessun blocco tecnico
-residuo dopo il giro di pulizia e l'audit SEO del 5 agosto 2026.
