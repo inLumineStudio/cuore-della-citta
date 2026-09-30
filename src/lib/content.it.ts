@@ -425,6 +425,26 @@ export const partners: Partner[] = [
     websiteUrl: "https://www.pubnerocaffe.it/",
   },
   {
+    name: "Ristorante Clemente",
+    category: "Ristorante",
+    tier: "10",
+    description:
+      "Dal 1957 in Piazza Santa Monica, nel centro di Sulmona: cucina abruzzese di tradizione reinterpretata con influenze mediterranee e contemporanee. Bib Gourmand della Guida Michelin e segnalato da Osterie d'Italia.",
+    logoSrc: "/images/partners/ristorante-clemente.png",
+    logoAlt: "Logo di Ristorante Clemente",
+    websiteUrl: "https://www.ristoranteclemente.it/",
+  },
+  {
+    name: "Cocco Pelletterie",
+    category: "Pelletteria & Accessori",
+    tier: "10",
+    description:
+      "Pelletteria dal 1923 su Corso Ovidio: borse, scarpe e piccola pelletteria da donna, accessori da uomo e valigie, con marchi come Pinko, Borbonese, Coccinelle, Twin Set e Samsonite.",
+    logoSrc: "/images/partners/cocco-pelletterie.png",
+    logoAlt: "Logo di Cocco Pelletterie",
+    websiteUrl: "https://coccopelletterie.it/",
+  },
+  {
     name: "inLumine Studio",
     category: "Consulenza Web & Design",
     tier: "10",

@@ -85,7 +85,11 @@ routing reale (non single-page ad anchor):
   Sulmona, fascia 20%, scheda verso il suo profilo Instagram) e
   **Nerocaffè** (pub irlandese a 7 km da Sulmona, fascia 10% sulla cena,
   scheda verso pubnerocaffe.it — sito realizzato in passato dallo stesso
-  studio). La sezione è organizzata per **fasce di sconto** (10%, 15%, 20%,
+  studio). Dal 30 settembre 2026 anche **Ristorante Clemente** (cucina
+  abruzzese dal 1957, Piazza Santa Monica, fascia 10%, scheda verso
+  ristoranteclemente.it) e **Cocco Pelletterie** (pelletteria dal 1923 su
+  Corso Ovidio, fascia 10%, scheda verso coccopelletterie.it): sei partner in
+  tutto. La sezione è organizzata per **fasce di sconto** (10%, 15%, 20%,
   omaggi gratuiti) invece che come griglia piatta —
   vedi `CLAUDE.md` § "I Nostri Partner". Non è più tra le sezioni smontate.
 
@@ -318,7 +322,10 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    studio, logo con testo bianco ricolorato via script per leggibilità sulla
    card chiara — vedi `CLAUDE.md`). **Tutte le descrizioni sono testo
    definitivo, confermato dalla proprietaria il 5 agosto 2026** (non più
-   bozza). La sezione è stata anche ristrutturata a **fasce di sconto**
+   bozza). Il 30 settembre 2026 si sono aggiunti **Ristorante Clemente** e
+   **Cocco Pelletterie** (entrambi fascia 10%): descrizioni scritte a partire
+   dai rispettivi siti ufficiali, **non ancora confermate dalla
+   proprietaria** come le prime quattro. La sezione è stata anche ristrutturata a **fasce di sconto**
    (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta
    della cliente — pronta a ricevere altri partner nella fascia ancora vuota
    (15%) non appena firmati.
@@ -354,7 +361,7 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    `CLAUDE.md` § Multilingua), con switch a bandierina accanto all'hamburger
    in Hero e `StickyHeader`. Nomi propri (Sulmona, monumenti, la citazione di
    Ovidio, l'indirizzo) non tradotti; sia Galleria (quattro foto, `alt`
-   tradotto per ciascuna) sia Partner (quattro partner, categoria e
+   tradotto per ciascuna) sia Partner (sei partner, categoria e
    descrizione tradotte, nomi propri no) hanno già i loro contenuti reali in
    entrambe le
    lingue, come da convenzione di `content.it.ts`/`content.en.ts`.
@@ -407,7 +414,7 @@ sono stati risolti — vedi le convenzioni in `CLAUDE.md`.
 
 Tutte e sei le sezioni sono ora complete: Homepage, "/la-dimora",
 "/servizi-comfort", "/posizione", "/galleria" (17 foto, dal 6 agosto 2026)
-e "/partner" (quattro partner al 1 agosto 2026, ma
+e "/partner" (sei partner al 30 settembre 2026, ma
 strutturalmente pronta a crescere). Non resta più nessuna sezione vuota da
 riempire da zero.
 

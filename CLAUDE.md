@@ -959,6 +959,19 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   30px ai lati, alla risoluzione nativa), portando il rapporto larghezza/
   altezza del logo da 3.99:1 a 3.22:1 — verificato in browser da 375px a
   1920px di viewport, margine visibile su tutti i lati a ogni larghezza.
+- **Loghi di Ristorante Clemente e Cocco Pelletterie** (30 settembre 2026,
+  entrambi fascia 10%, descrizioni ricavate dai rispettivi siti ufficiali).
+  Clemente non aveva un file logo: **ritagliato da una foto del biglietto da
+  visita** (`IMG_3383` sul Desktop del cliente), luminanza convertita in
+  canale alpha con glifi in nero pieno (stesso principio della trasparenza
+  di Cafè Piazza Tresca), ingrandito ×3 lanczos prima della soglia per bordi
+  puliti, e **raddrizzato di 1.68°**: il biglietto nella foto era inclinato
+  e il logo risultava storto (segnalato dal cliente). L'angolo è misurato sul
+  bordo superiore della ciotola, che nel marchio è orizzontale. Cocco arriva
+  dal sito ufficiale (`logo_cocco-pelletterie.png`, già trasparente, colore
+  bruno leggibile sul crema): solo `trim()` + margine trasparente con
+  `extend()`, per non ripetere il problema "logo che tocca i bordi" di
+  Nerocaffè.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie

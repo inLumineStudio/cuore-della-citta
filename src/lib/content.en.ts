@@ -432,6 +432,26 @@ export const partners: Partner[] = [
     websiteUrl: "https://www.instagram.com/whitenmore.sulmona",
   },
   {
+    name: "Ristorante Clemente",
+    category: "Restaurant",
+    tier: "10",
+    description:
+      "On Piazza Santa Monica in the center of Sulmona since 1957: traditional Abruzzo cuisine reinterpreted with Mediterranean and contemporary influences. Michelin Guide Bib Gourmand and listed in Osterie d'Italia.",
+    logoSrc: "/images/partners/ristorante-clemente.png",
+    logoAlt: "Ristorante Clemente logo",
+    websiteUrl: "https://www.ristoranteclemente.it/",
+  },
+  {
+    name: "Cocco Pelletterie",
+    category: "Leather Goods & Accessories",
+    tier: "10",
+    description:
+      "Leather goods shop on Corso Ovidio since 1923: women's handbags, shoes and small leather goods, men's accessories and luggage, with brands such as Pinko, Borbonese, Coccinelle, Twin Set and Samsonite.",
+    logoSrc: "/images/partners/cocco-pelletterie.png",
+    logoAlt: "Cocco Pelletterie logo",
+    websiteUrl: "https://coccopelletterie.it/",
+  },
+  {
     name: "inLumine Studio",
     category: "Web Consulting & Design",
     tier: "10",
