@@ -86,9 +86,10 @@ routing reale (non single-page ad anchor):
   **Nerocaffè** (pub irlandese a 7 km da Sulmona, fascia 10% sulla cena,
   scheda verso pubnerocaffe.it — sito realizzato in passato dallo stesso
   studio). Dal 30 settembre 2026 anche **Ristorante Clemente** (cucina
-  abruzzese dal 1957, Piazza Santa Monica, fascia 10%, scheda verso
-  ristoranteclemente.it) e **Cocco Pelletterie** (pelletteria dal 1923 su
-  Corso Ovidio, fascia 10%, scheda verso coccopelletterie.it): sei partner in
+  abruzzese dal 1957, Piazza Santa Monica, fascia 10%, scheda verso il suo
+  profilo Instagram) e **Cocco Pelletterie** (pelletteria dal 1923 su Corso
+  Ovidio, fascia 10%, scheda verso il suo profilo Instagram — entrambi hanno
+  un sito, ma la cliente ha preferito il link a Instagram): sei partner in
   tutto. La sezione è organizzata per **fasce di sconto** (10%, 15%, 20%,
   omaggi gratuiti) invece che come griglia piatta —
   vedi `CLAUDE.md` § "I Nostri Partner". Non è più tra le sezioni smontate.

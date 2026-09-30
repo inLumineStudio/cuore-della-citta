@@ -978,7 +978,10 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   l'elemento, non lo stile). Cafè Piazza Tresca punta al proprio profilo
   Facebook, White N'More al proprio profilo Instagram (nessuno dei due ha un
   sito), Nerocaffè al proprio sito (realizzato in passato dallo stesso
-  studio), inLumine Studio al proprio sito (`inlumine.it`).
+  studio), inLumine Studio al proprio sito (`inlumine.it`). Ristorante
+  Clemente e Cocco Pelletterie puntano ai propri profili Instagram **pur
+  avendo un sito**: scelta esplicita del cliente (30 settembre 2026), le
+  descrizioni restano comunque ricavate dai siti.
 - **Nessun `eyebrow`** sulla `SectionHeading`: come `Amenities`, la riga sotto
   il wordmark della Hero (`pageHeroes.partner.claim`, "Vantaggi Esclusivi")
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
