@@ -436,7 +436,7 @@ export const partners: Partner[] = [
     category: "Restaurant",
     tier: "10",
     description:
-      "On Piazza Santa Monica in the center of Sulmona since 1957: traditional Abruzzo cuisine reinterpreted with Mediterranean and contemporary influences. Michelin Guide Bib Gourmand and listed in Osterie d'Italia.",
+      "On Piazza Santa Monica in the center of Sulmona since 1957: traditional Abruzzo cuisine reinterpreted with Mediterranean and contemporary influences. Michelin Guide Bib Gourmand and two snails in Osterie d'Italia.",
     logoSrc: "/images/partners/ristorante-clemente.png",
     logoAlt: "Ristorante Clemente logo",
     websiteUrl: "https://www.instagram.com/ristoranteclemente/",

@@ -429,7 +429,7 @@ export const partners: Partner[] = [
     category: "Ristorante",
     tier: "10",
     description:
-      "Dal 1957 in Piazza Santa Monica, nel centro di Sulmona: cucina abruzzese di tradizione reinterpretata con influenze mediterranee e contemporanee. Bib Gourmand della Guida Michelin e segnalato da Osterie d'Italia.",
+      "Dal 1957 in Piazza Santa Monica, nel centro di Sulmona: cucina abruzzese di tradizione reinterpretata con influenze mediterranee e contemporanee. Bib Gourmand della Guida Michelin e due chiocciole su Osterie d'Italia.",
     logoSrc: "/images/partners/ristorante-clemente.png",
     logoAlt: "Logo di Ristorante Clemente",
     websiteUrl: "https://www.instagram.com/ristoranteclemente/",
