@@ -40,12 +40,12 @@ function PartnerCard({ partner, logoAltPrefix, logoComingSoon }: { partner: Part
       href={partner.websiteUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-ink p-8 transition-colors hover:bg-ink-soft"
+      className="bg-ink p-8 ring-1 ring-cream/10 transition-colors hover:bg-ink-soft"
     >
       {content}
     </a>
   ) : (
-    <div className="bg-ink p-8">{content}</div>
+    <div className="bg-ink p-8 ring-1 ring-cream/10">{content}</div>
   );
 }
 
@@ -81,7 +81,10 @@ export function Partners({ locale }: PartnersProps) {
                   <span className="font-display text-base tracking-[0.15em] uppercase">{tier.title}</span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm bg-cream/10 sm:grid-cols-3">
+                {/* Filetti sulle card (ring), non sullo sfondo della griglia: con
+                    un numero di partner non multiplo di 3, uno sfondo tinto
+                    trasparirebbe nelle celle vuote dell'ultima riga. */}
+                <div className="grid grid-cols-1 sm:grid-cols-3">
                   {tier.partners.map((partner) => (
                     <PartnerCard
                       key={partner.name}

@@ -984,11 +984,19 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   copre già quel ruolo, un'etichetta aggiuntiva era ridondante — convenzione
   non applicata a `Location`, che la usa (`eyebrow="Posizione"`), inconsistenza
   nota ma non ancora risolta lì.
-- **Griglia a celle divise da hairline** (`gap-px` su `bg-cream/10`, sfondo
-  scuro `bg-ink`) **dentro ogni fascia**, non più su tutti i partner insieme:
-  pensata per restare equilibrata con poche voci per fascia (3-6), non per
-  decine di partner — da rivedere se una singola fascia crescesse molto oltre
-  quella scala.
+- **Griglia a celle divise da hairline** (sfondo scuro `bg-ink`) **dentro
+  ogni fascia**, non più su tutti i partner insieme: pensata per restare
+  equilibrata con poche voci per fascia (3-6), non per decine di partner —
+  da rivedere se una singola fascia crescesse molto oltre quella scala.
+  **Il filetto è un `ring-1 ring-cream/10` su ogni card**, non più un `gap-px`
+  sopra un fondo `bg-cream/10` della griglia (corretto il 30 settembre 2026,
+  segnalato dal cliente): con un numero di partner non multiplo di 3, quel
+  fondo tinto traspariva nelle celle vuote dell'ultima riga come un riquadro
+  chiaro "segnaposto". Con il ring il filetto esiste solo dove c'è una card.
+  Due card adiacenti non raddoppiano la linea: la card dipinta dopo copre col
+  proprio sfondo il ring della precedente dal suo lato, quindi resta un solo
+  pixel. Tolto anche `overflow-hidden rounded-sm` dal contenitore, che avrebbe
+  tagliato il ring sul bordo esterno.
 
 ### FAQ (`components/sections/Faq.tsx`)
 
