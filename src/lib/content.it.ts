@@ -472,7 +472,7 @@ export const partners: Partner[] = [
     description:
       "A Palazzo SS. Annunziata, il punto di riferimento per chi visita Sulmona. Aperto dal martedì alla domenica (tutti i giorni dal 21 giugno al 21 settembre), dalle 9.00 alle 13.00 e dalle 15.30 alle 19.30.",
     logoSrc: "/images/partners/ufficio-turistico-iat.png",
-    logoAlt: "Simbolo dell'informazione turistica",
+    logoAlt: "Logo dell'Ufficio Turistico IAT",
     websiteUrl: "https://www.facebook.com/servizituristicisulmona/",
   },
   {
@@ -480,7 +480,7 @@ export const partners: Partner[] = [
     category: "Taxi",
     tier: "info",
     description:
-      "Servizio taxi a Sulmona (licenza n. 2). Si prenota per telefono o su WhatsApp al 352 2619261.",
+      "Servizio taxi a Sulmona (licenza n. 2). Si consiglia la prenotazione, per telefono o su WhatsApp al 352 2619261.",
     logoSrc: "/images/partners/taxi-giulia.png",
     logoAlt: "Logo di Taxi Giulia",
   },

@@ -985,11 +985,14 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   il download è riuscito solo da un browser (Playwright) partendo dalla
   pagina del sito; un primo giro con un ritaglio del biglietto da visita è
   stato scartato perché sfocato. Ufficio Turistico e Taxi Giulia vengono
-  invece da foto di biglietti da visita: l'Ufficio Turistico è il simbolo
-  "i" ritagliato dalla foto, ruotata di 90°, con angoli arrotondati e bianco
-  riequilibrato (la foto lo rendeva azzurrino); Taxi Giulia è il testo viola
-  con luminanza convertita in alpha. Tutti con margine trasparente
-  incorporato (`extend()`), come Nerocaffè. Taxi Giulia
+  invece da foto di biglietti da visita: l'Ufficio Turistico è il riquadro
+  rosso col nome ("Ufficio Turistico-IAT / Informazioni e Accoglienza
+  Turistica") dalla foto ruotata di 90°, ricomposto con il testo bianco
+  estratto via canale min(G,B) su un rosso piatto (185,47,70) e angoli
+  arrotondati, per eliminare gradiente e riflessi della foto (un primo
+  giro col solo simbolo "i" è stato scartato su richiesta: troppo generico);
+  Taxi Giulia è il testo viola con luminanza convertita in alpha. Taxi
+  Giulia ha margine trasparente incorporato (`extend()`), come Nerocaffè. Taxi Giulia
   **non ha `websiteUrl`**: la scheda resta statica e il numero (352 2619261)
   è scritto nella descrizione.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)

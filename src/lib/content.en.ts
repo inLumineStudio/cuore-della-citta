@@ -479,7 +479,7 @@ export const partners: Partner[] = [
     description:
       "At Palazzo SS. Annunziata, the go-to point for visitors to Sulmona. Open Tuesday to Sunday (every day from June 21 to September 21), 9:00 am to 1:00 pm and 3:30 pm to 7:30 pm.",
     logoSrc: "/images/partners/ufficio-turistico-iat.png",
-    logoAlt: "Tourist information symbol",
+    logoAlt: "Ufficio Turistico IAT logo",
     websiteUrl: "https://www.facebook.com/servizituristicisulmona/",
   },
   {
@@ -487,7 +487,7 @@ export const partners: Partner[] = [
     category: "Taxi",
     tier: "info",
     description:
-      "Taxi service in Sulmona (license no. 2). Book by phone or on WhatsApp at +39 352 2619261.",
+      "Taxi service in Sulmona (license no. 2). Booking is recommended, by phone or on WhatsApp at +39 352 2619261.",
     logoSrc: "/images/partners/taxi-giulia.png",
     logoAlt: "Taxi Giulia logo",
   },
