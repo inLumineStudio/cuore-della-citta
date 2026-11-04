@@ -8,7 +8,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Location & Map";
-const description = "How to reach Dimora Cuore della Città and the main points of interest in the historic center nearby.";
+const description = "Where to find Dimora Cuore della Città in Sulmona's historic center: map, directions and the main sights just steps away.";
 
 export const metadata: Metadata = {
   title,

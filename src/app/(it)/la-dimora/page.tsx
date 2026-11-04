@@ -7,7 +7,7 @@ import { buildOpenGraph } from "@/lib/seo";
 
 const title = "La Dimora";
 const description =
-  "Il racconto di Dimora Cuore della Città: la storia della struttura e degli ambienti che la compongono.";
+  "Il racconto di Dimora Cuore della Città: la storia della casa vacanze nel centro storico di Sulmona e degli ambienti che la compongono.";
 
 export const metadata: Metadata = {
   title,

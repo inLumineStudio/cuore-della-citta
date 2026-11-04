@@ -5,6 +5,7 @@
 // dato nuovo (es. recensioni, tariffe) quando arriveranno informazioni che
 // oggi il sito non ha ancora.
 import { getContent } from "./content";
+import { googleMapsProfileHref } from "./contact";
 import { addressParts, heroImageSrc, propertyCoordinates, propertyFacts, siteUrl } from "./content.shared";
 import { localizeHref, type Locale } from "./i18n";
 
@@ -29,7 +30,8 @@ export function lodgingBusinessJsonLd(locale: Locale) {
       latitude: propertyCoordinates.latitude,
       longitude: propertyCoordinates.longitude,
     },
-    sameAs: [content.instagramUrl],
+    hasMap: googleMapsProfileHref(),
+    sameAs: [content.instagramUrl, googleMapsProfileHref()],
     checkinTime: propertyFacts.checkinTime,
     checkoutTime: propertyFacts.checkoutTime,
     petsAllowed: propertyFacts.petsAllowed,

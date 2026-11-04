@@ -1,4 +1,4 @@
-import { siteConfigShared } from "./content.shared";
+import { googleBusinessCid, propertyCoordinates, siteConfigShared } from "./content.shared";
 
 export function telHref(): string {
   return `tel:${siteConfigShared.phoneHref}`;
@@ -11,15 +11,19 @@ export function whatsappHref(message?: string): string {
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
-// Basati sull'indirizzo (`siteConfigShared.addressLine`), non su un Place ID:
-// il profilo Google Business della struttura non è ancora pubblicato. Quando
-// lo sarà, questi due andranno aggiornati con l'ID del profilo (mappa più
-// precisa e "Indicazioni stradali" che apre la scheda invece del solo
-// indirizzo).
+// Basati sulla scheda Google Business della struttura (CID in
+// `content.shared.ts`): la mappa incorporata mostra il nome, la valutazione e
+// il pulsante "Apri in Maps" invece del solo indirizzo. Le indicazioni
+// puntano alle coordinate esatte del segnaposto della scheda.
+export function googleMapsProfileHref(): string {
+  return `https://www.google.com/maps?cid=${googleBusinessCid}`;
+}
+
 export function mapsEmbedSrc(): string {
-  return `https://www.google.com/maps?q=${encodeURIComponent(siteConfigShared.addressLine)}&output=embed`;
+  return `${googleMapsProfileHref()}&z=17&output=embed`;
 }
 
 export function mapsDirectionsHref(): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(siteConfigShared.addressLine)}`;
+  const { latitude, longitude } = propertyCoordinates;
+  return `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 }

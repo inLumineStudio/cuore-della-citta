@@ -315,7 +315,7 @@ src/
     seo.ts                # buildOpenGraph() — vedi § SEO e metadati
 public/
   images/                # Asset immagine statici
-    opengraph/            # Foto OG dedicate (la-dimora.jpg, posizione.jpg) — asset statici, non convenzione-file di Next, vedi § SEO e metadati
+    opengraph/            # Foto OG dedicate, una per pagina (la-dimora, galleria, servizi-comfort, posizione, partner) — asset statici, non convenzione-file di Next, vedi § SEO e metadati
 ```
 
 **Regola guida**: i componenti in `sections/` non contengono testo hardcoded
@@ -561,8 +561,8 @@ alternativi con due `<h1>` che si escludevano a vicenda.
 
 - Occupa **sempre l'intero viewport**: la `<section>` usa `min-h-dvh`
   (dynamic viewport height, robusto anche su mobile con barra URL variabile).
-- Il blocco centrale, in ordine: wordmark (`<h1>`, `<Link>` a `/` così fa anche
-  da logo), `heroLocation` ("Sulmona, Abruzzo"), `heroDescriptor` ("Una casa
+- Il blocco centrale, in ordine: wordmark (`<Link>` a `/` così fa anche
+  da logo; `<h1>` solo in home, vedi § Audit SEO), `heroLocation` ("Sulmona, Abruzzo"), `heroDescriptor` ("Una casa
   vacanze di charme nel cuore del centro storico."), claim e sottotitolo.
   Wordmark, località e descrittore sono un **gruppo stretto** (`gap-3` in un
   wrapper dedicato) mentre il contenitore usa `gap-7`/`md:gap-9`: con gap
@@ -811,14 +811,15 @@ stradali"; infine a piena larghezza la mappa Google Maps vera.
   cliente, perché chi scorre fino in fondo alla pagina non deve risalire per
   trovarli. Il link **"Indicazioni stradali" sta fra questo blocco e la mappa
   Google**, non più accanto all'elenco punti di interesse in alto: posizione
-  scelta dal cliente, apre Google Maps con l'indirizzo (`mapsDirectionsHref()`
-  in `contact.ts`), non la scheda dell'attività.
+  scelta dal cliente, apre Google Maps con le indicazioni verso le coordinate
+  esatte del segnaposto della scheda (`mapsDirectionsHref()` in `contact.ts`).
 - **Mappa Google** (`mapsEmbedSrc()` in `contact.ts`): un `<iframe>` a piena
-  larghezza in fondo, generato dal solo indirizzo (`siteConfig.addressLine`),
-  non da un Place ID — il profilo Google Business della struttura non è
-  ancora pubblicato (va aperto col cliente in seguito). Quando lo sarà,
-  `mapsEmbedSrc()`/`mapsDirectionsHref()` vanno aggiornati con l'ID del
-  profilo.
+  larghezza in fondo, generato dal **CID della scheda Google Business**
+  (`googleBusinessCid` in `content.shared.ts`, dal 4 novembre 2026): mostra
+  nome, valutazione e "Apri in Maps" invece del solo indirizzo. Il CID è la
+  seconda metà esadecimale dell'URL della scheda su Google Maps
+  (`0x...:0x...`), convertita in decimale. L'incorporamento funziona solo
+  dentro un iframe (aperto da solo risponde "must be used in an iframe").
 - **`pointsOfInterest` (`content.ts`) ha guadagnato un campo `description`**
   (opzionale): un cenno editoriale su cosa rende ciascun luogo degno di una
   visita, non solo nome e distanza. `LocationTeaser` (il pannello breve della
@@ -1209,8 +1210,8 @@ sotto sul perché non ci si affida al merge automatico fra layout e pagina.
 | `icon.svg` + `icon.png` (32px) | favicon; l'SVG copre i browser moderni, il PNG quelli che non lo supportano |
 | `apple-icon.png` (180px) | icona per la schermata home iOS |
 | `app/opengraph-image.jpg` (1200×630) + `.alt.txt` | preview social generica (la camera da letto), per le pagine senza foto dedicata |
-| `public/images/opengraph/la-dimora.jpg` / `posizione.jpg` | preview dedicate per quelle due pagine — asset statici, non convenzione-file (vedi bug sotto) |
-| `sitemap.ts` | `/sitemap.xml`, 24 URL (12 route × 2 lingue) con `alternates.languages` (incluso `x-default`) per coppia |
+| `public/images/opengraph/<slug>.jpg` | preview dedicata per ognuna delle cinque sottopagine (la-dimora, galleria, servizi-comfort, posizione, partner), 1200×630 JPEG ritagliati da foto già in galleria — asset statici, non convenzione-file (vedi bug sotto) |
+| `sitemap.ts` | `/sitemap.xml`, 24 URL (12 route × 2 lingue) con `alternates.languages` (incluso `x-default`) per coppia. Senza `lastmod`: era la data di build, uguale per tutte le pagine, quindi falsa (Google ignora i `lastmod` non affidabili) |
 | `robots.ts` | `/robots.txt`, che punta alla sitemap |
 
 `metadata` in ogni `layout.tsx` definisce `metadataBase` (obbligatorio:
@@ -1262,13 +1263,37 @@ sono diventate asset statici normali in `public/images/opengraph/` (un
 percorso `public/` è per definizione stabile, niente hash; `.alt.txt` non
 serve più, l'alt si passa come parametro di codice a `buildOpenGraph()`).
 Ogni `metadata` export (12 pagine + 2 root layout per l'home) ora dichiara
-il proprio `openGraph` completo: foto dedicata per La Dimora e Posizione,
-`/opengraph-image.jpg` (file di convenzione, verificato stabile) per le
-pagine senza scatto proprio (home, Comfort & Informazioni, Galleria,
-Partner). Verificato per tutte le 12 route in entrambe le lingue con
+il proprio `openGraph` completo: foto dedicata per le cinque sottopagine (dal
+4 novembre 2026; prima Comfort, Galleria e Partner usavano quella generica),
+`/opengraph-image.jpg` (file di convenzione, verificato stabile) per la home.
+Non usare la facciata esterna come anteprima: nella foto compare l'insegna di
+un partner (Ristorante Clemente). Verificato per tutte le 12 route in entrambe le lingue con
 `npm run build && npm start` + `curl`, controllando `og:title`/
 `og:description`/`og:url`/`og:image` uno per uno e lo status HTTP di ogni
 immagine referenziata.
+
+### Audit SEO del 4 novembre 2026
+
+Verificato su una build di produzione (`next build && next start`) con
+Playwright su tutte le 12 route: titoli e descrizioni unici, canonical,
+hreflang reciproci con `x-default`, `lang` corretto, nessuna immagine senza
+`alt`, nessun link interno rotto, JSON-LD valido (`LodgingBusiness` ovunque,
+`FAQPage` in home, `BreadcrumbList` nelle sottopagine), 404 con `noindex`.
+Corretto in quell'occasione:
+
+- **Un solo `<h1>`, diverso per pagina.** Prima era sempre il wordmark "Cuore
+  della Città". Ora `Hero` lo tiene come `<h1>` solo in home (nessun `claim`
+  passato); sulle sottopagine, che passano il claim, l'`<h1>` è il claim
+  ("La Nostra Storia", "Vantaggi Esclusivi"...) e il wordmark è un `<p>`.
+  Nessuna differenza visiva (Tailwind azzera gli stili dei titoli).
+- **Meta description allungate a 120-155 caratteri** su tutte le sottopagine
+  (erano 86-114), con "Sulmona" e "casa vacanze". Restano sotto il limite
+  oltre il quale Google tronca.
+- **Sitemap senza `lastmod`** (vedi tabella sopra).
+
+Non corretto, da sapere: la Galleria pesa ~5,4 MB (18 foto WebP da 400-600 KB
+servite così come sono perché `images.unoptimized: true`) e la home ~1,5 MB;
+è l'unico punto davvero debole per le Core Web Vitals.
 
 ### hreflang `x-default`
 
@@ -1335,11 +1360,13 @@ reception).
   duplicano in forma strutturata dati già scritti come prosa altrove
   (`siteConfig.addressLine`, i testi di `amenitiesPage`/`faqs`) — i commenti
   su ciascuno segnalano quale prosa va tenuta in sync se cambia il fatto
-  sottostante (es. cambia il numero di camere). **`propertyCoordinates` è una
-  stima**: geocoding di `siteConfig.addressLine` via Nominatim/OpenStreetMap
-  (precisione di via, non di numero civico), non un dato fornito dal cliente
-  — da sostituire con le coordinate esatte quando arriverà il profilo Google
-  Business (vedi TODO in `HANDOFF.md`).
+  sottostante (es. cambia il numero di camere). **`propertyCoordinates` è il
+  segnaposto della scheda Google Business** (letto dall'URL della scheda il 4
+  novembre 2026; prima era una stima di via da Nominatim, ~30 m più in là).
+  `hasMap` e `sameAs` puntano alla scheda (`googleMapsProfileHref()`). Non
+  si aggiunge `aggregateRating` con le recensioni della scheda (5,0 su 5): le
+  linee guida di Google escludono le recensioni "autoreferenziali" dai
+  risultati arricchiti.
 - **`faqPageJsonLd(locale)`** — tipo `FAQPage`, montato solo nelle due home
   (`(it)/page.tsx`, `en/page.tsx`): è l'unica pagina dove il pannello FAQ è
   davvero visibile, i dati
@@ -1380,9 +1407,10 @@ proprietaria. Il ramo Telegram è stato rimosso con `ContactCta`, che era
 l'unico a usarlo.
 
 Lo stesso file espone anche `mapsEmbedSrc()` e `mapsDirectionsHref()`, usati
-da `Location` (§ "Dove ci Troviamo"): entrambi costruiscono l'URL Google Maps
-dal solo `siteConfig.addressLine`, in attesa del profilo Google Business
-della struttura (non ancora pubblicato).
+da `Location` (§ "Dove ci Troviamo"): la mappa si basa sul CID della scheda
+Google Business, le indicazioni sulle coordinate del suo segnaposto.
+`googleMapsProfileHref()` dà il link diretto alla scheda (`?cid=`), usato anche
+nei dati strutturati.
 
 Il messaggio precompilato dei link WhatsApp sta in **un solo posto**,
 `whatsappMessage` in `content.ts`, ed è il valore di default di

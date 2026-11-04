@@ -28,14 +28,19 @@ export const addressParts = {
   addressCountry: "IT",
 } as const;
 
-// Coordinate di Via Panfilo Scudieri (precisione di via, non del numero
-// civico): geocoding via Nominatim/OpenStreetMap su `siteConfigShared.addressLine`,
-// non fornite dal cliente. Da sostituire con quelle esatte se e quando arriva
-// il profilo Google Business della struttura (vedi TODO in HANDOFF.md).
+// Coordinate del segnaposto del profilo Google Business della struttura
+// (lette dall'URL della scheda su Google Maps, 4 novembre 2026): sostituiscono
+// la stima di via ottenuta in precedenza via Nominatim, ~30 m più in là.
 export const propertyCoordinates = {
-  latitude: 42.051099,
-  longitude: 13.923446,
+  latitude: 42.0508673,
+  longitude: 13.9236486,
 } as const;
+
+// Identificativo (CID, decimale) della scheda "Dimora “Cuore della Città”" su
+// Google Maps: è la parte `0x...:0x...` dell'URL della scheda, seconda metà,
+// convertita da esadecimale. Serve a mappa incorporata, link alla scheda e
+// dati strutturati.
+export const googleBusinessCid = "16907975963333788783";
 
 // Fatti sulla struttura non ancora esposti come testo altrove (solo per i
 // dati strutturati). `numberOfRooms` e `petsAllowed` rispecchiano voci di

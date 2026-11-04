@@ -8,7 +8,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "I Nostri Partner";
-const description = "La rete di partner e le convenzioni riservate agli ospiti di Dimora Cuore della Città.";
+const description = "Le convenzioni riservate a chi soggiorna alla Dimora, casa vacanze a Sulmona: sconti in ristoranti, negozi e servizi del territorio.";
 
 export const metadata: Metadata = {
   title,
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     title: `${title} | Cuore della Città`,
     description,
     image: {
-      src: "/opengraph-image.jpg",
-      alt: "La camera della Dimora Cuore della Città, con la porta-finestra aperta sul centro storico di Sulmona",
+      src: "/images/opengraph/partner.jpg",
+      alt: "Una piazza del centro storico di Sulmona vista dal balcone della Dimora Cuore della Città",
     },
   }),
 };

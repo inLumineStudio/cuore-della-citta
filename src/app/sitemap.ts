@@ -7,7 +7,6 @@ import { localizeHref, locales } from "@/lib/i18n";
 // Google pagine che rimandano altrove. Finché la bozza è così, la sitemap
 // contiene solo le due home.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
   const routes = showFullNav ? navRoutes : navRoutes.filter((route) => route.id === "home");
 
   return routes.flatMap((route) => {
@@ -26,7 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     return locales.map((locale) => ({
       url: new URL(localizeHref(route.href, locale), siteUrl).toString(),
-      lastModified,
       changeFrequency: "monthly" as const,
       priority: route.id === "home" ? 1 : 0.7,
       alternates: { languages },

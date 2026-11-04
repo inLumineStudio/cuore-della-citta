@@ -8,7 +8,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Our Partners";
-const description = "The network of partners and special offers reserved for guests of Dimora Cuore della Città.";
+const description = "Special offers reserved for guests of Dimora Cuore della Città, a holiday home in Sulmona: discounts at restaurants, shops and local services.";
 
 export const metadata: Metadata = {
   title,
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     title: `${title} | Cuore della Città`,
     description,
     image: {
-      src: "/opengraph-image.jpg",
-      alt: "The room at Dimora Cuore della Città, with the French window open onto Sulmona's historic center",
+      src: "/images/opengraph/partner.jpg",
+      alt: "A square in Sulmona's historic center seen from the balcony of Dimora Cuore della Città",
     },
   }),
 };

@@ -8,7 +8,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Gallery";
-const description = "The photo gallery of Dimora Cuore della Città: a visual preview of the spaces you'll find when you arrive.";
+const description = "Photos of Dimora Cuore della Città, a holiday home in Sulmona: bedrooms, kitchen, bathroom and balconies over the historic center, before you book.";
 
 export const metadata: Metadata = {
   title,
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     title: `${title} | Cuore della Città`,
     description,
     image: {
-      src: "/opengraph-image.jpg",
-      alt: "The room at Dimora Cuore della Città, with the French window open onto Sulmona's historic center",
+      src: "/images/opengraph/galleria.jpg",
+      alt: "The bedroom at Dimora Cuore della Città, with its stone vaulted ceiling and French window onto the balcony",
     },
   }),
 };

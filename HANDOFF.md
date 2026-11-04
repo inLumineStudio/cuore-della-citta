@@ -206,6 +206,17 @@ visibile) e `BreadcrumbList` sulle pagine con contenuto reale
 dettagli in `CLAUDE.md` § Dati strutturati. Manca solo il
 dominio definitivo in `siteUrl` — vedi TODO 8. Dettagli in `CLAUDE.md` § SEO.
 
+**Audit SEO del 4 novembre 2026** (build di produzione + Playwright su tutte
+le 12 route): struttura a posto; corretti `<h1>` identico su ogni pagina,
+meta description troppo corte, `lastmod` falso in sitemap, e Comfort/
+Galleria/Partner ora hanno una propria immagine di anteprima social (prima
+condividevano quella della camera). **Resta aperto il peso delle immagini**:
+la Galleria è ~5,4 MB e la home ~1,5 MB perché `images.unoptimized: true`
+serve i WebP così come sono. Le strade sono due: miniature più piccole per la
+griglia (il file grande solo nel lightbox) oppure riattivare l'ottimizzazione
+di `next/image`, che però dipende da dove è ospitato il sito (serve `sharp`
+sul server). Non toccato perché cambia la qualità visiva scelta (WebP q92).
+
 > Il cliente ha chiesto di **potenziare la SEO ogni volta che si aggiungono
 > contenuti nuovi**, senza bisogno di richiederlo esplicitamente ogni volta
 > (2026-07-27): dati strutturati, immagini OG dedicate, coordinate, breadcrumb
@@ -394,10 +405,10 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    trovato e risolto lo stesso giorno), Open Graph, canonical, hreflang
    (incluso `x-default`), sitemap, robots e dati strutturati JSON-LD
    (`LodgingBusiness`/`FAQPage`/`BreadcrumbList`). Le coordinate in
-   `propertyCoordinates` (`content.ts`) sono una stima da geocoding
-   dell'indirizzo: da sostituire con quelle esatte quando arriva il profilo
-   Google Business (che risolve anche questo punto e il punto successivo
-   sull'indirizzo nella mappa embed di `Location`).
+   `propertyCoordinates` e la mappa embed di `Location` usano ora la scheda
+   **Google Business** della struttura, trovata il 4 novembre 2026 (5,0 su 5
+   recensioni, sito e telefono già corretti): coordinate esatte, CID per la
+   mappa e i dati strutturati.
 9. ~~**Crediti fotografici**~~ — risolto: `photoCredits` (`content.ts`, per
    lingua) mostra nel Footer una riga generica ("Le immagini presenti in
    questo sito sono di proprietà dei rispettivi autori." / l'equivalente
@@ -447,6 +458,6 @@ Nessun `ImagePlaceholder` resta nel percorso principale del sito.
   sito è pubblico.
 
 Nice-to-have per dopo il lancio, in ordine di impatto: **un logo vero per
-White N'More** (oggi un ritaglio da volantino) e l'**apertura del profilo
-Google Business** (per passare `Location` dall'indirizzo stimato al Place ID
-esatto, vedi `CLAUDE.md` § "Dove ci Troviamo").
+White N'More** (oggi un ritaglio da volantino) e, sulla **scheda Google Business**
+(già collegata al sito), tenere allineati foto, orari e descrizione con il
+sito.

@@ -9,7 +9,7 @@ import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Galleria";
 const description =
-  "La galleria fotografica di Dimora Cuore della Città: un assaggio visivo degli ambienti che troverai al tuo arrivo.";
+  "Le foto della casa vacanze Dimora Cuore della Città a Sulmona: camere, cucina, bagno e balconi sul centro storico, prima di prenotare.";
 
 export const metadata: Metadata = {
   title,
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     title: `${title} | Cuore della Città`,
     description,
     image: {
-      src: "/opengraph-image.jpg",
-      alt: "La camera della Dimora Cuore della Città, con la porta-finestra aperta sul centro storico di Sulmona",
+      src: "/images/opengraph/galleria.jpg",
+      alt: "La camera da letto della Dimora Cuore della Città, con il soffitto a volta in pietra e la porta-finestra sul balcone",
     },
   }),
 };

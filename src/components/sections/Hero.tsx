@@ -50,6 +50,13 @@ export function Hero({
   const resolvedDescriptor = descriptor ?? content.heroDescriptor;
   const resolvedSubtitle = subtitle ?? content.heroSubtitle;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Un solo <h1> per pagina e diverso da pagina a pagina: in home (nessun
+  // `claim` passato) resta il wordmark; sulle altre route, che passano il
+  // claim della sezione, l'<h1> è il claim e il wordmark scende a <p>.
+  // Altrimenti ogni pagina del sito avrebbe lo stesso <h1> "Cuore della Città".
+  const claimIsHeading = claim !== undefined;
+  const Wordmark = claimIsHeading ? "p" : "h1";
+  const Claim = claimIsHeading ? "h1" : "p";
 
   return (
     <section className="relative flex min-h-dvh items-end overflow-hidden bg-ink">
@@ -109,14 +116,14 @@ export function Hero({
         {/* Wordmark e località sono una coppia: gap breve tra loro, respiro
             maggiore verso claim e sottotitolo. */}
         <div className="flex flex-col items-center gap-3">
-          <h1>
+          <Wordmark>
             <Link
               href="/"
               className="block font-wordmark text-4xl leading-[1.05] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] md:text-6xl lg:text-7xl"
             >
               {content.name}
             </Link>
-          </h1>
+          </Wordmark>
 
           <p className="font-body text-[0.8rem] tracking-[0.2em] text-hero-sand uppercase drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
             {content.heroLocation}
@@ -129,13 +136,13 @@ export function Hero({
           )}
         </div>
 
-        <p
+        <Claim
           className={`font-wordmark text-2xl uppercase leading-tight tracking-[0.06em] text-hero-ivory drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] lg:text-3xl ${
             showClaimOnMobile ? "" : "hidden md:block"
           }`}
         >
           {resolvedClaim}
-        </p>
+        </Claim>
 
         {/* A differenza del claim, il sottotitolo compare anche sotto `md`:
             corpo ridotto (`text-sm`) perché su 375px resta comunque tre

@@ -8,7 +8,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Comfort & Informazioni";
-const description = "Tutti i servizi e i comfort disponibili a Dimora Cuore della Città, curati nei dettagli.";
+const description = "Comfort e informazioni utili della casa vacanze Dimora Cuore della Città a Sulmona: dotazioni, orari di check-in e check-out, arrivo e parcheggio.";
 
 export const metadata: Metadata = {
   title,
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     title: `${title} | Cuore della Città`,
     description,
     image: {
-      src: "/opengraph-image.jpg",
-      alt: "La camera della Dimora Cuore della Città, con la porta-finestra aperta sul centro storico di Sulmona",
+      src: "/images/opengraph/servizi-comfort.jpg",
+      alt: "Il soggiorno con cucina della Dimora Cuore della Città, con tavolo apparecchiato e la camera da letto sullo sfondo",
     },
   }),
 };

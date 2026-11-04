@@ -6,7 +6,7 @@ import { breadcrumbListJsonLd } from "@/lib/structuredData";
 import { buildOpenGraph } from "@/lib/seo";
 
 const title = "The Dimora";
-const description = "The story of Dimora Cuore della Città: the history of the building and the spaces that make it up.";
+const description = "The story of Dimora Cuore della Città: the history of this holiday home in Sulmona's historic center and the spaces that make it up.";
 
 export const metadata: Metadata = {
   title,

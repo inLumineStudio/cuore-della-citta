@@ -9,7 +9,7 @@ import { buildOpenGraph } from "@/lib/seo";
 
 const title = "Posizione & Mappa";
 const description =
-  "Come raggiungere Dimora Cuore della Città e i principali punti di interesse del centro storico nelle vicinanze.";
+  "Dove si trova Dimora Cuore della Città, nel centro storico di Sulmona: mappa, indicazioni stradali e i principali luoghi da visitare a pochi passi.";
 
 export const metadata: Metadata = {
   title,
