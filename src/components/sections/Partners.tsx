@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Gift, Handshake, Tag } from "lucide-react";
+import { Gift, Handshake, Info, Tag } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getContent, type Partner } from "@/lib/content";
@@ -75,6 +75,8 @@ export function Partners({ locale }: PartnersProps) {
                 <div className="flex items-center gap-2.5 text-amber-soft">
                   {tier.id === "gift" ? (
                     <Gift className="h-4 w-4" strokeWidth={1.75} />
+                  ) : tier.id === "info" ? (
+                    <Info className="h-4 w-4" strokeWidth={1.75} />
                   ) : (
                     <Tag className="h-4 w-4" strokeWidth={1.75} />
                   )}

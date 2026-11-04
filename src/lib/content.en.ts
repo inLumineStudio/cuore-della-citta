@@ -395,6 +395,7 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
   "15": "15% off",
   "20": "20% off",
   gift: "Free perks",
+  info: "Services & information",
 };
 
 // Network of partnerships with local businesses: discounts reserved for
@@ -452,6 +453,16 @@ export const partners: Partner[] = [
     websiteUrl: "https://www.instagram.com/coccopelletterie/",
   },
   {
+    name: "Il Fiocco",
+    category: "Sulmona Confetti",
+    tier: "10",
+    description:
+      "Sulmona confetti on Corso Ovidio: arrangements, wedding favors and place cards, flowers and creations made of confetti, sweets and liqueurs. The 10% discount applies from a minimum spend of 10 euros.",
+    logoSrc: "/images/partners/il-fiocco.png",
+    logoAlt: "Il Fiocco logo",
+    websiteUrl: "https://www.facebook.com/ilfioccoconfetti",
+  },
+  {
     name: "inLumine Studio",
     category: "Web Consulting & Design",
     tier: "10",
@@ -460,6 +471,25 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/inlumine-studio.svg",
     logoAlt: "inLumine Studio logo",
     websiteUrl: "https://www.inlumine.it",
+  },
+  {
+    name: "Ufficio Turistico IAT",
+    category: "Tourist Information & Welcome",
+    tier: "info",
+    description:
+      "At Palazzo SS. Annunziata, the go-to point for visitors to Sulmona. Open Tuesday to Sunday (every day from June 21 to September 21), 9:00 am to 1:00 pm and 3:30 pm to 7:30 pm.",
+    logoSrc: "/images/partners/ufficio-turistico-iat.png",
+    logoAlt: "Tourist information symbol",
+    websiteUrl: "https://www.facebook.com/servizituristicisulmona/",
+  },
+  {
+    name: "Taxi Giulia",
+    category: "Taxi",
+    tier: "info",
+    description:
+      "Taxi service in Sulmona (license no. 2). Book by phone or on WhatsApp at +39 352 2619261.",
+    logoSrc: "/images/partners/taxi-giulia.png",
+    logoAlt: "Taxi Giulia logo",
   },
 ];
 

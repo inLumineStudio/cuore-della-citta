@@ -129,8 +129,10 @@ export type AmenityGroup = {
 // offerti gratuitamente, senza percentuale). L'ordine di questo array è
 // l'ordine in cui le fasce compaiono nella sezione Partner - aggiungerne una
 // nuova significa aggiungere un id qui e la relativa etichetta in
-// `partnerTierLabels` (`content.it.ts`/`content.en.ts`).
-export const partnerTierIds = ["10", "15", "20", "gift"] as const;
+// `partnerTierLabels` (`content.it.ts`/`content.en.ts`). "info" non è una
+// fascia di sconto ma una sezione a parte (ufficio turistico, taxi): servizi
+// utili all'ospite, senza condizioni economiche, sempre in fondo.
+export const partnerTierIds = ["10", "15", "20", "gift", "info"] as const;
 export type PartnerTierId = (typeof partnerTierIds)[number];
 
 export type Partner = {

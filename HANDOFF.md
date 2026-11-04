@@ -89,9 +89,14 @@ routing reale (non single-page ad anchor):
   abruzzese dal 1957, Piazza Santa Monica, fascia 10%, scheda verso il suo
   profilo Instagram) e **Cocco Pelletterie** (pelletteria dal 1923 su Corso
   Ovidio, fascia 10%, scheda verso il suo profilo Instagram — entrambi hanno
-  un sito, ma la cliente ha preferito il link a Instagram): sei partner in
+  un sito, ma la cliente ha preferito il link a Instagram). Il 4 novembre
+  2026 si sono aggiunti **Il Fiocco** (confetti di Sulmona, Corso Ovidio,
+  fascia 10% da 10 euro di spesa minima, scheda verso la pagina Facebook) e
+  una sezione a parte **"Servizi e informazioni"** con **Ufficio Turistico
+  IAT** (scheda verso la pagina Facebook) e **Taxi Giulia** (nessun link:
+  non ha sito né social, il numero è nella descrizione): nove schede in
   tutto. La sezione è organizzata per **fasce di sconto** (10%, 15%, 20%,
-  omaggi gratuiti) invece che come griglia piatta —
+  omaggi gratuiti) più la sezione informativa, invece che come griglia piatta —
   vedi `CLAUDE.md` § "I Nostri Partner". Non è più tra le sezioni smontate.
 
 La nav (`navLinks` in `content.ts`) ha oggi sei voci: **Homepage** (punta a `/`),
@@ -326,7 +331,9 @@ Tutti i placeholder sono marcati con `TODO` in `src/lib/content.ts`.
    bozza). Il 30 settembre 2026 si sono aggiunti **Ristorante Clemente** e
    **Cocco Pelletterie** (entrambi fascia 10%): descrizioni scritte a partire
    dai rispettivi siti ufficiali, **non ancora confermate dalla
-   proprietaria** come le prime quattro. La sezione è stata anche ristrutturata a **fasce di sconto**
+   proprietaria** come le prime quattro, e lo stesso vale per **Il Fiocco**,
+   **Ufficio Turistico IAT** (orari ricavati dal biglietto da visita, da
+   ricontrollare se cambiano) e **Taxi Giulia** (4 novembre 2026). La sezione è stata anche ristrutturata a **fasce di sconto**
    (10%/15%/20%/omaggi, vedi `CLAUDE.md` § "I Nostri Partner") su richiesta
    della cliente — pronta a ricevere altri partner nella fascia ancora vuota
    (15%) non appena firmati.

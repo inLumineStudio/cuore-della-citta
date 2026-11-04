@@ -870,7 +870,8 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   `Location` prima di avere l'indirizzo definitivo (segnaposto testuale
   onesto, non un contenuto inventato).
 - **Fasce di sconto fisse** (`partnerTierIds` in `content.shared.ts`): `10`,
-  `15`, `20`, `gift` (omaggi gratuiti, senza percentuale) — quest'ordine è
+  `15`, `20`, `gift` (omaggi gratuiti, senza percentuale) e `info` (non uno
+  sconto: la sezione "Servizi e informazioni", vedi sotto) — quest'ordine è
   anche l'ordine in cui compaiono in pagina. Ogni `Partner` ha un campo
   `tier` che lo assegna a una fascia; **non ha più un campo `benefit` a testo
   libero** (es. "15% di sconto sul menu") — lo sconto lo dice la fascia in
@@ -972,6 +973,25 @@ dice esplicitamente che il 20% è sulla colazione, non sull'intero locale
   bruno leggibile sul crema): solo `trim()` + margine trasparente con
   `extend()`, per non ripetere il problema "logo che tocca i bordi" di
   Nerocaffè.
+- **Il Fiocco, Ufficio Turistico IAT e Taxi Giulia** (4 novembre 2026). Il
+  Fiocco (confetti di Sulmona, fascia 10% da 10 euro di spesa minima, link
+  Facebook) è un partner normale. Gli altri due stanno in una sezione a parte,
+  **`info`** ("Servizi e informazioni"), aggiunta come ultimo id in
+  `partnerTierIds`: non è una fascia di sconto ma riusa lo stesso meccanismo
+  di raggruppamento, con icona `Info` al posto di `Tag` in `Partners.tsx`. I
+  loghi stanno in `public/images/partners/`. **Il Fiocco** usa il logo
+  ufficiale scaricato dal sito (`Layout/Logo.png`, 276×110, già trasparente,
+  con la scritta "confetti & more"): `curl` riceve un errore 999 dal server,
+  il download è riuscito solo da un browser (Playwright) partendo dalla
+  pagina del sito; un primo giro con un ritaglio del biglietto da visita è
+  stato scartato perché sfocato. Ufficio Turistico e Taxi Giulia vengono
+  invece da foto di biglietti da visita: l'Ufficio Turistico è il simbolo
+  "i" ritagliato dalla foto, ruotata di 90°, con angoli arrotondati e bianco
+  riequilibrato (la foto lo rendeva azzurrino); Taxi Giulia è il testo viola
+  con luminanza convertita in alpha. Tutti con margine trasparente
+  incorporato (`extend()`), come Nerocaffè. Taxi Giulia
+  **non ha `websiteUrl`**: la scheda resta statica e il numero (352 2619261)
+  è scritto nella descrizione.
 - **`websiteUrl` opzionale** rende l'intera scheda un link (`target="_blank"`)
   verso il sito o il profilo social del partner; se assente la scheda resta
   statica (`<div>` invece di `<a>` — stesso contenuto, il branch sceglie

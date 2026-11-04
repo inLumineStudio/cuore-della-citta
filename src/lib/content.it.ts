@@ -388,6 +388,7 @@ export const partnerTierLabels: Record<PartnerTierId, string> = {
   "15": "15% di sconto",
   "20": "20% di sconto",
   gift: "Omaggi gratuiti",
+  info: "Servizi e informazioni",
 };
 
 // Rete di convenzioni con attività del territorio: sconti riservati a chi
@@ -445,6 +446,16 @@ export const partners: Partner[] = [
     websiteUrl: "https://www.instagram.com/coccopelletterie/",
   },
   {
+    name: "Il Fiocco",
+    category: "Confetti di Sulmona",
+    tier: "10",
+    description:
+      "Confetti di Sulmona su Corso Ovidio: composizioni, bomboniere e segnaposto, fiori e creazioni di confetti, dolci e liquori. Il 10% di sconto è valido a partire da una spesa minima di 10 euro.",
+    logoSrc: "/images/partners/il-fiocco.png",
+    logoAlt: "Logo di Il Fiocco",
+    websiteUrl: "https://www.facebook.com/ilfioccoconfetti",
+  },
+  {
     name: "inLumine Studio",
     category: "Consulenza Web & Design",
     tier: "10",
@@ -453,6 +464,25 @@ export const partners: Partner[] = [
     logoSrc: "/images/partners/inlumine-studio.svg",
     logoAlt: "Logo di inLumine Studio",
     websiteUrl: "https://www.inlumine.it",
+  },
+  {
+    name: "Ufficio Turistico IAT",
+    category: "Informazioni e Accoglienza Turistica",
+    tier: "info",
+    description:
+      "A Palazzo SS. Annunziata, il punto di riferimento per chi visita Sulmona. Aperto dal martedì alla domenica (tutti i giorni dal 21 giugno al 21 settembre), dalle 9.00 alle 13.00 e dalle 15.30 alle 19.30.",
+    logoSrc: "/images/partners/ufficio-turistico-iat.png",
+    logoAlt: "Simbolo dell'informazione turistica",
+    websiteUrl: "https://www.facebook.com/servizituristicisulmona/",
+  },
+  {
+    name: "Taxi Giulia",
+    category: "Taxi",
+    tier: "info",
+    description:
+      "Servizio taxi a Sulmona (licenza n. 2). Si prenota per telefono o su WhatsApp al 352 2619261.",
+    logoSrc: "/images/partners/taxi-giulia.png",
+    logoAlt: "Logo di Taxi Giulia",
   },
 ];
 
